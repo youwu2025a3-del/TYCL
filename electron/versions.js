@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchJson } = require('./net');
+const { fetchJson, fetchText } = require('./net');
 const { paths, ensureDir } = require('./paths');
 const { store } = require('./store');
 
@@ -116,12 +116,14 @@ async function getLoaders(mcVersion) {
     fabric: { label: 'Fabric', recommended: '', versions: [] },
     forge: { label: 'Forge', recommended: '', versions: [] },
     quilt: { label: 'Quilt', recommended: '', versions: [] },
+    neoforge: { label: 'NeoForge', recommended: '', versions: [] },
   };
 
-  const [fabricResult, forgeResult, quiltResult] = await Promise.allSettled([
+  const [fabricResult, forgeResult, quiltResult, neoResult] = await Promise.allSettled([
     fetchJson(`${FABRIC_META}/versions/loader/${encodeURIComponent(mcVersion)}`, { timeout: 20000 }),
     fetchJson(FORGE_PROMOTIONS, { timeout: 20000 }),
     fetchJson(`${QUILT_META}/versions/loader/${encodeURIComponent(mcVersion)}`, { timeout: 20000 }),
+    fetchText('https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml', { timeout: 20000 }),
   ]);
 
   if (fabricResult.status === 'fulfilled' && Array.isArray(fabricResult.value)) {
@@ -149,6 +151,16 @@ async function getLoaders(mcVersion) {
     if (latest) set.add(latest);
     result.forge.versions = Array.from(set).map((version) => ({ version, stable: version === recommended, type: 'loader' }));
     result.forge.recommended = recommended || latest || '';
+  }
+  if (neoResult.status === 'fulfilled' && typeof neoResult.value === 'string') {
+    const parts = String(mcVersion).split('.').map(Number);
+    const prefix = parts[1] === 20 && parts[2] === 1 ? '47.1.' : `${parts[1]}.${parts[2]}.`;
+    const versions = [...neoResult.value.matchAll(/<version>([^<]+)<\/version>/g)]
+      .map((match) => match[1])
+      .filter((version) => version.startsWith(prefix))
+      .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+    result.neoforge.versions = versions.map((version) => ({ version, stable: true, type: 'loader' }));
+    result.neoforge.recommended = versions[0] || '';
   }
 
   loaderCache.set(mcVersion, result);

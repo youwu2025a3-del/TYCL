@@ -139,7 +139,7 @@ export async function render(container, ctx) {
                 ${instances
                   .map((instance) => {
                     const running = state.activeGame && state.activeGame.instanceId === instance.id;
-                    return `<div class="instance-card ${running ? 'running' : ''}">
+                    return `<div class="instance-card ${running ? 'running' : ''}" data-instance="${escapeHtml(instance.id)}">
                       <div class="instance-thumb ${instance.modpack?.iconUrl ? 'modpack' : escapeHtml(instance.loader)}">
                         ${instance.modpack?.iconUrl ? `<img src="${escapeHtml(instance.modpack.iconUrl)}" alt="">` : ''}
                       </div>
@@ -186,6 +186,13 @@ export async function render(container, ctx) {
           : ''
       }
     `;
+    body.querySelectorAll('[data-instance]').forEach((card) => {
+      card.addEventListener('click', (event) => {
+        if (event.target.closest('button, a, input, select')) return;
+        const instance = instances.find((item) => item.id === card.dataset.instance);
+        if (instance) ctx.openInstanceManager(instance);
+      });
+    });
     body.querySelectorAll('[data-play]').forEach((button) => {
       button.addEventListener('click', () => {
         const instance = instances.find((item) => item.id === button.dataset.play);

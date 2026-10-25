@@ -28,7 +28,7 @@ const sha256 = crypto.createHash('sha256').update(fs.readFileSync(zipPath)).dige
 const manifest = {
   version: pkg.version,
   channel: 'stable',
-  notes: 'TYCL 更新：自动开服、房间号直连与客户端 Mod 过滤。',
+  notes: 'TYCL 更新：联机稳定性、Mod 指纹校验与性能优化。',
   downloadUrl: `${baseUrl}/${zipName}`,
   sha256,
   publishedAt: new Date().toISOString(),

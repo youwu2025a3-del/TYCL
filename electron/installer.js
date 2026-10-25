@@ -394,7 +394,7 @@ function runProcess(command, args, options, onLog) {
   });
 }
 
-function findForgeVersion(mcVersion) {
+function findForgeVersion(mcVersion, loaderVersion = '') {
   const root = store.getSettings().gameDir;
   const versionsDir = path.join(root, 'versions');
   const entries = fs.existsSync(versionsDir) ? fs.readdirSync(versionsDir, { withFileTypes: true }) : [];
@@ -415,7 +415,10 @@ function findForgeVersion(mcVersion) {
     }
   }
   matches.sort((a, b) => b.mtime - a.mtime);
-  return matches.find((item) => item.id.includes(mcVersion)) || matches[0] || null;
+  return matches.find((item) => item.id.includes(mcVersion))
+    || (loaderVersion ? matches.find((item) => item.id.includes(loaderVersion)) : null)
+    || matches[0]
+    || null;
 }
 
 async function installForge(task, mcVersion, loaderVersion, rangeStart, rangeEnd) {
@@ -445,7 +448,7 @@ async function installForge(task, mcVersion, loaderVersion, rangeStart, rangeEnd
       if (line) task.report({ percent: Math.min(rangeEnd - 1, task.percent + 0.5), stage: '运行 Forge 安装器', detail: line.slice(0, 100) });
     },
   );
-  const found = findForgeVersion(mcVersion);
+  const found = findForgeVersion(mcVersion, selectedVersion);
   if (!found) throw new Error('Forge 安装器运行结束，但未找到生成的版本配置');
   return {
     versionId: found.id,
@@ -453,6 +456,41 @@ async function installForge(task, mcVersion, loaderVersion, rangeStart, rangeEnd
     loaderVersion: selectedVersion,
     javaMajor: requiredJavaMajor(mcVersion),
     forgeInstaller: installerFile,
+  };
+}
+
+async function installNeoForge(task, mcVersion, loaderVersion, rangeStart, rangeEnd) {
+  const root = store.getSettings().gameDir;
+  let selectedVersion = loaderVersion;
+  if (!selectedVersion) {
+    const loaders = await getLoaders(mcVersion);
+    selectedVersion = loaders.neoforge.recommended || (loaders.neoforge.versions[0] && loaders.neoforge.versions[0].version);
+  }
+  if (!selectedVersion) throw new Error('该版本没有可用的 NeoForge 安装包');
+  task.report({ percent: rangeStart, stage: '下载 NeoForge 安装器', detail: selectedVersion });
+  const installerUrl = `https://maven.neoforged.net/releases/net/neoforged/neoforge/${selectedVersion}/neoforge-${selectedVersion}-installer.jar`;
+  const installerFile = path.join(root, 'tycl-cache', `neoforge-${mcVersion}-${selectedVersion}-installer.jar`);
+  await downloadToFile([installerUrl], installerFile, { signal: task.signal, timeout: 180000 });
+  const java = await resolveJava({ mcVersion, anyVersion: true });
+  task.report({ percent: rangeStart + 4, stage: '运行 NeoForge 安装器', detail: '安装可能需要几分钟' });
+  let child = null;
+  task.setCancelHandler(() => { if (child) child.kill(); });
+  await runProcess(
+    java.path,
+    ['-jar', installerFile, '--installClient', root],
+    { cwd: root, onChild: (proc) => { child = proc; } },
+    (text) => {
+      const line = text.trim().split(/\r?\n/).filter(Boolean).slice(-1)[0];
+      if (line) task.report({ percent: Math.min(rangeEnd - 1, task.percent + 0.5), stage: '运行 NeoForge 安装器', detail: line.slice(0, 100) });
+    },
+  );
+  const found = findForgeVersion(mcVersion, selectedVersion);
+  if (!found) throw new Error('NeoForge 安装器运行结束，但未找到生成的版本配置');
+  return {
+    versionId: found.id,
+    loader: 'neoforge',
+    loaderVersion: selectedVersion,
+    javaMajor: requiredJavaMajor(mcVersion),
   };
 }
 
@@ -468,6 +506,8 @@ async function installVersionCore(task, { mcVersion, loader = 'vanilla', loaderV
     result = await installFabricLike(task, loader, mcVersion, loaderVersion, base.versionJson, 70, 92);
   } else if (loader === 'forge') {
     result = await installForge(task, mcVersion, loaderVersion, 70, 92);
+  } else if (loader === 'neoforge') {
+    result = await installNeoForge(task, mcVersion, loaderVersion, 70, 92);
   } else if (loader !== 'vanilla') {
     throw new Error('暂不支持该模组加载器：' + loader);
   }
@@ -477,7 +517,7 @@ async function installVersionCore(task, { mcVersion, loader = 'vanilla', loaderV
 
 function makeInstanceName(mcVersion, loader, customName) {
   if (customName) return customName;
-  const labels = { vanilla: '原版', fabric: 'Fabric', forge: 'Forge', quilt: 'Quilt' };
+  const labels = { vanilla: '原版', fabric: 'Fabric', forge: 'Forge', quilt: 'Quilt', neoforge: 'NeoForge' };
   return `${mcVersion} · ${labels[loader] || loader}`;
 }
 

@@ -17,7 +17,7 @@ if (!fs.existsSync(asarFile)) {
 }
 
 const notes =
-  '本次更新：新增自动开服、房间号直连与客户端 Mod 过滤，联机界面重做。';
+  '本次更新：联机白名单/端口避让/Mod 指纹校验，并优化实例与联机页性能。';
 
 const channel = process.env.UPDATE_CHANNEL === 'beta' ? 'beta' : 'stable';
 const updateManifest = {
