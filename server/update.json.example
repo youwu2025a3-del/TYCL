@@ -1,0 +1,8 @@
+{
+  "version": "1.1.1",
+  "notes": "在这里填写本次更新内容。",
+  "downloadUrl": "http://YOUR_PUBLIC_IP:8080/TYCL-update-1.1.1.zip",
+  "sha256": "把更新包 zip 的 SHA-256 填在这里",
+  "publishedAt": "2026-10-25T00:00:00.000Z",
+  "mandatory": false
+}

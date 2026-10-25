@@ -1,0 +1,40 @@
+![In purple text and white text, "BETTER MINECRAFT" is displayed infront of a screenshot of the Minecraft Overworld. The background image has a tree with purple leaves on both sides.](https://cdn.modrinth.com/data/cached_images/fc76c836ab354e79660c2f5d81a13a87396a2f38.jpeg)
+
+![In all-caps bold text, the word "FEATURES". ](https://cdn.modrinth.com/data/cached_images/785d3640a720d7e56cba3a6e2bbcdc37f34cf7e1.png)
+
+✔️ Full parity with [Curseforge Version](https://www.curseforge.com/minecraft/modpacks/better-mc-forge-bmc4)
+
+✔️ 100+ Quests
+
+✔️ Completely Overhauled World Generation ([Biomes o' Plenty](https://modrinth.com/mod/biomes-o-plenty), [Geophilic](https://modrinth.com/datapack/geophilic))
+
+✔️ Fully Optimized with Shader Support
+
+✔️ Overhauled Stronghold & Fortresses
+
+✔️ New Bosses and Mobs ([Mowzie's Mobs](https://www.curseforge.com/minecraft/mc-mods/mowzies-mobs), [Cataclysm](https://modrinth.com/mod/l_enders-cataclysm))
+
+✔️ Thousands of NEW Dungeons & Structures ([When Dungeons Arise](https://modrinth.com/mod/when-dungeons-arise), [AdoraBuild: Structures](https://modrinth.com/mod/adorabuild-structures))
+
+✔️ The Aether Dimension with Many Tweaks and Additions ([Deep Aether](https://modrinth.com/mod/deep-aether), [Aether Redux](https://modrinth.com/mod/the-aether-redux), [Aether Villages](https://modrinth.com/mod/aether-villages))
+
+✔️ QoL Features such as [Waystones](https://modrinth.com/mod/waystones) and [ XP Tomes](https://modrinth.com/mod/xp-tome)
+
+✔️ [Xaero's Minimap](https://modrinth.com/mod/xaeros-minimap) with Additional Features
+
+✔️ [Rideable Dragons](https://modrinth.com/mod/dragon-mounts-legacy/)
+
+✔️ Many Custom Features for an Improved Experience
+
+✔️ Built-in, [Free World Sharing](https://www.youtube.com/watch?v=tLTC6wYcWVM)
+
+✔️ [270+ Mods](https://www.modpackindex.com/modpack/64026/better-mc-forge-bmc4)
+
+[![Live count of how many members are online in the Luna Pixel Studios discord server.](https://img.shields.io/discord/790272037578473512?label=Discord&color=393939&labelColor=0843bf&style=for-the-badge&logo=discord&logoColor=white)](https://lunapixel.studio/discord)
+
+[![Use code LUNAPIXEL for 25% off Bisect Hosting](https://cdn.modrinth.com/data/cached_images/2c3d1af34a17cb45f2ba4b9cfca4bd54d1c857ef.png)](https://lunapixel.studio/bisect)
+
+<iframe src="https://www.youtube.com/embed/2pPFQRC-0tg" width="410" height="230" allowfullscreen="allowfullscreen"></iframe>
+<iframe src="https://www.youtube.com/embed/SV_SKlxNEUM?wmode=transparent" width="410" height="230" allowfullscreen="allowfullscreen"></iframe>
+
+NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT

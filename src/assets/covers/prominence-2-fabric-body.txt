@@ -1,0 +1,120 @@
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/-HqUkTtxtoU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p align="center">
+<a href="https://link.cinderstonestudios.com/serverbanner" target="_blank" rel="nofollow noopener"><img src="https://media.forgecdn.net/attachments/1198/74/prom_bisect_banner-png.png" alt="Get a 25% OFF Server using code ELOCIN"></a>
+</p>
+
+<p align="center">
+<a href="https://link.cinderstonestudios.com/wiki" target="_blank" rel="nofollow noopener"><img src="https://github.com/nvb-uy/cdn/blob/main/badges/readthewiki.png?raw=true" alt="Read the Wiki" width="200"></a>
+</p>
+
+<p align="center">
+<img src="https://github.com/nvb-uy/cdn/blob/main/desc/prominence/rpg/new_prominence_banner.webp?raw=true" alt="Prominence II RPG">
+</p>
+
+<p align="center">
+<a href="https://link.cinderstonestudios.com/discord" target="_blank" rel="nofollow noopener"><img src="https://img.shields.io/discord/1368653041145741427?label=Discord&color=393939&labelColor=ba743d&style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
+<a href="https://link.cinderstonestudios.com/patreon" target="_blank" rel="nofollow noopener"><img src="https://img.shields.io/static/v1?label=&message=Support us and get benefits!&color=393939&labelColor=ba743d&style=for-the-badge&logo=Patreon&logoColor=white" alt="Support us on Patreon"></a>
+<a href="https://link.cinderstonestudios.com/serverbadge" target="_blank" rel="nofollow noopener"><img src="https://img.shields.io/static/v1?label=&message=Get a Server with 25%25 off&color=393939&labelColor=ba743d&style=for-the-badge&logo=bisecthosting&logoColor=white" alt="Get a Server with 25% off"></a>
+</p>
+
+![Prominence features lots of custom content. Including quests, custom end game gear, and two story campaigns that unlock with the player's progression.](https://media.forgecdn.net/attachments/1849/685/1-webp.webp)
+
+![The Capital City you can access at any time, full of NPCs, secrets, and more!](https://media.forgecdn.net/attachments/1849/689/2_vaaz-webp.webp)
+
+![The modpack also features a custom talent tree with 10 fates, +16 passive talents, +5 active abilities and +100 stat talents. This allows you to make your own class with a unique talent build and gear.](https://media.forgecdn.net/attachments/1179/305/1-webp.webp)
+
+![The modpack also features a custom player leveling system, with mob scaling and multiplayer support.](https://media.forgecdn.net/attachments/1179/307/3-webp.webp)
+
+![Showcase of the dialogue systems with voice acting and interactive dialogues.](https://media.forgecdn.net/attachments/1849/687/3_dialogues-webp.webp)
+
+![Prominence features a handcrafted design with custom textures on its own volcanic-like style. From simple UI changes to custom GUIs, changed textures, a custom hotbar and more!](https://media.forgecdn.net/attachments/1849/728/4-webp.webp)
+
+![Primordial Forge endgame armor sets](https://media.forgecdn.net/attachments/1849/712/5_primordialarmor-webp.webp)
+
+![Mythic Challenges endgame boss encounters](https://media.forgecdn.net/attachments/1849/688/6-webp.webp)
+
+![Transmogrification: Choose your own style. You can transmog any item into another item, so you're able to turn into anything while keeping the same powerful gear.](https://media.forgecdn.net/attachments/1179/334/7-webp.webp)
+
+<p align="center">
+<a href="https://link.cinderstonestudios.com/serverbanner" target="_blank" rel="nofollow noopener"><img src="https://media.forgecdn.net/attachments/1198/74/prom_bisect_banner-png.png" alt="Get a 25% OFF Server using code ELOCIN"></a>
+</p>
+
+### 🧭 Built on Custom Content
+
+**You are one of the Flameborn of Vaaz, a race created by S'kellak, the Creator of All Things, to protect and ensure the balance of all realms.**
+
+**After thousands of years of peace, a ravenous force known as the Void has started an invasion into the universal realms. Worlds filled with life and death are now threatened with being destroyed completely.** **Will you fulfill your mission and stop the Void's Invasion?**
+
+*Prominence is a modpack built on Custom Content, based on its lore universe.*
+
+*Get ready for v4.0, the Kingdom of Vaaz Update, featuring for the first time in a Minecraft modpack a fully functional capital city filled with NPCs, which you will be able to visit at any point of the campaign, and which will evolve as you progress through the quests and eventually reach the Hasturian Era.*
+
+<h3 align="center">⭐ Feature Overview ⭐</h3>
+
+📜 <u>**Quests and Story Campaign**</u>
+Guide yourself through the mods with interactive quests. Explore two major storylines: **The Void's Invasion** and **The Hasturian Era**.
+The story campaign unlocks progressively, tying together **lore**, **narrative**, and your character's **progression**.
+
+🌋 <u>**The Kingdom of Vaaz**</u>
+
+A fully fledged **capital city**, home of the **Flameborn**, **Dwarven** and **Serkonid**.
+
+🐍 Find various NPCs with dialogues, shops and quests.
+
+⏳ Watch it evolve with your campaign progress and change over time.
+
+🌲 <u>**The Talent Tree**</u>
+Create your own class using a custom **Talent Tree** in Prominence's volcanic style.
+It features **10 fates**, **16 passive talents**, **5 active abilities**, and **100 stat talents**.
+Customize your build with unique talents and gear.
+
+🔼 <u>**Level Up Your Character**</u>
+Grow stronger with a custom leveling system.
+Earn **talent points** every 2 levels and battle enemies that scale with your level.
+Includes **multiplayer support** with mob scaling.
+
+💬 <u>**NPC Dialogues**</u>
+
+Two completely custom dialogue systems tied to NPCs:
+
+🗣️ Immersive Dialogues, which contain **voice acted** (no AI used) lines and are used during campaign or important quests.
+🔇 Interactive Dialogues, which use a custom screen to make players interact with the NPC, used by various NPCs across Vaaz.
+
+🎨 <u>**Handcrafted Design**</u>
+Prominence features a distinct **volcanic visual style** crafted by **S'Kellak**.
+Includes a custom hotbar, custom GUI, changed textures, and a lot more immersive visual details throughout the modpack.
+
+🔨 <u>**Forge Your Own Endgame**</u>
+Choose your own playstyle with **powerful artifacts** featuring unique abilities.
+Obtain the **Molten Core** through the campaign to forge artifacts.
+Upgrade them through their own **Upgrade Tree** by gaining Artifact Power using **Molten Remnants**.
+
+⚔️ <u>**The Primordial Forge: Endgame Custom Armor Sets**</u>
+
+Forge endgame sets with unique tiered effects using the **Primordial Forge**, unlocked in Chapter II of the Hasturian Era.
+
+💀 <u>**Mythic Challenges: Endgame Boss Encounters**</u>
+Face off against **Mythic Bosses** with **infinite scaling** difficulty, which you need to defeat before the **timer runs out**.
+Start at **Mythic 1** and fight increasingly harder bosses with random **affixes**.
+⚠️ Up to 3 lives during multiplayer encounters; losing them makes the **Unholy Hourglass** level be reduced.
+🔓 *Unlocked after completing Chapter II of the Hasturian Era.*
+
+🧥 <u>**Transmogrification – Choose Your Own Style**</u>
+Customize the appearance of your **armor** and **weapons** using magical **Transmogrification**.
+Change any item's look without affecting its stats; **style freely without sacrificing power**!
+
+---
+
+THE FOLLOWING WEBSITES ARE THE ONLY OFFICIAL WEBSITES THAT HOST PROMINENCE II CONTENT. ALL OTHER WEBSITES ARE NOT ASSOCIATED WITH US AND ANY CLAIMS OF THEM BEING OFFICIAL ARE FALSE. PLEASE AVOID THEM AT ALL COSTS AS THEY MIGHT CONTAIN MALICIOUS CONTENT.
+
+- [Official Wiki for Prominence](https://rpg.prominence.wiki/)
+- [Official Prominence II Server Browser](https://servers.cinderstonestudios.com/)
+- [Official Server Hosting Guide for Prominence II](https://servers.cinderstonestudios.com/create-server)
+- [Official Modpack Page on CurseForge](https://www.curseforge.com/minecraft/modpacks/prominence-2-rpg)
+- [Official Modpack Page on Modrinth](https://modrinth.com/modpack/prominence-2-fabric)
+- [Official Chinese Modpack Page on CurseForge](https://www.curseforge.com/minecraft/modpacks/prominence-2-chinese)
+
+Prominence™ is a trademark of Cinderstone Studios LLC. This project is not affiliated with or endorsed by Mojang, Microsoft, or any other third party. All other trademarks are the property of their respective owners.
+
+NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.

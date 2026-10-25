@@ -1,0 +1,28 @@
+{
+  "name": "tycl-launcher",
+  "productName": "TYCL",
+  "version": "1.2.0",
+  "description": "TYCL — 简洁优雅的 Minecraft 启动器",
+  "main": "electron/main.js",
+  "author": "A3Y8",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "lint": "node scripts/check-syntax.js",
+    "package:win": "node scripts/package.js",
+    "installer:pack": "node scripts/installer.js",
+    "update:pack": "node scripts/make-update.js",
+    "pages:pack": "node scripts/make-pages.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "minecraft-launcher-core": "^3.18.2",
+    "undici": "^6.29.1"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^38.0.0"
+  }
+}

@@ -1,0 +1,328 @@
+[
+  {
+    "title": "Enter the Marketplace, if you dare",
+    "tag": "news",
+    "category": "Minecraft for Windows",
+    "date": "2026-10-20",
+    "text": "Looking for a scary good time? Explore seven frightfully fun Spooky Spotlight packs! Discover creepy creatures, eerie environments, jarring jump scares, and chilling challenges. What are you waiting for? Enter the Marketplace...if you dare! ",
+    "playPageImage": {
+      "title": "MKPL_SpookySpotlight_Launcher_700x466.png",
+      "url": "/v2/images/MKPLSpookySpotlightLauncher700x466.png"
+    },
+    "newsPageImage": {
+      "title": "MKPL_SpookySpotlight_Launcher_772x350.png",
+      "url": "/v2/images/MKPLSpookySpotlightLauncher772x350.png",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://minecraft.net/article/marketplace-spotlight-october-2026?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "News page",
+      "Bedrock"
+    ],
+    "id": "aa44585aa5999900c6a678f221a145b930b5cf5106cbf43e91a9718ad97971e5",
+    "needsTranslation": true,
+    "localImage": "./assets/news/news-0.png"
+  },
+  {
+    "title": "Avatar Legends add-on  ",
+    "tag": "news",
+    "category": "Minecraft for Windows",
+    "date": "2026-10-16",
+    "text": "Become the Avatar in Minecraft! Discover temples, master the elements, and even unlock the Avatar State. Dress for the occasion with the Blue Spirit mask Character Creator item, available for free in the Marketplace, for a limited time!",
+    "playPageImage": {
+      "title": "AvatarLegends_Launcher_700x466.png",
+      "url": "/v2/images/AvatarLegendsLauncher700x466.png"
+    },
+    "newsPageImage": {
+      "title": "AvatarLegends_Launcher_772x350.png",
+      "url": "/v2/images/AvatarLegendsLauncher772x350.png",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/avatar-legends-add-on?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "News page",
+      "Bedrock"
+    ],
+    "id": "b456b9804ffc7e0236e5ff65ea2a0fc36043270ac6ad6e7e660f4e0958dc8dba",
+    "needsTranslation": true,
+    "localImage": "./assets/news/news-1.png"
+  },
+  {
+    "title": "Minecraft Realms  ",
+    "tag": "news",
+    "category": "Minecraft for Windows",
+    "date": "2026-10-08",
+    "text": "Bring your Wilderness Bound expedition into Minecraft Realms! Gather up to 10 explorers from any Bedrock platform for an expedition through the dappled forest. Subscribe today!",
+    "playPageImage": {
+      "title": "MCV_FallDrop_Realms_Primary_MinecraftLauncher_700x466.png",
+      "url": "/v2/images/MCVFallDropRealmsPrimaryMinecraftLauncher700x466.png"
+    },
+    "newsPageImage": {
+      "title": "MCV_FallDrop_Realms_Primary_MinecraftLauncher_772x350.png",
+      "url": "/v2/images/MCVFallDropRealmsPrimaryMinecraftLauncher772x350.png",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/wilderness-bound-realms?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "News page",
+      "Bedrock"
+    ],
+    "id": "dd69791f65d7b210ed1ebc68adb0124f27491396e021a90926b8cfd1911703a2",
+    "needsTranslation": true,
+    "localImage": "./assets/news/news-2.png"
+  },
+  {
+    "title": "Minecraft Dungeons II is live",
+    "tag": "News",
+    "category": "Minecraft Dungeons II",
+    "date": "2026-09-28",
+    "text": "Time to brave the unknown and save the day!",
+    "playPageImage": {
+      "title": "dungeons_launch_700x466.jpg",
+      "url": "/v2/images/dungeonslaunch700x466.jpg"
+    },
+    "newsPageImage": {
+      "title": "dungeons_launch_772x350.jpg",
+      "url": "/v2/images/dungeonslaunch772x350.jpg",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/minecraft-dungeons-ii-is-live?OCID=Launcher",
+    "cardBorder": true,
+    "articleBody": "",
+    "newsType": [
+      "Dungeons",
+      "DungeonsII",
+      "News page"
+    ],
+    "id": "24bf2eef916f4b81af8e781a968b8e7768ac7d829d7426f099203f62d4e99490",
+    "needsTranslation": false,
+    "localImage": "./assets/news/news-3.jpg"
+  },
+  {
+    "title": "New on Java Realms: Grinding & Galaxy",
+    "tag": "News",
+    "category": "Minecraft: Java Edition",
+    "date": "2026-09-28",
+    "text": "9 maps to entertain you this autumn.",
+    "playPageImage": {
+      "title": "jr-sep-700x466.jpg",
+      "url": "/v2/images/jrsep700x466.jpg"
+    },
+    "newsPageImage": {
+      "title": "jr-sep-772x350.jpg",
+      "url": "/v2/images/jrsep772x350.jpg",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/new-on-java-realms--grinding-and-galaxy?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "Java",
+      "News page"
+    ],
+    "id": "78414c42c91674ca52934326ba3713477483080ed92e37d21c1f0f183646a80e",
+    "needsTranslation": false,
+    "localImage": "./assets/news/news-4.jpg"
+  },
+  {
+    "title": "Camp Out Challenge",
+    "tag": "news",
+    "category": "Minecraft for Windows",
+    "date": "2026-09-26",
+    "text": "Head into the wild to place 200M cushions and 50M straw beds in our community challenge! Place 50% of both to unlock 2 free Character Creator items and a java skin, or place them all before Friday October 2 at 10 AM PT for MORE rewards for all players!",
+    "playPageImage": {
+      "title": "MCLauncher_700x466.png",
+      "url": "/v2/images/MCLauncher700x466.png"
+    },
+    "newsPageImage": {
+      "title": "MCLauncher_772x350.png",
+      "url": "/v2/images/MCLauncher772x350.png",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/camp-out-community-challenge?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "Java",
+      "News page",
+      "Bedrock"
+    ],
+    "id": "deb8f187feb8d44c54ab18e21949f528428953e2baf90bc6a36eaba136aaa8c9",
+    "needsTranslation": true,
+    "localImage": "./assets/news/news-5.png"
+  },
+  {
+    "title": "Minecraft Live Recap",
+    "tag": "News",
+    "category": "Minecraft for Windows",
+    "date": "2026-09-26",
+    "text": "Catch up on the new dimension, Minecraft World, Dungeons II, and more!",
+    "playPageImage": {
+      "title": "mcln700x466.jpg",
+      "url": "/v2/images/mcln700x466.jpg"
+    },
+    "newsPageImage": {
+      "title": "mcln772x350.jpg",
+      "url": "/v2/images/mcln772x350.jpg",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/mclive_sept2026_recap?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "Java",
+      "Dungeons",
+      "DungeonsII",
+      "News page",
+      "Bedrock",
+      "Legends"
+    ],
+    "id": "8b8dd9a917ff824c7c171525ead64ea850b5c607abcd83cb5b797d6de688ccff",
+    "needsTranslation": false,
+    "localImage": "./assets/news/news-6.jpg"
+  },
+  {
+    "title": "Play Wilderness Bound",
+    "tag": "news",
+    "category": "Minecraft for Windows",
+    "date": "2026-09-15",
+    "text": "Wilderness Bound is out now in Minecraft! Set off into the atmospheric dappled forest, seek out abandoned camps, sleep under the stars, and make the great outdoors your own with new building blocks. Just remember: maps are lighter than regrets!",
+    "playPageImage": {
+      "title": "Minecraft_WildernessBound_Launcher_700x466.png",
+      "url": "/v2/images/MinecraftWildernessBoundLauncher700x466.png"
+    },
+    "newsPageImage": {
+      "title": "Minecraft_WildernessBound_Launcher_772x350.png",
+      "url": "/v2/images/MinecraftWildernessBoundLauncher772x350.png",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/play-wilderness-bound-game-drop?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "Java",
+      "News page",
+      "Bedrock"
+    ],
+    "id": "b91dc9d1a815888416b27de18679cab5ad85552e6d3e3349df34adbf09ec3e17",
+    "needsTranslation": true,
+    "localImage": "./assets/news/news-7.png"
+  },
+  {
+    "title": "New on Java Realms: Mischiefs & Secrets",
+    "tag": null,
+    "category": "Minecraft: Java Edition",
+    "date": "2026-08-28",
+    "text": "9 new and exciting maps have been released this month!",
+    "playPageImage": {
+      "title": "jr08-28-700x466.jpg",
+      "url": "/v2/images/jr0828700x466.jpg"
+    },
+    "newsPageImage": {
+      "title": "jr08-28-772x350.jpg",
+      "url": "/v2/images/jr0828772x350.jpg",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/new-on-java-realms--mischiefs---secrets?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "Java",
+      "News page"
+    ],
+    "id": "ae8a50b9847297f2b50d5ec5139d97f9a7185bd92a3d49ff731aa2458322db82",
+    "needsTranslation": false,
+    "localImage": "./assets/news/news-java-0.jpg"
+  },
+  {
+    "title": "Are you ready for 9 new fun maps on Realms?!",
+    "tag": "news",
+    "category": "Minecraft: Java Edition",
+    "date": "2026-07-29",
+    "text": "Are you ready for 9 new fun maps on Realms?!",
+    "playPageImage": {
+      "title": "LAUNCHER2_java_realms_launcher_Jul26_700x466.jpg",
+      "url": "/v2/images/LAUNCHER2javarealmslauncherJul26700x466.jpg"
+    },
+    "newsPageImage": {
+      "title": "LAUNCHER_java_realms_launcher_Jul26_772x350.jpg",
+      "url": "/v2/images/LAUNCHERjavarealmslauncherJul26772x350.jpg",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/new-on-java-realms-monstrous-summer?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "Java",
+      "News page"
+    ],
+    "id": "cd14443876abacf189274a6d0c29f401c8478bd8c50575fdfb24da787b6f522f",
+    "needsTranslation": true,
+    "localImage": "./assets/news/news-java-1.jpg"
+  },
+  {
+    "title": "New on Java Realms: DASH AND UNWIND",
+    "tag": "news",
+    "category": "Minecraft: Java Edition",
+    "date": "2026-06-26",
+    "text": "This month we have eleven new and exciting maps for you.",
+    "playPageImage": {
+      "title": "JavaRealms_June26_700x466.jpg",
+      "url": "/v2/images/JavaRealmsJune26700x466.jpg"
+    },
+    "newsPageImage": {
+      "title": "JavaRealms_June26_772x350.jpg",
+      "url": "/v2/images/JavaRealmsJune26772x350.jpg",
+      "dimensions": {
+        "width": 772,
+        "height": 350
+      }
+    },
+    "readMoreLink": "https://www.minecraft.net/article/new-on-java-realms-dash-and-unwind?OCID=Launcher",
+    "cardBorder": false,
+    "articleBody": "",
+    "newsType": [
+      "Java",
+      "News page"
+    ],
+    "id": "61e04b7857f4cafd3eff931d30fb927eed1dfd2630770f6989ab59c122bce405",
+    "needsTranslation": true,
+    "localImage": "./assets/news/news-java-2.jpg"
+  }
+]

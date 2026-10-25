@@ -1,0 +1,151 @@
+<svg width="680" height="540" viewBox="0 0 680 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="48%" r="52%">
+      <stop stop-color="#D7F7E9" stop-opacity=".72"/>
+      <stop offset=".58" stop-color="#E4F7EF" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#EFF9F5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="grass" x1="185" y1="190" x2="500" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B7E7BB"/>
+      <stop offset=".56" stop-color="#8FD6A0"/>
+      <stop offset="1" stop-color="#65BE8B"/>
+    </linearGradient>
+    <linearGradient id="grassLight" x1="340" y1="160" x2="340" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E4F7D9"/>
+      <stop offset="1" stop-color="#A4DDB0"/>
+    </linearGradient>
+    <linearGradient id="dirtL" x1="230" y1="300" x2="260" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C4A385"/>
+      <stop offset="1" stop-color="#8C725D"/>
+    </linearGradient>
+    <linearGradient id="dirtR" x1="430" y1="300" x2="400" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#AD8A6D"/>
+      <stop offset="1" stop-color="#745E50"/>
+    </linearGradient>
+    <linearGradient id="water" x1="348" y1="335" x2="348" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BDE7F4"/>
+      <stop offset="1" stop-color="#78C8E8"/>
+    </linearGradient>
+    <linearGradient id="trunk" x1="275" y1="210" x2="270" y2="320" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9C7358"/>
+      <stop offset="1" stop-color="#6F5041"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#4D8C75" flood-opacity=".18"/>
+    </filter>
+    <filter id="cloudBlur" x="-30%" y="-60%" width="160%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <circle cx="340" cy="255" r="235" fill="url(#glow)"/>
+  <circle cx="474" cy="143" r="74" fill="#FDF7DD" opacity=".7"/>
+  <circle cx="474" cy="143" r="44" fill="#FBF0BE" opacity=".55"/>
+
+  <!-- 云 -->
+  <g opacity=".85" filter="url(#cloudBlur)">
+    <rect x="92" y="126" width="126" height="26" rx="13" fill="#fff"/>
+    <rect x="126" y="107" width="70" height="30" rx="15" fill="#fff"/>
+    <rect x="504" y="288" width="114" height="22" rx="11" fill="#fff"/>
+    <rect x="534" y="272" width="58" height="24" rx="12" fill="#fff"/>
+    <rect x="92" y="364" width="86" height="18" rx="9" fill="#fff"/>
+  </g>
+
+  <!-- 漂浮小方块 -->
+  <g opacity=".95">
+    <path d="M146 197 176 214 146 231 116 214 146 197Z" fill="#E7F8EC"/>
+    <path d="M116 214 146 231V254L116 237V214Z" fill="#95D6B0"/>
+    <path d="M176 214 146 231V254L176 237V214Z" fill="#6BBF94"/>
+    <path d="M510 198 533 211 510 224 487 211 510 198Z" fill="#D9EFFB"/>
+    <path d="M487 211 510 224V242L487 229V211Z" fill="#ADD9ED"/>
+    <path d="M533 211 510 224V242L533 229V211Z" fill="#7EBFDA"/>
+    <path d="M551 353 568 363 551 373 534 363 551 353Z" fill="#F2F9ED"/>
+    <path d="M534 363 551 373V388L534 378V363Z" fill="#CBE5C7"/>
+    <path d="M568 363 551 373V388L568 378V363Z" fill="#A8D3A5"/>
+  </g>
+
+  <!-- 主岛 -->
+  <g filter="url(#shadow)">
+    <path d="M340 143 526 251 340 359 154 251 340 143Z" fill="url(#grass)"/>
+    <path d="M340 143 526 251 340 359 154 251 340 143Z" fill="url(#grassLight)" opacity=".55"/>
+    <path d="M154 251 340 359 340 474 292 448 292 418 250 394 250 366 199 337 154 311V251Z" fill="url(#dirtL)"/>
+    <path d="M526 251 340 359 340 474 387 449 387 418 430 394 430 366 481 337 526 311V251Z" fill="url(#dirtR)"/>
+    <path d="M154 251 340 359 340 382 154 275V251Z" fill="#75C994"/>
+    <path d="M526 251 340 359 340 382 526 275V251Z" fill="#55AF7C"/>
+    <!-- 土层纹理 -->
+    <g opacity=".45" fill="#6F5849">
+      <rect x="190" y="305" width="22" height="9" rx="3"/>
+      <rect x="237" y="334" width="15" height="7" rx="3"/>
+      <rect x="280" y="380" width="24" height="8" rx="3"/>
+      <rect x="322" y="405" width="14" height="7" rx="3"/>
+      <rect x="445" y="336" width="19" height="8" rx="3"/>
+      <rect x="398" y="374" width="24" height="8" rx="3"/>
+      <rect x="357" y="413" width="18" height="7" rx="3"/>
+    </g>
+    <g opacity=".8" fill="#8FCF9C">
+      <rect x="212" y="283" width="9" height="9" rx="2"/>
+      <rect x="451" y="286" width="10" height="10" rx="2"/>
+      <rect x="386" y="240" width="6" height="6" rx="1"/>
+    </g>
+
+    <!-- 瀑布 -->
+    <path d="M348 355 372 341 377 411 370 480 359 495 348 458V355Z" fill="url(#water)" opacity=".9"/>
+    <path d="M353 367 361 363V463L353 449V367Z" fill="#E4F8FF" opacity=".62"/>
+    <path d="M370 410 375 407 370 478 364 488 370 410Z" fill="#D7F3FE" opacity=".5"/>
+    <ellipse cx="361" cy="501" rx="41" ry="9" fill="#A7DAEC" opacity=".55"/>
+
+    <!-- 树 -->
+    <path d="M264 289 282 279 282 213 264 223V289Z" fill="url(#trunk)"/>
+    <path d="M282 279 298 270V205L282 213V279Z" fill="#87604A"/>
+    <path d="M250 202 300 173 350 202 300 232 250 202Z" fill="#5FAF7F"/>
+    <path d="M250 202 300 232V261L250 231V202Z" fill="#438E67"/>
+    <path d="M350 202 300 232V261L350 231V202Z" fill="#347A57"/>
+    <path d="M267 169 309 145 351 169 309 194 267 169Z" fill="#76C093"/>
+    <path d="M267 169 309 194V219L267 194V169Z" fill="#4F9D74"/>
+    <path d="M351 169 309 194V219L351 194V169Z" fill="#3F8863"/>
+    <path d="M285 138 317 120 349 138 317 157 285 138Z" fill="#8FD0A4"/>
+    <path d="M285 138 317 157V177L285 158V138Z" fill="#5DAA7F"/>
+    <path d="M349 138 317 157V177L349 158V138Z" fill="#4A946C"/>
+
+    <!-- 石屋 / 传送门 -->
+    <path d="M415 237 462 264 462 308 415 335 368 308 368 264 415 237Z" fill="#D8CCBE"/>
+    <path d="M415 254 445 271 415 288 385 271 415 254Z" fill="#F3EDE4"/>
+    <path d="M385 271 415 288V318L385 301V271Z" fill="#BBAA98"/>
+    <path d="M445 271 415 288V318L445 301V271Z" fill="#9B897A"/>
+    <path d="M404 286 426 274 426 307 404 319 404 286Z" fill="#433D59"/>
+    <path d="M408 288 422 280V302L408 310V288Z" fill="#7E6FB4"/>
+    <path d="M410 291 419 286V297L410 302V291Z" fill="#CBBDF4"/>
+    <path d="M406 332 437 314 439 321 408 339 406 332Z" fill="#A6D7A9"/>
+    <path d="M447 315 463 306 465 313 448 322 447 315Z" fill="#B7DEB7"/>
+
+    <!-- 花与草 -->
+    <g fill="#F6F1DE">
+      <rect x="206" y="289" width="6" height="6" rx="1"/>
+      <rect x="220" y="307" width="5" height="5" rx="1"/>
+      <rect x="469" y="313" width="6" height="6" rx="1"/>
+      <rect x="321" y="327" width="5" height="5" rx="1"/>
+    </g>
+    <g fill="#5AA978">
+      <rect x="204" y="295" width="2" height="8"/>
+      <rect x="218" y="312" width="2" height="8"/>
+      <rect x="467" y="319" width="2" height="8"/>
+      <rect x="319" y="333" width="2" height="7"/>
+    </g>
+    <g fill="#E9B8A9">
+      <rect x="232" y="330" width="5" height="4" rx="1"/>
+      <rect x="454" y="347" width="5" height="4" rx="1"/>
+    </g>
+
+    <!-- 岛底碎石 -->
+    <path d="M248 429 268 440 268 455 248 444V429Z" fill="#90755F"/>
+    <path d="M412 440 430 430V444L412 454V440Z" fill="#6D584A"/>
+    <path d="M303 454 326 443 326 466 303 478V454Z" fill="#806753"/>
+  </g>
+
+  <!-- 星星 -->
+  <g fill="#8BC9AA">
+    <path d="M572 102 574 111 583 113 574 115 572 124 570 115 561 113 570 111 572 102Z"/>
+    <path d="M121 287 123 294 130 296 123 298 121 305 119 298 112 296 119 294 121 287Z" opacity=".7"/>
+    <path d="M583 406 584 411 589 412 584 413 583 418 582 413 577 412 582 411 583 406Z" opacity=".7"/>
+  </g>
+</svg>

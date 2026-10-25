@@ -1,0 +1,9 @@
+:8080 {
+	root * C:/TYCL-Server/public
+	file_server
+	encode gzip
+	log {
+		output file C:/TYCL-Server/access.log
+		format console
+	}
+}

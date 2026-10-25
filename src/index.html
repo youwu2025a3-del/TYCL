@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self' data:; connect-src 'self' https:;">
+  <title>TYCL — Minecraft Launcher</title>
+  <link rel="icon" href="./assets/icon-128.png">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/pages.css">
+</head>
+<body data-theme="light" data-accent="mint">
+  <div class="app-window">
+    <header class="chrome" id="chrome">
+      <div class="chrome-left">
+        <div class="chrome-logo"><img src="./assets/icon-128.png" alt="TYCL"></div>
+        <div class="chrome-name">TYCL <span>LAUNCHER</span></div>
+        <div class="chrome-sep"></div>
+        <div class="chrome-page" id="chrome-page">首页</div>
+      </div>
+      <div class="chrome-drag" id="chrome-drag"></div>
+      <div class="chrome-actions">
+        <button class="chrome-btn theme-quick" id="quick-theme" title="切换主题" aria-label="切换主题">
+          <span data-icon="sun"></span>
+        </button>
+        <button class="chrome-btn" id="chrome-queue" title="下载队列" aria-label="下载队列">
+          <span data-icon="download"></span>
+          <span class="queue-dot" id="queue-dot" hidden>0</span>
+        </button>
+        <button class="chrome-btn" id="chrome-updates" title="更新公告" aria-label="更新公告">
+          <span data-icon="megaphone"></span>
+        </button>
+        <button class="chrome-btn" id="chrome-help" title="关于 TYCL" aria-label="关于 TYCL">
+          <span data-icon="help"></span>
+        </button>
+        <div class="win-controls" id="win-controls">
+          <button class="win-btn" id="win-min" aria-label="最小化"><span data-icon="minimize"></span></button>
+          <button class="win-btn" id="win-max" aria-label="最大化"><span data-icon="maximize"></span></button>
+          <button class="win-btn win-close" id="win-close" aria-label="关闭"><span data-icon="close"></span></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <aside class="sidebar">
+        <div class="sidebar-scroll">
+          <div class="nav-section">
+            <div class="nav-caption">游戏</div>
+            <nav class="nav-list" id="main-nav">
+              <button class="nav-item" data-route="home">
+                <span class="nav-icon" data-icon="home"></span>
+                <span class="nav-text">首页</span>
+              </button>
+              <button class="nav-item" data-route="news">
+                <span class="nav-icon" data-icon="news"></span>
+                <span class="nav-text">新闻</span>
+              </button>
+              <button class="nav-item" data-route="versions">
+                <span class="nav-icon" data-icon="layers"></span>
+                <span class="nav-text">游戏库</span>
+                <span class="nav-badge" id="nav-instance-count" hidden>0</span>
+              </button>
+              <button class="nav-item" data-route="resources">
+                <span class="nav-icon" data-icon="compass"></span>
+                <span class="nav-text">资源中心</span>
+              </button>
+              <button class="nav-item" data-route="skins">
+                <span class="nav-icon" data-icon="shirt"></span>
+                <span class="nav-text">皮肤工坊</span>
+              </button>
+            </nav>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-caption">通用</div>
+            <nav class="nav-list">
+              <button class="nav-item" data-route="settings">
+                <span class="nav-icon" data-icon="settings"></span>
+                <span class="nav-text">设置</span>
+              </button>
+              <button class="nav-item" id="open-folder-nav">
+                <span class="nav-icon" data-icon="folder"></span>
+                <span class="nav-text">打开游戏目录</span>
+              </button>
+            </nav>
+          </div>
+
+          <div class="sidebar-spacer"></div>
+
+          <div class="sidebar-discovery" id="sidebar-discovery">
+            <div class="discovery-art"><span data-icon="sparkles"></span></div>
+            <div class="discovery-copy">
+              <strong>发现新的世界</strong>
+              <span>精选整合包与 Mod，一键安装</span>
+            </div>
+            <button class="discovery-link" data-route="resources">
+              去逛逛 <span data-icon="arrow-right"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="player-card" id="player-card">
+            <span class="player-avatar" id="sidebar-avatar"></span>
+            <span class="player-meta">
+              <span class="player-name" id="sidebar-name">Steve</span>
+              <span class="player-type"><i></i> 离线账户</span>
+            </span>
+            <span class="player-more" data-icon="chevron-up-down"></span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <div class="workspace-scroll" id="app"></div>
+      </main>
+    </div>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root"></div>
+  <div id="task-root"></div>
+  <div class="drag-overlay" id="drag-overlay">
+    <div class="drag-overlay-inner">
+      <span data-icon="upload"></span>
+      <strong>松开以导入皮肤</strong>
+      <span>支持 64×64 或 64×32 的 PNG 文件</span>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
