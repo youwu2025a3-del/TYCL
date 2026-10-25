@@ -402,6 +402,7 @@ function registerIpc() {
   ipcMain.handle('server:state', async () => serverManager.getServerState());
   ipcMain.handle('server:stop', async () => serverManager.stopDedicatedServer());
   ipcMain.handle('server:force-stop', async () => serverManager.forceStopServer());
+  ipcMain.handle('instances:server-fingerprint', async (_, instanceId) => serverManager.getServerFingerprint(instanceId));
   ipcMain.handle('instances:delete', async (_, instanceId) => deleteInstance(instanceId));
   ipcMain.handle('instances:details', async (_, instanceId) => {
     const instance = getInstance(instanceId);

@@ -589,8 +589,20 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.2';
+  const version = ctx.state.system?.appVersion || '1.3.3';
   const releases = [
+    {
+      version: '1.3.3',
+      date: '2026.10.25',
+      title: '联机稳定性 · 性能优化',
+      items: [
+        '联机房间加入白名单、正版验证、人数、视距和难度高级设置。',
+        '自动避让被占用的服务端端口，房间使用实际端口。',
+        '服务端 Mod 指纹写入 MOTD，客户端进房前自动检查 Mod 是否一致。',
+        'Mod 列表不再在打开实例时同步计算哈希，降低卡顿；只在检查更新时计算。',
+        '联机页轮询降低频率，服务端状态与日志分离刷新。',
+      ],
+    },
     {
       version: '1.3.2',
       date: '2026.10.25',
@@ -914,7 +926,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.2';
+  const version = ctx.state.system?.appVersion || '1.3.3';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',

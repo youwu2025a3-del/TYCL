@@ -4889,3 +4889,12 @@ body[data-theme="dark"] .hero-meta-link:hover {
 .cf-main strong { display: block; color: var(--text-strong); font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cf-main span { display: block; color: var(--muted); font-size: 8.8px; margin-top: 2px; }
 .cf-main small { display: block; color: var(--faint); font-size: 8.5px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.room-advanced { margin: -3px 0 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-subtle); }
+.room-advanced summary { padding: 8px 10px; cursor: pointer; color: var(--muted); font-size: 9.5px; display: flex; align-items: center; gap: 4px; }
+.room-advanced-body { display: flex; flex-direction: column; gap: 7px; padding: 0 10px 10px; }
+.room-check { display: flex; align-items: center; gap: 6px; color: var(--muted-strong); font-size: 9.5px; }
+.room-check input { accent-color: var(--accent); }
+.room-advanced-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.room-advanced-row label { display: flex; flex-direction: column; gap: 3px; color: var(--faint); font-size: 8.5px; }
+.room-advanced-row .input { height: 27px; font-size: 9px; padding: 0 7px; }

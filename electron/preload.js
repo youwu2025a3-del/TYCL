@@ -44,6 +44,7 @@ contextBridge.exposeInMainWorld('tycl', {
   getServerState: () => invoke('server:state'),
   stopServer: () => invoke('server:stop'),
   forceStopServer: () => invoke('server:force-stop'),
+  getServerFingerprint: (instanceId) => invoke('instances:server-fingerprint', instanceId),
   deleteInstance: (instanceId) => invoke('instances:delete', instanceId),
   getInstanceDetails: (instanceId) => invoke('instances:details', instanceId),
   updateInstanceSettings: (instanceId, patch) => invoke('instances:update-settings', instanceId, patch),

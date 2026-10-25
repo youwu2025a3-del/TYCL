@@ -110,7 +110,7 @@ function listMods(instanceId) {
       enabled: name.endsWith('.jar'),
       size: stat.size,
       modifiedAt: stat.mtime.toISOString(),
-      sha1: stat.size < 80 * 1024 * 1024 ? sha1(file) : '',
+      sha1: '',
       ...meta,
       name: meta.name || name.replace(/\.jar(\.disabled)?$/, ''),
     });

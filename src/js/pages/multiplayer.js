@@ -22,6 +22,7 @@ export async function render(container, ctx) {
   let room = null;
   let hostMode = 'server';
   let hostBusy = false;
+  const config = { onlineMode: false, whitelist: false, whitelistNames: [], maxPlayers: 20, viewDistance: 10, difficulty: 'normal' };
   let lanTimer = null;
   let serverTimer = null;
   let tunnelBusy = false;
@@ -65,6 +66,21 @@ export async function render(container, ctx) {
             <button class="host-mode-btn ${hostMode === 'server' ? 'active' : ''}" data-host-mode="server">${icon('server', 13)} 自动开服</button>
             <button class="host-mode-btn ${hostMode === 'lan' ? 'active' : ''}" data-host-mode="lan">${icon('wifi', 13)} 局域网世界</button>
           </div>
+          <details class="room-advanced">
+            <summary>${icon('settings', 12)} 高级设置</summary>
+            <div class="room-advanced-body">
+              <label class="room-check"><input type="checkbox" data-cfg-online> 开启正版验证</label>
+              <label class="room-check"><input type="checkbox" data-cfg-whitelist> 启用白名单</label>
+              <input class="input" data-cfg-names placeholder="白名单玩家名，逗号分隔" spellcheck="false">
+              <div class="room-advanced-row">
+                <label>人数 <input class="input" type="number" min="1" max="100" value="20" data-cfg-max></label>
+                <label>视距 <input class="input" type="number" min="3" max="32" value="10" data-cfg-view></label>
+                <label>难度
+                  <select class="select" data-cfg-diff><option value="peaceful">和平</option><option value="easy">简单</option><option value="normal" selected>普通</option><option value="hard">困难</option></select>
+                </label>
+              </div>
+            </div>
+          </details>
           <div class="field">
             <div class="field-label">使用实例</div>
             <div class="select-wrap">
@@ -74,8 +90,7 @@ export async function render(container, ctx) {
             </div>
           </div>
           <div class="field">
-            <div class="field-label">${hostMode === 'server' ? '服务端端口' : '局域网端口'}</div>
-            <div class="path-field">
+            <div class="field-label">${hostMode === 'server' ? '服务端端口' : '局域网端口'}</div>            <div class="path-field">
               <input class="input" type="number" min="1" max="65535" value="${hostMode === 'server' ? '25565' : '25565'}" data-host-port>
               <button class="btn btn-primary" data-room-start ${room || hostBusy ? 'disabled' : ''}>${hostBusy ? '<span class="spinner" style="width:13px;height:13px"></span> 准备中' : `${icon('zap', 14)} 一键开房`}</button>
             </div>
@@ -247,6 +262,14 @@ export async function render(container, ctx) {
         toast({ title: '房间无法连接', message: `${address} · ${status.error || '可能已关闭'}`, type: 'error', duration: 6000 });
         return;
       }
+      const remoteFingerprint = /·\s*([0-9a-f]{8})\b/i.exec(status.motd || '');
+      if (remoteFingerprint) {
+        const local = await ctx.api.getServerFingerprint(instanceId).catch(() => null);
+        if (local && local.fingerprint && local.fingerprint !== remoteFingerprint[1]) {
+          toast({ title: 'Mod 不一致', message: `房间 ${remoteFingerprint[1]} / 本地 ${local.fingerprint}，请先同步 Mod`, type: 'error', duration: 8000 });
+          return;
+        }
+      }
       await ctx.api.startLaunch(instanceId, { serverAddress: address });
       toast({ title: '正在进入房间', message: address, type: 'info' });
     } catch (error) {
@@ -309,14 +332,21 @@ export async function render(container, ctx) {
     if (!instanceId) return toast({ title: '请选择实例', type: 'error' });
     hostBusy = true;
     renderRoom();
+    config.onlineMode = Boolean(body.querySelector('[data-cfg-online]')?.checked);
+    config.whitelist = Boolean(body.querySelector('[data-cfg-whitelist]')?.checked);
+    config.whitelistNames = String(body.querySelector('[data-cfg-names]')?.value || '').split(/[,，\s]+/).map((name) => name.trim()).filter(Boolean);
+    config.maxPlayers = Number(body.querySelector('[data-cfg-max]')?.value) || 20;
+    config.viewDistance = Number(body.querySelector('[data-cfg-view]')?.value) || 10;
+    config.difficulty = body.querySelector('[data-cfg-diff]')?.value || 'normal';
     try {
       if (hostMode === 'server') {
-        server = await ctx.api.startServer({ instanceId, port, motd: 'TYCL Room' });
+        server = await ctx.api.startServer({ instanceId, port, motd: 'TYCL Room', config });
         renderServer();
       }
-      tunnel = await ctx.api.startTunnel({ port });
+      const actualPort = server.active ? server.port : port;
+      tunnel = await ctx.api.startTunnel({ port: actualPort });
       const code = String(tunnel.address).split(':').pop();
-      room = { code, address: tunnel.address, port, mode: hostMode };
+      room = { code, address: tunnel.address, port: actualPort, mode: hostMode, fingerprint: server.fingerprint || '' };
       renderRoom();
       toast({ title: '房间已开启', message: `房间号 ${code}`, type: 'success', duration: 6500 });
     } catch (error) {

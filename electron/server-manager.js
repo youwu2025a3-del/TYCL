@@ -132,15 +132,28 @@ function syncServerMods(instance, root) {
   return { kept, skipped, sourceCount: kept.length + skipped.length };
 }
 
-function writeServerProperties(root, port, motd) {
+function isPortFree(port) {
+  return new Promise((resolve) => {
+    const net = require('net');
+    const server = net.createServer();
+    server.once('error', () => resolve(false));
+    server.once('listening', () => server.close(() => resolve(true)));
+    server.listen(port, '0.0.0.0');
+  });
+}
+
+function writeServerProperties(root, port, motd, config = {}) {
   const file = path.join(root, 'server.properties');
   const defaults = {
     'server-port': String(port),
-    'online-mode': 'false',
+    'online-mode': config.onlineMode ? 'true' : 'false',
+    'white-list': config.whitelist ? 'true' : 'false',
+    'max-players': String(Math.max(1, Number(config.maxPlayers) || 20)),
+    'view-distance': String(Math.min(32, Math.max(3, Number(config.viewDistance) || 10))),
     motd: motd || 'TYCL Room',
     'enable-query': 'false',
     'spawn-protection': '0',
-    difficulty: 'normal',
+    difficulty: ['peaceful', 'easy', 'normal', 'hard'].includes(config.difficulty) ? config.difficulty : 'normal',
     gamemode: 'survival',
   };
   let current = {};
@@ -153,20 +166,58 @@ function writeServerProperties(root, port, motd) {
   } catch {
     current = {};
   }
-  const merged = { ...defaults, ...current, 'server-port': String(port), 'online-mode': 'false', motd: motd || current.motd || 'TYCL Room' };
+  const merged = {
+    ...defaults,
+    ...current,
+    'server-port': String(port),
+    'online-mode': config.onlineMode ? 'true' : 'false',
+    'white-list': config.whitelist ? 'true' : 'false',
+    'max-players': String(Math.max(1, Number(config.maxPlayers) || 20)),
+    'view-distance': String(Math.min(32, Math.max(3, Number(config.viewDistance) || 10))),
+    difficulty: defaults.difficulty,
+    motd: motd || current.motd || 'TYCL Room',
+  };
   fs.writeFileSync(file, Object.entries(merged).map(([key, value]) => `${key}=${value}`).join('\n') + '\n', 'utf8');
 }
 
-async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Room', memoryMb = 0 } = {}) {
+function offlineUuid(name) {
+  const crypto = require('crypto');
+  const hash = crypto.createHash('md5').update('OfflinePlayer:' + name, 'utf8').digest();
+  hash[6] = (hash[6] & 0x0f) | 0x30;
+  hash[8] = (hash[8] & 0x3f) | 0x80;
+  const hex = hash.toString('hex');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+function writeWhitelist(root, names) {
+  const list = (Array.isArray(names) ? names : [])
+    .map((name) => String(name || '').trim())
+    .filter(Boolean)
+    .map((name) => ({ uuid: offlineUuid(name), name }));
+  fs.writeFileSync(path.join(root, 'whitelist.json'), JSON.stringify(list, null, 2), 'utf8');
+}
+
+function modFingerprint(mods) {
+  const crypto = require('crypto');
+  const names = (mods || []).map((item) => item.file).sort();
+  return crypto.createHash('sha1').update(names.join('|')).digest('hex').slice(0, 8);
+}
+
+async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Room', memoryMb = 0, config = {} } = {}) {
   if (active) throw new Error('已有服务端在运行');
   const instance = getInstance(instanceId);
   if (!instance) throw new Error('实例不存在');
   const root = serverRoot(instance);
+  let actualPort = Number(port) || 25565;
+  for (let attempt = 0; attempt < 20 && !(await isPortFree(actualPort)); attempt += 1) actualPort += 1;
   const java = await resolveJava({ mcVersion: instance.baseVersion, explicitPath: instance.javaPath || '', autoDownload: true });
   if (java.major < java.required) throw new Error(`Java ${java.major} 低于服务端需要的 Java ${java.required}`);
   const jar = await ensureServerJar(instance, root, java.path);
   const mods = syncServerMods(instance, root);
-  writeServerProperties(root, port, motd);
+  const fingerprint = modFingerprint(mods.kept);
+  const roomMotd = `${motd || 'TYCL Room'} · ${fingerprint}`;
+  writeServerProperties(root, actualPort, roomMotd, config);
+  writeWhitelist(root, config.whitelistNames || []);
   fs.writeFileSync(path.join(root, 'eula.txt'), 'eula=true\n', 'utf8');
   const max = Number(memoryMb) || instance.javaMemoryMb || 4096;
   const child = spawn(java.path, ['-Xms512M', `-Xmx${Math.max(1024, max)}M`, '-jar', jar, 'nogui'], {
@@ -178,12 +229,14 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
     child,
     instanceId,
     instanceName: instance.name,
-    port,
+    port: actualPort,
     root,
     startedAt: Date.now(),
     status: 'starting',
     logs: [],
     mods,
+    fingerprint,
+    config,
     java: java.path,
     error: '',
   };
@@ -260,4 +313,18 @@ function forceStopServer() {
   active = null;
 }
 
-module.exports = { startDedicatedServer, getServerState, stopDedicatedServer, forceStopServer, syncServerMods, modSide };
+function getServerFingerprint(instanceId) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const source = path.join(instance.gameDir, 'mods');
+  const kept = [];
+  if (fs.existsSync(source)) {
+    for (const name of fs.readdirSync(source)) {
+      if (!name.endsWith('.jar') || name.endsWith('.jar.disabled')) continue;
+      if (modSide(path.join(source, name)).side !== 'client') kept.push({ file: name });
+    }
+  }
+  return { fingerprint: modFingerprint(kept), count: kept.length };
+}
+
+module.exports = { startDedicatedServer, getServerState, stopDedicatedServer, forceStopServer, syncServerMods, modSide, getServerFingerprint };

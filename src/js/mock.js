@@ -339,7 +339,7 @@ function bootstrap() {
       platform: 'win32',
       arch: 'x64',
       totalMemoryMb: 32768,
-      appVersion: '1.3.2',
+      appVersion: '1.3.3',
       gameDir: state.settings.gameDir,
       isMaximized: false,
       demo: true,
@@ -508,20 +508,20 @@ const api = {
   async checkUpdates() {
     await new Promise((r) => setTimeout(r, 600));
     return {
-      currentVersion: '1.3.2',
+      currentVersion: '1.3.3',
       packaged: false,
       canAutoUpdate: false,
       feedUrl: state.settings.updateFeedUrl,
       configured: false,
       hasUpdate: false,
-      latestVersion: '1.3.2',
+      latestVersion: '1.3.3',
       notes: '',
       error: state.settings.updateFeedUrl ? '' : '尚未配置更新源（演示模式）',
       checkedAt: Date.now(),
     };
   },
   async getUpdateInfo() {
-    return { currentVersion: '1.3.2', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
+    return { currentVersion: '1.3.3', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
   },
   async chooseUpdatePackage() {
     return { canceled: true };
@@ -700,7 +700,7 @@ const api = {
     return {
       generatedAt: new Date().toISOString(),
       level: 'ok',
-      appVersion: '1.3.2',
+      appVersion: '1.3.3',
       system: { platform: 'win32', arch: 'x64', totalMemoryMb: 32768, cpus: 16 },
       environment: { gameDir: state.settings.gameDir, javaPath: '', javaRequired: 17, javaList: javaList.map((item) => ({ path: item.path, major: item.major })), memoryMb: state.settings.memoryMb },
       instance: instance ? { id: instance.id, name: instance.name, baseVersion: instance.baseVersion, versionId: instance.versionId, loader: instance.loader, loaderLabel: instance.loaderLabel, gameDir: instance.gameDir, modsCount: instance.modsCount } : null,

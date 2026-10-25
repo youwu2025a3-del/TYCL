@@ -17,7 +17,7 @@ if (!fs.existsSync(asarFile)) {
 }
 
 const notes =
-  '本次更新：修复正版皮肤透明，新增资源管理、CurseForge、NeoForge 与自动 Java。';
+  '本次更新：联机白名单/端口避让/Mod 指纹校验，并优化实例与联机页性能。';
 
 const channel = process.env.UPDATE_CHANNEL === 'beta' ? 'beta' : 'stable';
 const updateManifest = {
