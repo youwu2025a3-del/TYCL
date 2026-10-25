@@ -17,7 +17,7 @@ if (!fs.existsSync(asarFile)) {
 }
 
 const notes =
-  '本次更新：新增实例管理、备份导入导出、Mod 更新检查、下载暂停续传与更新通道。';
+  '本次更新：修复 Microsoft 正版账户皮肤不显示的问题，自动缓存官方皮肤并识别经典/纤细模型。';
 
 const channel = process.env.UPDATE_CHANNEL === 'beta' ? 'beta' : 'stable';
 const updateManifest = {

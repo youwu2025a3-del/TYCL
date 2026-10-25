@@ -35,7 +35,10 @@ export async function render(container, ctx) {
           <h2>${escapeHtml(skin.name)}</h2>
           <p class="skin-desc">${escapeHtml(skin.description || '本地导入的皮肤')}</p>
         </div>
-        <span class="skin-model-pill">${selectedModel === 'slim' ? '纤细' : '经典'}模型</span>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+          ${skin.official ? `<span class="badge badge-accent">Microsoft 正版</span>` : ''}
+          <span class="skin-model-pill">${selectedModel === 'slim' ? '纤细' : '经典'}模型</span>
+        </div>
       </div>
       <div class="skin-field">
         <div class="field-label">手臂模型 <span class="field-hint" style="font-weight:400">保存后生效</span></div>
@@ -63,7 +66,7 @@ export async function render(container, ctx) {
       </div>
       <div class="notice" style="margin-top:12px">
         ${icon('info', 15)}
-        <span>皮肤保存在本机，仅由 TYCL 展示。离线账户无法在官方服务器同步皮肤。</span>
+        <span>${ctx.state.account?.mode === 'microsoft' ? '正版皮肤来自 Microsoft 账户，启动器会显示你当前的官方皮肤。本地导入的皮肤只用于启动器预览，不会自动上传到 Mojang。' : '皮肤保存在本机，仅由 TYCL 展示。离线账户无法在官方服务器同步皮肤。'}</span>
       </div>
     `;
   }
@@ -129,7 +132,7 @@ export async function render(container, ctx) {
     if (applyButton) {
       const applied = selectedId === activeId && selectedModel === activeModel;
       applyButton.disabled = applied;
-      applyButton.innerHTML = applied ? `${icon('check', 13)} 已应用` : `${icon('check', 13)} 应用皮肤`;
+      applyButton.innerHTML = applied ? `${icon('check', 13)} 已应用` : `${icon('check', 13)} ${selectedSkin().official ? '使用正版皮肤' : '应用皮肤'}`;
     }
   }
 

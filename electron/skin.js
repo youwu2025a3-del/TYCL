@@ -5,6 +5,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { paths, ensureDir } = require('./paths');
 const { store, readJson, writeJsonAtomic } = require('./store');
+const auth = require('./auth');
 
 const BUILTIN = [
   { id: 'builtin:yunshan', name: '云杉', description: '松林与旧木屋的气息', file: 'yunshan.png', model: 'classic', tone: '#4e8a6d' },
@@ -73,7 +74,37 @@ function getSkinState() {
     dataUrl: dataUrlForFile(path.join(paths.skins(), item.file)),
   }));
   const all = [...builtins, ...customs];
+  let official = null;
+  const accountState = auth.getPublicState();
+  const account = accountState.mode === 'microsoft' ? accountState.account : null;
+  if (account && account.uuid) {
+    const cachedFile = path.join(paths.skins(), `microsoft-${account.uuid}.png`);
+    const dataUrl = fs.existsSync(cachedFile) ? dataUrlForFile(cachedFile) : account.skinUrl || '';
+    official = {
+      id: `microsoft:${account.uuid}`,
+      name: account.name || 'Microsoft',
+      description: 'Microsoft 正版皮肤',
+      model: account.skinModel === 'slim' ? 'slim' : 'classic',
+      tone: '#4e8a6d',
+      builtin: false,
+      official: true,
+      dataUrl,
+    };
+    all.unshift(official);
+  }
   let active = all.find((item) => item.id === settings.player.skin);
+  if (official && (!active || settings.player.skin === 'builtin:yunshan' || String(settings.player.skin || '').startsWith('microsoft:'))) {
+    active = official;
+    if (settings.player.skin !== official.id) {
+      store.saveSettings({
+        player: {
+          ...settings.player,
+          skin: official.id,
+          model: official.model,
+        },
+      });
+    }
+  }
   if (!active) active = builtins[0];
   return {
     activeSkinId: active.id,

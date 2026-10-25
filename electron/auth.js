@@ -70,6 +70,7 @@ function offlineAuth(playerName) {
 
 function publicAccount(account) {
   if (!account) return null;
+  const activeSkin = (account.skins || []).find((skin) => skin.state === 'ACTIVE') || (account.skins || [])[0];
   return {
     type: 'microsoft',
     name: account.name,
@@ -77,6 +78,9 @@ function publicAccount(account) {
     xuid: account.xuid || '',
     skins: account.skins || [],
     capes: account.capes || [],
+    skinId: account.skinId || (activeSkin && activeSkin.id) || '',
+    skinUrl: account.skinUrl || (activeSkin && activeSkin.url) || '',
+    skinModel: account.skinModel || 'classic',
     loggedInAt: account.loggedInAt,
     expiresAt: account.expiresAt,
   };
@@ -258,8 +262,7 @@ async function fetchProfile(accessToken) {
   return response.json();
 }
 
-async function checkEntitlements(accessToken) {
-  const response = await smartFetch('https://api.minecraftservices.com/entitlements/mcstore', {
+async function checkEntitlements(accessToken) {  const response = await smartFetch('https://api.minecraftservices.com/entitlements/mcstore', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'User-Agent': `TYCL Launcher/${require('../package.json').version}`,
@@ -271,6 +274,73 @@ async function checkEntitlements(accessToken) {
   if (Array.isArray(data.items) && data.items.length === 0) {
     throw new Error('该 Microsoft 账户没有 Minecraft Java 版的有效授权。');
   }
+}
+
+async function fetchSkinModel(uuid) {
+  try {
+    const response = await smartFetch(`https://sessionserver.mojang.com/session/minecraft/profile/${encodeURIComponent(uuid)}`, {
+      headers: { 'User-Agent': `TYCL Launcher/${require('../package.json').version}` },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!response.ok) return 'classic';
+    const data = await response.json();
+    const property = (data.properties || []).find((item) => item.name === 'textures');
+    if (!property || !property.value) return 'classic';
+    const decoded = JSON.parse(Buffer.from(property.value, 'base64').toString('utf8'));
+    const model = decoded && decoded.textures && decoded.textures.SKIN && decoded.textures.SKIN.metadata
+      ? decoded.textures.SKIN.metadata.model
+      : '';
+    return model === 'slim' ? 'slim' : 'classic';
+  } catch {
+    return 'classic';
+  }
+}
+
+async function cacheMicrosoftSkin(account) {
+  const active = (account.skins || []).find((skin) => skin.state === 'ACTIVE') || (account.skins || [])[0];
+  if (!active || !active.url) {
+    return { skinFile: '', skinModel: 'classic', skinId: '', skinUrl: '' };
+  }
+  const result = {
+    skinId: active.id || '',
+    skinUrl: active.url,
+    skinModel: await fetchSkinModel(account.uuid),
+    skinFile: '',
+    skinUpdatedAt: new Date().toISOString(),
+  };
+  try {
+    const response = await smartFetch(active.url, {
+      headers: { 'User-Agent': `TYCL Launcher/${require('../package.json').version}` },
+      signal: AbortSignal.timeout(20000),
+    });
+    if (response.ok) {
+      const buffer = Buffer.from(await response.arrayBuffer());
+      if (buffer.length > 8 && buffer.subarray(0, 8).toString('hex') === '89504e470d0a1a0a') {
+        const file = `microsoft-${account.uuid}.png`;
+        fs.mkdirSync(paths.skins(), { recursive: true });
+        fs.writeFileSync(path.join(paths.skins(), file), buffer);
+        result.skinFile = file;
+      }
+    }
+  } catch {
+    // 网络不可用时仍保留远程皮肤地址，界面可以继续显示
+  }
+  return result;
+}
+
+function applyOfficialSkin(account) {
+  if (!account || !account.uuid) return;
+  const settings = store.getSettings();
+  const skinId = `microsoft:${account.uuid}`;
+  const current = settings.player.skin || '';
+  if (current && current !== 'builtin:yunshan' && !current.startsWith('microsoft:')) return;
+  store.saveSettings({
+    player: {
+      ...settings.player,
+      skin: skinId,
+      model: account.skinModel === 'slim' ? 'slim' : 'classic',
+    },
+  });
 }
 
 async function buildAccountFromMicrosoft(tokenData, previous = {}) {
@@ -290,14 +360,34 @@ async function buildAccountFromMicrosoft(tokenData, previous = {}) {
     loggedInAt: previous.loggedInAt || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
+  Object.assign(account, await cacheMicrosoftSkin(account));
   saveAccounts([account]);
   store.saveSettings({ accountMode: 'microsoft' });
+  applyOfficialSkin(account);
   return account;
 }
 
 async function loginWithCode(code) {
   const tokenData = await exchangeCode(code);
   return buildAccountFromMicrosoft(tokenData);
+}
+
+async function ensureAccountSkin() {
+  if (store.getSettings().accountMode !== 'microsoft') return null;
+  const accounts = loadAccounts();
+  const account = accounts[0];
+  if (!account) return null;
+  const active = (account.skins || []).find((skin) => skin.state === 'ACTIVE') || (account.skins || [])[0];
+  const fileExists = account.skinFile && fs.existsSync(path.join(paths.skins(), account.skinFile));
+  const changed = active && account.skinUrl !== active.url;
+  if (active && fileExists && !changed && account.skinModel) {
+    applyOfficialSkin(account);
+    return account;
+  }
+  Object.assign(account, await cacheMicrosoftSkin(account));
+  saveAccounts(accounts);
+  applyOfficialSkin(account);
+  return account;
 }
 
 async function ensureMicrosoftAccount({ forceRefresh = false } = {}) {
@@ -375,6 +465,7 @@ module.exports = {
   getAuthUrl,
   loginWithCode,
   ensureMicrosoftAccount,
+  ensureAccountSkin,
   getPublicState,
   getDisplayIdentity,
   resolveLaunchAuth,

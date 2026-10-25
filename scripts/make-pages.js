@@ -28,7 +28,7 @@ const sha256 = crypto.createHash('sha256').update(fs.readFileSync(zipPath)).dige
 const manifest = {
   version: pkg.version,
   channel: 'stable',
-  notes: 'TYCL 更新：实例管理、下载续传、Mod 更新与稳定分发。',
+  notes: 'TYCL 更新：修复 Microsoft 正版皮肤不显示的问题。',
   downloadUrl: `${baseUrl}/${zipName}`,
   sha256,
   publishedAt: new Date().toISOString(),

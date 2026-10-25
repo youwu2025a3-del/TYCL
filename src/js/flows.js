@@ -588,8 +588,18 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.2.0';
+  const version = ctx.state.system?.appVersion || '1.2.1';
   const releases = [
+    {
+      version: '1.2.1',
+      date: '2026.10.25',
+      title: '正版皮肤显示修复',
+      items: [
+        'Microsoft 正版账户登录后会自动读取并缓存官方皮肤。',
+        '启动器头像、皮肤工坊和 3D 预览会显示正版皮肤，不再回退到本地默认皮肤。',
+        '自动识别正版皮肤的经典 / 纤细模型，并标记为 Microsoft 正版。',
+      ],
+    },
     {
       version: '1.2.0',
       date: '2026.10.25',
@@ -723,8 +733,8 @@ export function openUpdatesModal(ctx) {
       <div class="update-hero">
         <div class="update-hero-icon">${icon('megaphone', 24)}</div>
         <div style="flex:1">
-          <strong>实例、下载与分发，一起补齐。</strong>
-          <span>TYCL 1.2.0 新增实例管理、备份导入导出、Mod 更新、下载续传与更新通道。</span>
+          <strong>正版皮肤，回来了。</strong>
+          <span>TYCL 1.2.1 自动读取 Microsoft 官方皮肤，头像和 3D 预览都会同步显示。</span>
         </div>
         <span class="badge badge-accent">LATEST</span>
       </div>
@@ -866,7 +876,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.2.0';
+  const version = ctx.state.system?.appVersion || '1.2.1';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',
