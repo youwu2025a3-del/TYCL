@@ -28,7 +28,7 @@ const sha256 = crypto.createHash('sha256').update(fs.readFileSync(zipPath)).dige
 const manifest = {
   version: pkg.version,
   channel: 'stable',
-  notes: 'TYCL 更新：新增联机中心、公网房间与服务器一键进入。',
+  notes: 'TYCL 更新：自动开服、房间号直连与客户端 Mod 过滤。',
   downloadUrl: `${baseUrl}/${zipName}`,
   sha256,
   publishedAt: new Date().toISOString(),

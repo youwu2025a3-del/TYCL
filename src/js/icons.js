@@ -50,6 +50,7 @@ const paths = {
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.4 2"/>',
   calendar: '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 10h17"/><path d="M8 14h2M14 14h2M8 17h2"/>',
   activity: '<path d="M3 12h4l2.5-6 4 12L16 12h5"/>',
+  server: '<rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/>',
   box: '<path d="m12 3 8.5 4.7v8.6L12 21l-8.5-4.7V7.7L12 3Z"/><path d="m3.7 7.8 8.3 4.6 8.3-4.6M12 12.4V21"/>',
   gamepad: '<path d="M7.5 7.5h9a5 5 0 0 1 4.8 6.4l-.6 2.3a2.4 2.4 0 0 1-4.1 1l-1.4-1.6H8.8l-1.4 1.6a2.4 2.4 0 0 1-4.1-1l-.6-2.3a5 5 0 0 1 4.8-6.4Z"/><path d="M8 10v4M6 12h4"/><path d="M16 11h.01M18 13h.01"/>',
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3.2 9.5h17.6M3.2 14.5h17.6"/><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z"/>',

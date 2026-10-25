@@ -22,3 +22,4 @@ _*.txt
 i18n-segments.json
 i18n-strings.json
 i18n-map.json
+.multi2-profile/

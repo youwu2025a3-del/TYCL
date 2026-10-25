@@ -17,7 +17,7 @@ if (!fs.existsSync(asarFile)) {
 }
 
 const notes =
-  '本次更新：新增联机中心，支持公网房间、局域网发现、服务器收藏与一键进入。';
+  '本次更新：新增自动开服、房间号直连与客户端 Mod 过滤，联机界面重做。';
 
 const channel = process.env.UPDATE_CHANNEL === 'beta' ? 'beta' : 'stable';
 const updateManifest = {
