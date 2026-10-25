@@ -40,12 +40,26 @@ function localManifestCandidates() {
   ];
 }
 
+const MIRROR_FEEDS = [
+  'https://raw.githubusercontent.com/youwu2025a3-del/TYCL/main/update.json',
+  'https://cdn.jsdelivr.net/gh/youwu2025a3-del/TYCL@main/update.json',
+  'https://github.com/youwu2025a3-del/TYCL/raw/main/update.json',
+];
+
+function feedCandidates(primary) {
+  const list = [primary, ...MIRROR_FEEDS].filter(Boolean);
+  return Array.from(new Set(list));
+}
+
 function normalizeManifest(data, source) {
   if (!data || !data.version) throw new Error('更新清单缺少 version 字段');
+  const urls = [data.downloadUrl || data.url || '', ...(Array.isArray(data.downloadUrls) ? data.downloadUrls : [])]
+    .filter((url) => /^https?:\/\//i.test(url));
   return {
     version: String(data.version),
     notes: String(data.notes || data.changelog || ''),
-    downloadUrl: data.downloadUrl || data.url || '',
+    downloadUrl: urls[0] || '',
+    downloadUrls: Array.from(new Set(urls)),
     sha256: data.sha256 || '',
     size: Number(data.size) || 0,
     publishedAt: data.publishedAt || data.date || '',
@@ -64,16 +78,26 @@ async function resolveManifest() {
       : settings.updateFeedUrl;
   if (feedUrl) {
     if (/^https?:\/\//i.test(feedUrl)) {
-      try {
-        const data = await fetchJson(feedUrl, { timeout: 20000, preferElectron: true });
-        return normalizeManifest(data, feedUrl);
-      } catch (error) {
-        if (channel === 'beta' && settings.updateFeedUrl) {
-          const data = await fetchJson(settings.updateFeedUrl, { timeout: 20000, preferElectron: true });
-          return normalizeManifest(data, settings.updateFeedUrl);
+      let lastError = null;
+      for (const candidate of feedCandidates(feedUrl)) {
+        try {
+          const data = await fetchJson(candidate, { timeout: 20000, preferElectron: true });
+          return normalizeManifest(data, candidate);
+        } catch (error) {
+          lastError = error;
         }
-        throw error;
       }
+      if (channel === 'beta' && settings.updateFeedUrl) {
+        for (const candidate of feedCandidates(settings.updateFeedUrl)) {
+          try {
+            const data = await fetchJson(candidate, { timeout: 20000, preferElectron: true });
+            return normalizeManifest(data, candidate);
+          } catch (error) {
+            lastError = error;
+          }
+        }
+      }
+      throw lastError || new Error('所有更新源都不可用');
     }
     const file = path.resolve(feedUrl);
     if (fs.existsSync(file)) {
@@ -181,19 +205,32 @@ function prepareUpdate(inputPath) {
 }
 
 async function downloadUpdate(options = {}) {
-  const { url, sha256 } = options;
-  if (!/^https?:\/\//i.test(url || '')) throw new Error('更新下载地址无效');
-  const file = path.join(updatesDir(), `download-${Date.now()}${path.extname(new URL(url).pathname) || '.zip'}`);
-  await downloadToFile([url], file, { timeout: 180000, skipIfExists: false, preferElectronFetch: true });
-  if (sha256) {
-    const crypto = require('crypto');
-    const hash = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-    if (hash.toLowerCase() !== String(sha256).toLowerCase()) {
-      fs.rmSync(file, { force: true });
-      throw new Error('更新包 SHA-256 校验失败');
+  const urls = Array.from(new Set([
+    options.url,
+    ...(Array.isArray(options.urls) ? options.urls : []),
+    ...(Array.isArray(options.downloadUrls) ? options.downloadUrls : []),
+  ].filter((url) => /^https?:\/\//i.test(url || ''))));
+  if (!urls.length) throw new Error('更新下载地址无效');
+  let lastError = null;
+  for (const url of urls) {
+    const file = path.join(updatesDir(), `download-${Date.now()}${path.extname(new URL(url).pathname) || '.zip'}`);
+    try {
+      await downloadToFile([url], file, { timeout: 180000, skipIfExists: false, preferElectronFetch: true });
+      if (options.sha256) {
+        const crypto = require('crypto');
+        const hash = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+        if (hash.toLowerCase() !== String(options.sha256).toLowerCase()) {
+          fs.rmSync(file, { force: true });
+          throw new Error('更新包 SHA-256 校验失败');
+        }
+      }
+      return prepareUpdate(file);
+    } catch (error) {
+      lastError = error;
+      try { fs.rmSync(file, { force: true }); } catch { /* ignore */ }
     }
   }
-  return prepareUpdate(file);
+  throw lastError || new Error('所有更新下载地址都失败');
 }
 
 function scheduleInstall(options = {}) {
