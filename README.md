@@ -6,7 +6,9 @@
 [![License](https://img.shields.io/github/license/youwu2025a3-del/TYCL?color=19a97f)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-19a97f)](https://github.com/youwu2025a3-del/TYCL/releases/latest)
 
-**[下载最新版](https://github.com/youwu2025a3-del/TYCL/releases/latest)** · [宣传素材](PROMO.md) · [签名说明](SIGNING.md) · [打包说明](PACKAGING.md)
+**[下载最新版](https://github.com/youwu2025a3-del/TYCL/releases/latest)** · [宣传素材](PROMO.md) · [隐私说明](PRIVACY.md) · [签名说明](SIGNING.md) · [打包说明](PACKAGING.md)
+
+> Windows 发布物的代码签名正在通过 [SignPath Foundation](https://signpath.org/) 申请。TYCL 使用 GitHub Actions 构建，源码和发布产物均可公开检查。
 
 ![TYCL 宣传图](promo/TYCL-banner.png)
 

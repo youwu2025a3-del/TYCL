@@ -1,0 +1,53 @@
+name: Build Windows release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Syntax check
+        run: npm run lint
+
+      - name: Package app
+        run: npm run package:win
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Build installer
+        run: npm run installer:pack
+
+      - name: Build update package
+        run: npm run update:pack
+
+      - name: Build download page
+        run: npm run pages:pack
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: TYCL-windows
+          path: |
+            dist/TYCL-Setup-*.exe
+            dist/TYCL-update-*.zip
+            dist/update.json
+            dist/pages-upload/
+          if-no-files-found: error
