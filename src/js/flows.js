@@ -6,6 +6,7 @@ const LOADER_META = {
   vanilla: { label: '原版', desc: '原汁原味的 Minecraft' },
   fabric: { label: 'Fabric', desc: '轻量 · 更新快 · 生态活跃' },
   forge: { label: 'Forge', desc: '经典 · 大型整合包首选' },
+  neoforge: { label: 'NeoForge', desc: 'Forge 社区的新分支' },
   quilt: { label: 'Quilt', desc: 'Fabric 的开放分支' },
 };
 
@@ -588,8 +589,21 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.1';
+  const version = ctx.state.system?.appVersion || '1.3.2';
   const releases = [
+    {
+      version: '1.3.2',
+      date: '2026.10.25',
+      title: '资源管理 · NeoForge · 联机修复',
+      items: [
+        '修复 Microsoft 正版皮肤透明：统一使用 HTTPS 纹理并启动时缓存官方皮肤。',
+        '联机加入兼容旧版本，1.20 以下使用 legacy 直连参数。',
+        '实例管理新增材质包、光影包、地图的查看、导入和删除。',
+        '设置新增独立自动检查更新开关，以及自动安装 Java 21。',
+        '资源中心接入 CurseForge，可在设置填写 API Key 后搜索并安装 Mod。',
+        '安装器加载器列表支持 NeoForge。',
+      ],
+    },
     {
       version: '1.3.1',
       date: '2026.10.25',
@@ -757,8 +771,8 @@ export function openUpdatesModal(ctx) {
       <div class="update-hero">
         <div class="update-hero-icon">${icon('megaphone', 24)}</div>
         <div style="flex:1">
-          <strong>一个房间号，直接进世界。</strong>
-          <span>TYCL 1.3.1 自动开服、房间号直连，并自动过滤客户端 Mod。</span>
+          <strong>把资源、联机和 Java 都收进来。</strong>
+          <span>TYCL 1.3.2 修复正版皮肤、加入资源管理、CurseForge 与 NeoForge。</span>
         </div>
         <span class="badge badge-accent">LATEST</span>
       </div>
@@ -900,7 +914,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.1';
+  const version = ctx.state.system?.appVersion || '1.3.2';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',
@@ -1153,6 +1167,7 @@ export async function openInstanceManager(ctx, instance) {
     ['overview', '概览', 'layers'],
     ['mods', `Mods ${data.mods.mods.length ? `· ${data.mods.mods.length}` : ''}`, 'package'],
     ['worlds', '存档 / 截图', 'image'],
+    ['resources', '资源包 / 光影', 'folder'],
     ['backups', '备份', 'harddrive'],
     ['settings', '设置', 'settings'],
   ];
@@ -1285,6 +1300,34 @@ export async function openInstanceManager(ctx, instance) {
         }
       });
     });
+    modal.body.querySelectorAll('[data-resource-add]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        button.disabled = true;
+        try {
+          const result = await ctx.api.addResource(instance.id, button.dataset.resourceAdd);
+          if (result.cancelled) return;
+          data.resources = result.resources;
+          render();
+          toast({ title: '资源已导入', message: result.name || '' });
+        } catch (error) {
+          button.disabled = false;
+          toast({ title: '导入失败', message: error.message, type: 'error' });
+        }
+      });
+    });
+    modal.body.querySelectorAll('[data-resource-delete]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const ok = await confirmDialog({ title: '删除资源', message: button.dataset.resourceName, confirmText: '删除', danger: true });
+        if (!ok) return;
+        try {
+          const result = await ctx.api.deleteResource(instance.id, button.dataset.resourceDelete, button.dataset.resourceName);
+          data.resources = result.resources;
+          render();
+        } catch (error) {
+          toast({ title: '删除失败', message: error.message, type: 'error' });
+        }
+      });
+    });
     modal.body.querySelector('[data-restore-backup]')?.addEventListener('click', async (event) => {
       const file = event.currentTarget.dataset.restoreBackup;
       const ok = await confirmDialog({ title: '恢复实例备份', message: '会导入为一个新实例，不会覆盖当前实例。', confirmText: '导入' });
@@ -1364,14 +1407,27 @@ export async function openInstanceManager(ctx, instance) {
         </div>
         <div class="notice">${icon('info', 14)}<span>Mod 更新来自 Modrinth 的文件哈希匹配；未收录的 Mod 不会显示更新。</span></div>
       `;
-    } else if (tab === 'worlds') {
-      content = `
+    } else if (tab === 'worlds') {      content = `
         <div class="manager-toolbar"><span>${data.worlds.length} 个存档 · ${data.screenshots.length} 张截图</span><button class="btn btn-secondary btn-sm" data-manager-folder>${icon('folder', 12)} 打开目录</button></div>
         <div class="manager-list">
           ${data.worlds.map((world) => `<div class="manager-row"><div class="manager-row-main"><strong>${escapeHtml(world.name)}</strong><span>最后修改 ${escapeHtml(new Date(world.modifiedAt).toLocaleString('zh-CN'))}</span></div><button class="btn btn-secondary btn-xs" data-world-backup="${escapeHtml(world.name)}">备份</button></div>`).join('') || '<div class="manager-empty">还没有存档</div>'}
         </div>
         <div class="manager-toolbar" style="margin-top:14px"><span>截图</span><button class="btn btn-secondary btn-sm" data-manager-folder>${icon('folder', 12)} 截图目录</button></div>
         <div class="manager-screens">${data.screenshots.slice(0, 12).map((shot) => `<span title="${escapeHtml(shot.name)}">${escapeHtml(shot.name)}</span>`).join('') || '<div class="manager-empty">还没有截图</div>'}</div>
+      `;
+    } else if (tab === 'resources') {
+      const resources = data.resources || { resourcepacks: [], shaderpacks: [], saves: [] };
+      const section = (kind, title, items) => `<div class="resource-block">
+        <div class="manager-toolbar"><span>${title} · ${items.length}</span><button class="btn btn-secondary btn-sm" data-resource-add="${kind}">${icon('plus', 12)} 导入</button></div>
+        <div class="manager-list">
+          ${items.map((item) => `<div class="manager-row"><div class="manager-row-main"><strong>${escapeHtml(item.name)}</strong><span>${item.directory ? '文件夹' : formatSize(item.size)}</span></div><button class="btn btn-ghost btn-xs danger" data-resource-delete="${kind}" data-resource-name="${escapeHtml(item.name)}">删除</button></div>`).join('') || '<div class="manager-empty">还没有内容</div>'}
+        </div>
+      </div>`;
+      content = `
+        <div class="notice">${icon('info', 14)}<span>资源包和光影包放入实例目录，地图导入到 saves；不会影响其他实例。</span></div>
+        ${section('resourcepacks', '材质包', resources.resourcepacks)}
+        ${section('shaderpacks', '光影包', resources.shaderpacks)}
+        ${section('saves', '地图 / 存档', resources.saves)}
       `;
     } else if (tab === 'backups') {
       content = `

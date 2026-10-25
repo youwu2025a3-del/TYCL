@@ -102,6 +102,11 @@ export async function render(container, ctx) {
               </div>
               <button class="switch ${settings.showSnapshots ? 'on' : ''}" data-snapshots aria-label="显示快照"></button>
             </div>
+            <div class="field">
+              <div class="field-label">CurseForge API Key <span class="field-hint" style="font-weight:400">可选</span></div>
+              <input class="input input-sm" data-curseforge-key value="${escapeHtml(settings.curseForgeApiKey || '')}" placeholder="在 console.curseforge.com 申请" spellcheck="false">
+              <div class="field-hint">填写后可在资源页搜索 CurseForge Mod。密钥只保存在本机。</div>
+            </div>
             <div class="notice">
               ${icon('info', 15)}
               <span>下载源只影响游戏文件。安装 Mod 与整合包时始终从 Modrinth 获取内容。</span>
@@ -116,10 +121,17 @@ export async function render(container, ctx) {
           <div class="settings-card-body">
             <div class="setting-row">
               <div class="setting-copy">
-                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.3.1')}</strong>
+                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.3.2')}</strong>
                 <span>${microsoft ? '正版账户已连接。' : ''}支持检查更新、导入本地更新包并在后台替换应用资源。</span>
               </div>
               <button class="btn btn-primary btn-sm" data-open-updates>${icon('megaphone', 12)} 更新公告</button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-copy">
+                <strong>启动时自动检查更新</strong>
+                <span>关闭后只在点击「检查」时访问更新源，适合流量受限或使用代理的环境。</span>
+              </div>
+              <button class="switch ${settings.autoCheckUpdates !== false ? 'on' : ''}" data-auto-check aria-label="自动检查更新"></button>
             </div>
             <div class="field">
               <div class="field-label">更新通道</div>
@@ -176,7 +188,7 @@ export async function render(container, ctx) {
             </div>
             <div class="divider"></div>
             <div class="field">
-              <div class="field-label">Java 路径 <button class="section-link" data-java-refresh>${icon('refresh', 11)} 重新检测</button></div>
+              <div class="field-label">Java 路径 <button class="section-link" data-java-refresh>${icon('refresh', 11)} 重新检测</button> <button class="section-link" data-java-install>${icon('download', 11)} 自动安装 Java 21</button></div>
               <div class="path-field">
                 <input class="input input-sm" readonly value="${escapeHtml(settings.javaPath || '自动选择最合适的 Java')}" data-java-path>
                 <button class="btn btn-secondary btn-sm" data-java-browse>${icon('folder', 12)} 浏览</button>
@@ -240,7 +252,7 @@ export async function render(container, ctx) {
               </div>
             </div>
             <div class="about-meta">
-              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.3.1')}</span>
+              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.3.2')}</span>
               <span>${icon('cpu', 11)} ${escapeHtml(state.system?.platform || 'win32')} / ${escapeHtml(state.system?.arch || 'x64')}</span>
               <span>${icon('terminal', 11)} Electron</span>
               <span>${icon('file-text', 11)} MIT License</span>
@@ -349,8 +361,7 @@ export async function render(container, ctx) {
   container.querySelector('[data-about]').addEventListener('click', () => ctx.openAbout());
   container.querySelector('[data-open-updates]').addEventListener('click', () => ctx.openUpdates());
 
-  const clientIdInput = container.querySelector('[data-ms-client-id]');
-  clientIdInput?.addEventListener('change', async () => {
+  const clientIdInput = container.querySelector('[data-ms-client-id]');  clientIdInput?.addEventListener('change', async () => {
     const value = clientIdInput.value.trim();
     if (!value) {
       clientIdInput.value = ctx.state.settings.microsoftClientId || '00000000402b5328';
@@ -378,6 +389,16 @@ export async function render(container, ctx) {
     try {
       await ctx.saveSettings({ updateChannel: event.target.value });
       toast({ title: event.target.value === 'beta' ? '已切换到测试版通道' : '已切换到稳定版通道' });
+    } catch (error) {
+      toast({ title: '保存失败', message: error.message, type: 'error' });
+    }
+  });
+  container.querySelector('[data-auto-check]')?.addEventListener('click', async (event) => {
+    try {
+      const next = !event.currentTarget.classList.contains('on');
+      event.currentTarget.classList.toggle('on', next);
+      await ctx.saveSettings({ autoCheckUpdates: next });
+      toast({ title: next ? '已开启自动检查更新' : '已关闭自动检查更新' });
     } catch (error) {
       toast({ title: '保存失败', message: error.message, type: 'error' });
     }
@@ -481,7 +502,30 @@ export async function render(container, ctx) {
     });
   }
 
+  container.querySelector('[data-curseforge-key]')?.addEventListener('change', async (event) => {
+    try {
+      await ctx.saveSettings({ curseForgeApiKey: event.target.value.trim() });
+      toast({ title: 'CurseForge API Key 已保存' });
+    } catch (error) {
+      toast({ title: '保存失败', message: error.message, type: 'error' });
+    }
+  });
   container.querySelector('[data-java-refresh]').addEventListener('click', refreshJavaList);
+  container.querySelector('[data-java-install]')?.addEventListener('click', async (event) => {
+    const button = event.currentTarget;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner" style="width:11px;height:11px"></span> 下载中';
+    try {
+      const result = await ctx.api.installJava(21);
+      await ctx.saveSettings({ javaPath: result.path });
+      toast({ title: 'Java 已安装', message: result.path, duration: 6000 });
+      ctx.rerender();
+    } catch (error) {
+      button.disabled = false;
+      button.innerHTML = `${icon('download', 11)} 自动安装 Java 21`;
+      toast({ title: 'Java 安装失败', message: error.message, type: 'error', duration: 7000 });
+    }
+  });
   container.querySelector('[data-java-browse]').addEventListener('click', async () => {
     try {
       const result = await ctx.api.chooseFile({

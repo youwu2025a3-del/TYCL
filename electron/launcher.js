@@ -99,10 +99,14 @@ function launchInstance(instanceId, task, { onStatus, serverAddress = '' } = {})
       if (instance.loader === 'forge' && !forgeInstaller) {
         throw new Error('找不到 Forge 安装器，请重新安装该实例');
       }
+      const quickPlayType = (() => {
+        const parts = String(instance.baseVersion || '').split('.').map(Number);
+        return (parts[1] || 0) >= 20 ? 'multiplayer' : 'legacy';
+      })();
       const options = {
         authorization: launchAccount.authorization,
         root: settings.gameDir,
-        ...(serverAddress ? { quickPlay: { type: 'multiplayer', identifier: /:\d+$/.test(serverAddress) ? serverAddress : `${serverAddress}:25565` } } : {}),
+        ...(serverAddress ? { quickPlay: { type: quickPlayType, identifier: /:\d+$/.test(serverAddress) ? serverAddress : `${serverAddress}:25565` } } : {}),
         version: {
           number: instance.baseVersion,
           type: 'release',

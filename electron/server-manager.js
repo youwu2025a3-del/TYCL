@@ -33,19 +33,50 @@ function serverJarUrl(instance) {
   throw new Error(`${instance.loader} 服务端暂未自动支持，请使用原版或 Fabric 实例`);
 }
 
-async function ensureServerJar(instance, root) {
-  const target = path.join(root, 'server.jar');
-  if (fs.existsSync(target) && fs.statSync(target).size > 1024) return target;
+function runInstaller(executable, args, cwd) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(executable, args, { cwd, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });
+    let output = '';
+    child.stdout.on('data', (chunk) => { output += String(chunk); });
+    child.stderr.on('data', (chunk) => { output += String(chunk); });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code === 0) resolve(output);
+      else reject(new Error(output.slice(-800) || `安装器退出（代码 ${code}）`));
+    });
+  });
+}
+
+async function ensureServerJar(instance, root, javaPath) {
   if (instance.loader === 'vanilla') {
+    const target = path.join(root, 'server.jar');
+    if (fs.existsSync(target) && fs.statSync(target).size > 1024) return target;
     const json = await getVersionJson(instance.baseVersion);
     const url = json.downloads && json.downloads.server && json.downloads.server.url;
     if (!url) throw new Error('该版本没有可用的官方服务端');
     await downloadToFile([url], target, { sha1: json.downloads.server.sha1, size: json.downloads.server.size, timeout: 120000 });
     return target;
   }
-  const url = serverJarUrl(instance);
-  await downloadToFile([url], target, { timeout: 180000, skipIfExists: false });
-  return target;
+  if (instance.loader === 'fabric' || instance.loader === 'quilt') {
+    const launcherName = instance.loader === 'fabric' ? 'fabric-server-launch.jar' : 'quilt-server-launch.jar';
+    const launcher = path.join(root, launcherName);
+    if (fs.existsSync(launcher) && fs.statSync(launcher).size > 1024) return launcher;
+    const installerName = instance.loader === 'fabric' ? 'fabric-installer.jar' : 'quilt-installer.jar';
+    const installer = path.join(root, installerName);
+    if (!fs.existsSync(installer)) {
+      const url = instance.loader === 'fabric'
+        ? 'https://maven.fabricmc.net/net/fabricmc/fabric-installer/1.0.1/fabric-installer-1.0.1.jar'
+        : 'https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-installer/0.11.2/quilt-installer-0.11.2.jar';
+      await downloadToFile([url], installer, { timeout: 120000, skipIfExists: false });
+    }
+    const args = instance.loader === 'fabric'
+      ? ['-jar', installer, 'server', '-mcversion', instance.baseVersion, '-loader', instance.loaderVersion, '-downloadMinecraft']
+      : ['-jar', installer, 'install', 'server', instance.baseVersion, '--download-server'];
+    await runInstaller(javaPath, args, root);
+    if (!fs.existsSync(launcher)) throw new Error(`${instance.loader} 服务端安装器没有生成启动文件`);
+    return launcher;
+  }
+  throw new Error(`${instance.loader} 服务端暂未自动支持，请使用原版或 Fabric 实例`);
 }
 
 function modSide(file) {
@@ -133,7 +164,7 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
   const root = serverRoot(instance);
   const java = await resolveJava({ mcVersion: instance.baseVersion, explicitPath: instance.javaPath || '', autoDownload: true });
   if (java.major < java.required) throw new Error(`Java ${java.major} 低于服务端需要的 Java ${java.required}`);
-  const jar = await ensureServerJar(instance, root);
+  const jar = await ensureServerJar(instance, root, java.path);
   const mods = syncServerMods(instance, root);
   writeServerProperties(root, port, motd);
   fs.writeFileSync(path.join(root, 'eula.txt'), 'eula=true\n', 'utf8');

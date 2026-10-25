@@ -324,8 +324,79 @@ function backupWorld(instanceId, worldName) {
   return { ok: true, file, name: path.basename(file) };
 }
 
-function updateSettings(instanceId, patch) {
-  const allowed = {};
+function listResources(instanceId) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const readDir = (folder, filter) => {
+    const dir = ensureDir(path.join(instance.gameDir, folder));
+    return fs
+      .readdirSync(dir, { withFileTypes: true })
+      .filter((entry) => filter(entry))
+      .map((entry) => {
+        const file = path.join(dir, entry.name);
+        const stat = fs.statSync(file);
+        return { name: entry.name, path: file, directory: entry.isDirectory(), size: entry.isFile() ? stat.size : 0, modifiedAt: stat.mtime.toISOString() };
+      })
+      .sort((a, b) => b.modifiedAt.localeCompare(a.modifiedAt));
+  };
+  return {
+    resourcepacks: readDir('resourcepacks', (entry) => entry.isFile() && entry.name.endsWith('.zip')),
+    shaderpacks: readDir('shaderpacks', (entry) => entry.isFile() && entry.name.endsWith('.zip')),
+    saves: readDir('saves', (entry) => entry.isDirectory() && fs.existsSync(path.join(instance.gameDir, 'saves', entry.name, 'level.dat'))),
+  };
+}
+
+function addResource(instanceId, kind, source, copyDirectory = true) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const folder = kind === 'resourcepacks' ? 'resourcepacks' : kind === 'shaderpacks' ? 'shaderpacks' : 'saves';
+  const targetRoot = ensureDir(path.join(instance.gameDir, folder));
+  const stat = fs.statSync(source);
+  if (kind === 'saves') {
+    const name = path.basename(source, path.extname(source)).replace(/[\\/:*?"<>|]/g, '').slice(0, 64) || 'Imported World';
+    const target = safeResolveWithin(targetRoot, name);
+    if (stat.isDirectory()) {
+      if (!copyDirectory) throw new Error('不能导入文件夹');
+      if (fs.existsSync(target)) throw new Error('同名存档已存在');
+      fs.cpSync(source, target, { recursive: true });
+    } else if (/\.(zip|mcworld)$/i.test(source)) {
+      const zip = new AdmZip(source);
+      const temp = path.join(targetRoot, `.import-${Date.now()}`);
+      for (const entry of zip.getEntries()) {
+        if (entry.isDirectory) continue;
+        const file = safeResolveWithin(temp, entry.entryName);
+        ensureDir(path.dirname(file));
+        fs.writeFileSync(file, entry.getData());
+      }
+      if (!fs.existsSync(path.join(temp, 'level.dat'))) {
+        const nested = fs.readdirSync(temp, { withFileTypes: true }).find((entry2) => entry2.isDirectory() && fs.existsSync(path.join(temp, entry2.name, 'level.dat')));
+        if (nested) fs.renameSync(path.join(temp, nested.name), target);
+        else throw new Error('压缩包中没有 level.dat');
+      } else {
+        fs.renameSync(temp, target);
+      }
+    } else {
+      throw new Error('存档需要是文件夹、.zip 或 .mcworld');
+    }
+    return { ok: true, name };
+  }
+  if (!stat.isFile() || !source.toLowerCase().endsWith('.zip')) throw new Error('资源包 / 光影包需要是 .zip');
+  const target = safeResolveWithin(targetRoot, path.basename(source));
+  fs.copyFileSync(source, target);
+  return { ok: true, name: path.basename(source) };
+}
+
+function deleteResource(instanceId, kind, name) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const folder = kind === 'resourcepacks' ? 'resourcepacks' : kind === 'shaderpacks' ? 'shaderpacks' : 'saves';
+  const target = safeResolveWithin(path.join(instance.gameDir, folder), name);
+  if (!fs.existsSync(target)) return { ok: false };
+  fs.rmSync(target, { recursive: true, force: true });
+  return { ok: true };
+}
+
+function updateSettings(instanceId, patch) {  const allowed = {};
   if (typeof patch.name === 'string') allowed.name = patch.name.trim().slice(0, 64);
   if (typeof patch.javaPath === 'string') allowed.javaPath = patch.javaPath;
   if (Number.isFinite(Number(patch.javaMemoryMb))) allowed.javaMemoryMb = Math.max(1024, Math.min(65536, Math.round(Number(patch.javaMemoryMb) / 512) * 512));
@@ -344,5 +415,8 @@ module.exports = {
   importArchive,
   exportInstance,
   backupWorld,
+  listResources,
+  addResource,
+  deleteResource,
   updateSettings,
 };

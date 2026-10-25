@@ -14,6 +14,7 @@ const instanceTools = require('./instance-tools');
 const { launchInstance, getActiveGame, stopGame, recentLogs } = require('./launcher');
 const modrinth = require('./modrinth');
 const { detectJava } = require('./java');
+const { downloadJavaRuntime } = require('./java');
 const { ensureDir, paths } = require('./paths');
 const auth = require('./auth');
 const updater = require('./updater');
@@ -25,6 +26,7 @@ const servers = require('./servers');
 const tunnel = require('./tunnel');
 const lan = require('./lan');
 const serverManager = require('./server-manager');
+const curseforge = require('./curseforge');
 
 let mainWindow = null;
 let loginWindow = null;
@@ -310,6 +312,7 @@ function registerIpc() {
     const javas = await detectJava({ refresh: true });
     return { javas, settings: store.getSettings() };
   });
+  ipcMain.handle('java:install', async (_, major = 21) => downloadJavaRuntime(Number(major) || 21));
 
   ipcMain.handle('skin:set', async (_, payload) => setActiveSkin(payload));
   ipcMain.handle('skin:upload', async (_, payload) => uploadSkin(payload));
@@ -409,12 +412,30 @@ function registerIpc() {
       worlds: instanceTools.listWorlds(instanceId),
       screenshots: instanceTools.listScreenshots(instanceId),
       backups: instanceTools.listBackups(),
+      resources: instanceTools.listResources(instanceId),
     };
   });
   ipcMain.handle('instances:update-settings', async (_, instanceId, patch) => instanceTools.updateSettings(instanceId, patch));
   ipcMain.handle('instances:mod-toggle', async (_, instanceId, file, enabled) => instanceTools.toggleMod(instanceId, file, enabled));
   ipcMain.handle('instances:mod-delete', async (_, instanceId, file) => instanceTools.deleteMod(instanceId, file));
   ipcMain.handle('instances:mod-updates', async (_, instanceId) => instanceTools.checkModUpdates(instanceId));
+  ipcMain.handle('instances:resources', async (_, instanceId) => instanceTools.listResources(instanceId));
+  ipcMain.handle('instances:resource-add', async (_, instanceId, kind) => {
+    const result = await dialog.showOpenDialog(mainWindow, {
+      title: kind === 'saves' ? '导入 Minecraft 存档' : kind === 'shaderpacks' ? '导入光影包' : '导入资源包',
+      properties: ['openFile'],
+      filters: kind === 'saves'
+        ? [{ name: 'Minecraft 存档', extensions: ['zip', 'mcworld'] }, { name: '所有文件', extensions: ['*'] }]
+        : [{ name: 'ZIP 包', extensions: ['zip'] }],
+    });
+    if (result.canceled || !result.filePaths[0]) return { ok: false, cancelled: true };
+    const added = instanceTools.addResource(instanceId, kind, result.filePaths[0]);
+    return { ...added, resources: instanceTools.listResources(instanceId) };
+  });
+  ipcMain.handle('instances:resource-delete', async (_, instanceId, kind, name) => {
+    const result = instanceTools.deleteResource(instanceId, kind, name);
+    return { ...result, resources: instanceTools.listResources(instanceId) };
+  });
   ipcMain.handle('instances:backup-world', async (_, instanceId, worldName) => instanceTools.backupWorld(instanceId, worldName));
   ipcMain.handle('instances:backup', async (_, instanceId) => instanceTools.backupInstance(instanceId));
   ipcMain.handle('backups:list', async () => instanceTools.listBackups());
@@ -485,6 +506,12 @@ function registerIpc() {
       worker: (task) => modrinth.installModTask(task, options),
     });
   });
+  ipcMain.handle('curseforge:search', async (_, options) => curseforge.search(options));
+  ipcMain.handle('curseforge:install', async (_, options) => tasks.start({
+    kind: 'mod',
+    title: `CurseForge · ${options.title || options.modId}`,
+    worker: (task) => curseforge.installCurseModTask(task, options),
+  }));
   ipcMain.handle('resources:install-modpack', async (_, options) => {
     return tasks.start({
       kind: 'modpack',
@@ -554,12 +581,18 @@ if (!gotLock) {
       mainWindow.focus();
     }
   });
-  app.whenReady().then(() => {
+  app.whenReady().then(async () => {
     app.setAppUserModelId('com.tycl.launcher');
     nativeTheme.themeSource = store.getSettings().theme;
     registerIpc();
     const skipSplash = process.argv.includes('--no-splash') || consumeUpdateRestartFlag() || consumeLegacyUpdateRestart();
     if (!skipSplash) createSplashWindow();
+    if (store.getSettings().accountMode === 'microsoft') {
+      await Promise.race([
+        auth.ensureAccountSkin().catch(() => null),
+        new Promise((resolve) => setTimeout(resolve, 6000)),
+      ]);
+    }
     createWindow({ immediate: skipSplash });
     if (isDev && mainWindow) mainWindow.webContents.openDevTools({ mode: 'detach' });
     app.on('activate', () => {

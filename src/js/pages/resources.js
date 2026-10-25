@@ -1,6 +1,6 @@
 import { icon } from '../icons.js';
 import { escapeHtml, formatNumber, debounce } from '../utils.js';
-import { skeletonCards, emptyState } from '../components.js';
+import { skeletonCards, emptyState, openModal, toast } from '../components.js';
 import { openProjectModal } from '../flows.js';
 
 const CATEGORY_LABELS = {
@@ -73,6 +73,72 @@ function resourceCard(item) {
   </article>`;
 }
 
+function openCurseForge(ctx, state, filters = {}) {
+  const key = state.settings.curseForgeApiKey;
+  if (!key) {
+    toast({ title: '需要 CurseForge API Key', message: '请先在设置 → 下载源中填写 API Key', type: 'info', duration: 6000 });
+    ctx.navigate('settings');
+    return;
+  }
+  let instanceId = state.ui.selectedInstanceId || state.instances[0]?.id || '';
+  const modal = openModal({
+    title: 'CurseForge',
+    subtitle: '搜索并安装 CurseForge Mod',
+    size: 'modal-lg',
+    body: `
+      <div class="cf-toolbar">
+        <input class="input" data-cf-query placeholder="搜索 CurseForge Mod…" spellcheck="false">
+        <button class="btn btn-primary" data-cf-search>${icon('search', 13)} 搜索</button>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <div class="field-label">安装到实例</div>
+        <div class="select-wrap"><select class="select" data-cf-instance>${state.instances.map((instance) => `<option value="${escapeHtml(instance.id)}" ${instance.id === instanceId ? 'selected' : ''}>${escapeHtml(instance.name)} · ${escapeHtml(instance.baseVersion)} · ${escapeHtml(instance.loaderLabel)}</option>`).join('')}</select></div>
+      </div>
+      <div class="cf-list" data-cf-list><div class="manager-empty">输入关键词搜索 CurseForge</div></div>
+    `,
+    footer: `<button class="btn btn-secondary btn-sm" data-modal-close>关闭</button>`,
+  });
+  const list = modal.body.querySelector('[data-cf-list]');
+  const query = modal.body.querySelector('[data-cf-query]');
+  const instanceSelect = modal.body.querySelector('[data-cf-instance]');
+  instanceSelect?.addEventListener('change', () => { instanceId = instanceSelect.value; });
+  const search = async () => {
+    const text = query.value.trim();
+    if (!text) return;
+    list.innerHTML = `<div class="loading-block"><span class="spinner"></span> 搜索中…</div>`;
+    try {
+      const result = await ctx.api.searchCurseForge({ query: text, type: 'mod', gameVersion: filters.gameVersion || '', loader: filters.loader || '' });
+      if (!result.hits?.length) {
+        list.innerHTML = `<div class="manager-empty">没有找到结果</div>`;
+        return;
+      }
+      list.innerHTML = result.hits.map((item) => `<div class="cf-row">
+        <div class="cf-icon">${item.iconUrl ? `<img src="${escapeHtml(item.iconUrl)}" alt="">` : icon('package', 18)}</div>
+        <div class="cf-main"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.author || 'CurseForge')} · ${formatNumber(item.downloads)} 次下载</span><small>${escapeHtml(item.summary || '')}</small></div>
+        <button class="btn btn-primary btn-xs" data-cf-install="${item.id}" data-cf-title="${escapeHtml(item.name)}">安装</button>
+      </div>`).join('');
+      list.querySelectorAll('[data-cf-install]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          if (!instanceId) return toast({ title: '没有可用实例', type: 'error' });
+          button.disabled = true;
+          try {
+            await ctx.api.installCurseForge({ instanceId, modId: Number(button.dataset.cfInstall), title: button.dataset.cfTitle });
+            toast({ title: '开始安装 CurseForge Mod', message: button.dataset.cfTitle });
+          } catch (error) {
+            button.disabled = false;
+            toast({ title: '安装失败', message: error.message, type: 'error' });
+          }
+        });
+      });
+    } catch (error) {
+      list.innerHTML = `<div class="manager-empty">${escapeHtml(error.message)}</div>`;
+    }
+  };
+  modal.body.querySelector('[data-cf-search]').addEventListener('click', search);
+  query.addEventListener('keydown', (event) => { if (event.key === 'Enter') search(); });
+  query.focus();
+}
+
 export async function render(container, ctx) {
   const { state } = ctx;
   if (!state.ui.resourceType) state.ui.resourceType = 'modpack';
@@ -102,6 +168,7 @@ export async function render(container, ctx) {
           <p class="page-subtitle">从 Modrinth 发现精心制作的整合包与 Mod，选中兼容版本，一键安装到你的实例。</p>
         </div>
         <div class="page-actions">
+          <button class="btn btn-secondary btn-sm" data-curseforge>${icon('zap', 13)} CurseForge</button>
           <span class="badge badge-outline" style="height:28px">${icon('globe', 12)} Powered by Modrinth</span>
         </div>
       </div>
@@ -304,6 +371,8 @@ export async function render(container, ctx) {
       load();
     });
   });
+
+  container.querySelector('[data-curseforge]')?.addEventListener('click', () => openCurseForge(ctx, state, { gameVersion: view.gameVersion, loader: view.loader }));
 
   updateTypeUI();
   await load();

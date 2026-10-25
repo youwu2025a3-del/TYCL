@@ -4878,3 +4878,14 @@ body[data-theme="dark"] .hero-meta-link:hover {
   .room-banner { align-items: stretch; flex-direction: column; }
   .room-code-box { min-width: 0; }
 }
+
+/* CurseForge */
+.cf-toolbar { display: flex; gap: 6px; }
+.cf-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; max-height: 430px; overflow: auto; }
+.cf-row { display: flex; align-items: center; gap: 9px; padding: 9px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-subtle); }
+.cf-icon { width: 34px; height: 34px; flex: 0 0 34px; border-radius: 8px; overflow: hidden; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); color: var(--accent-strong); }
+.cf-icon img { width: 100%; height: 100%; object-fit: cover; }
+.cf-main { flex: 1; min-width: 0; }
+.cf-main strong { display: block; color: var(--text-strong); font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cf-main span { display: block; color: var(--muted); font-size: 8.8px; margin-top: 2px; }
+.cf-main small { display: block; color: var(--faint); font-size: 8.5px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

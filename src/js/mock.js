@@ -339,7 +339,7 @@ function bootstrap() {
       platform: 'win32',
       arch: 'x64',
       totalMemoryMb: 32768,
-      appVersion: '1.3.1',
+      appVersion: '1.3.2',
       gameDir: state.settings.gameDir,
       isMaximized: false,
       demo: true,
@@ -508,20 +508,20 @@ const api = {
   async checkUpdates() {
     await new Promise((r) => setTimeout(r, 600));
     return {
-      currentVersion: '1.3.1',
+      currentVersion: '1.3.2',
       packaged: false,
       canAutoUpdate: false,
       feedUrl: state.settings.updateFeedUrl,
       configured: false,
       hasUpdate: false,
-      latestVersion: '1.3.1',
+      latestVersion: '1.3.2',
       notes: '',
       error: state.settings.updateFeedUrl ? '' : '尚未配置更新源（演示模式）',
       checkedAt: Date.now(),
     };
   },
   async getUpdateInfo() {
-    return { currentVersion: '1.3.1', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
+    return { currentVersion: '1.3.2', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
   },
   async chooseUpdatePackage() {
     return { canceled: true };
@@ -570,6 +570,10 @@ const api = {
   async openInstanceFolder() {
     return { ok: true };
   },
+  async searchCurseForge() { return { hits: [{ id: 238222, name: 'JEI', author: 'mezz', downloads: 120000000, summary: 'Just Enough Items', iconUrl: '' }] }; },
+  async installCurseForge() { return { id: 'cf-task' }; },
+  async addResource() { return { ok: true, name: 'demo.zip', resources: {} }; },
+  async deleteResource() { return { ok: true, resources: {} }; },
   async testNetwork() {
     await new Promise((r) => setTimeout(r, 900));
     return {
@@ -596,6 +600,7 @@ const api = {
       worlds: [{ name: '新的世界', path: 'mock', modifiedAt: new Date().toISOString() }],
       screenshots: [{ name: '2026-10-25_15.20.11.png' }],
       backups: [{ name: '实例备份-2026-10-25.zip', file: 'mock-backup.zip', size: 48200000, modifiedAt: new Date().toISOString() }],
+      resources: { resourcepacks: [{ name: 'Faithful 32x.zip', size: 2200000, modifiedAt: new Date().toISOString() }], shaderpacks: [{ name: 'Complementary.zip', size: 5400000, modifiedAt: new Date().toISOString() }], saves: [{ name: '新的世界', directory: true, size: 0, modifiedAt: new Date().toISOString() }] },
     };
   },
   async updateInstanceSettings(id, patch) {
@@ -695,7 +700,7 @@ const api = {
     return {
       generatedAt: new Date().toISOString(),
       level: 'ok',
-      appVersion: '1.3.1',
+      appVersion: '1.3.2',
       system: { platform: 'win32', arch: 'x64', totalMemoryMb: 32768, cpus: 16 },
       environment: { gameDir: state.settings.gameDir, javaPath: '', javaRequired: 17, javaList: javaList.map((item) => ({ path: item.path, major: item.major })), memoryMb: state.settings.memoryMb },
       instance: instance ? { id: instance.id, name: instance.name, baseVersion: instance.baseVersion, versionId: instance.versionId, loader: instance.loader, loaderLabel: instance.loaderLabel, gameDir: instance.gameDir, modsCount: instance.modsCount } : null,

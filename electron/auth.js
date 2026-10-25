@@ -79,7 +79,7 @@ function publicAccount(account) {
     skins: account.skins || [],
     capes: account.capes || [],
     skinId: account.skinId || (activeSkin && activeSkin.id) || '',
-    skinUrl: account.skinUrl || (activeSkin && activeSkin.url) || '',
+    skinUrl: String(account.skinUrl || (activeSkin && activeSkin.url) || '').replace(/^http:/i, 'https:'),
     skinModel: account.skinModel || 'classic',
     loggedInAt: account.loggedInAt,
     expiresAt: account.expiresAt,
@@ -303,13 +303,13 @@ async function cacheMicrosoftSkin(account) {
   }
   const result = {
     skinId: active.id || '',
-    skinUrl: active.url,
+    skinUrl: String(active.url || '').replace(/^http:/i, 'https:'),
     skinModel: await fetchSkinModel(account.uuid),
     skinFile: '',
     skinUpdatedAt: new Date().toISOString(),
   };
   try {
-    const response = await smartFetch(active.url, {
+    const response = await smartFetch(String(active.url || '').replace(/^http:/i, 'https:'), {
       headers: { 'User-Agent': `TYCL Launcher/${require('../package.json').version}` },
       signal: AbortSignal.timeout(20000),
     });

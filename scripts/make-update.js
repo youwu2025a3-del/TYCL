@@ -17,7 +17,7 @@ if (!fs.existsSync(asarFile)) {
 }
 
 const notes =
-  '本次更新：新增自动开服、房间号直连与客户端 Mod 过滤，联机界面重做。';
+  '本次更新：修复正版皮肤透明，新增资源管理、CurseForge、NeoForge 与自动 Java。';
 
 const channel = process.env.UPDATE_CHANNEL === 'beta' ? 'beta' : 'stable';
 const updateManifest = {
