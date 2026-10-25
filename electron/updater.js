@@ -41,6 +41,8 @@ function localManifestCandidates() {
 }
 
 const MIRROR_FEEDS = [
+  'https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/update.json',
+  'https://tycl-updates-a3y8.youwu2025a3.workers.dev/update.json',
   'https://raw.githubusercontent.com/youwu2025a3-del/TYCL/main/update.json',
   'https://cdn.jsdelivr.net/gh/youwu2025a3-del/TYCL@main/update.json',
   'https://github.com/youwu2025a3-del/TYCL/raw/main/update.json',
@@ -57,7 +59,13 @@ function normalizeManifest(data, source) {
     .filter((url) => /^https?:\/\//i.test(url));
   return {
     version: String(data.version),
-    notes: String(data.notes || data.changelog || ''),
+    notes: (() => {
+      const text = String(data.notes || data.changelog || '');
+      try {
+        if (/[ÃÂæå]/i.test(text)) return Buffer.from(text, 'latin1').toString('utf8');
+      } catch { /* ignore */ }
+      return text;
+    })(),
     downloadUrl: urls[0] || '',
     downloadUrls: Array.from(new Set(urls)),
     sha256: data.sha256 || '',

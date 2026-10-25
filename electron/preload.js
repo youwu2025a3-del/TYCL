@@ -98,5 +98,6 @@ contextBridge.exposeInMainWorld('tycl', {
   onGameStatus: subscribe('game:status'),
   onAccountChanged: subscribe('account:changed'),
   onUpdateAvailable: subscribe('update:available'),
+  onBootstrapChanged: subscribe('bootstrap:changed'),
   onWindowMaximized: subscribe('window:maximized'),
 });

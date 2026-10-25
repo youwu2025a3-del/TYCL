@@ -21,7 +21,10 @@
       </div>
       <div class="chrome-drag" id="chrome-drag"></div>
       <div class="chrome-actions">
-        <button class="chrome-btn theme-quick" id="quick-theme" title="切换主题" aria-label="切换主题">
+        <button class="chrome-btn command-trigger" id="command-trigger" title="搜索或跳转 (Ctrl+K)" aria-label="打开命令面板">
+        <span data-icon="search"></span><kbd>Ctrl K</kbd>
+      </button>
+      <button class="chrome-btn theme-quick" id="quick-theme" title="切换主题" aria-label="切换主题">
           <span data-icon="sun"></span>
         </button>
         <button class="chrome-btn" id="chrome-queue" title="下载队列" aria-label="下载队列">
@@ -122,6 +125,18 @@
   </div>
 
   <div id="modal-root"></div>
+  <div id="command-palette" class="command-palette" hidden>
+    <div class="command-backdrop" data-command-close></div>
+    <div class="command-panel" role="dialog" aria-modal="true" aria-label="命令面板">
+      <div class="command-search">
+        <span data-icon="search"></span>
+        <input id="command-input" placeholder="搜索页面、实例或操作…" autocomplete="off" spellcheck="false">
+        <kbd>Esc</kbd>
+      </div>
+      <div class="command-results" id="command-results"></div>
+      <div class="command-foot"><span><kbd>↑</kbd><kbd>↓</kbd> 选择</span><span><kbd>Enter</kbd> 打开</span><span><kbd>Ctrl K</kbd> 关闭</span></div>
+    </div>
+  </div>
   <div id="toast-root" class="toast-root"></div>
   <div id="task-root"></div>
   <div class="drag-overlay" id="drag-overlay">
@@ -132,6 +147,7 @@
     </div>
   </div>
 
+  <script defer src="./vendor/skinview3d.bundle.js"></script>
   <script type="module" src="./js/app.js"></script>
 </body>
 </html>

@@ -289,7 +289,119 @@ const ctx = {
 
 window.tyclContext = ctx;
 
+api.onBootstrapChanged?.(async () => {
+  try {
+    const data = await api.getBootstrap();
+    applyBootstrap(data);
+    if (currentRoute === 'skins' || currentRoute === 'home') await renderRoute(currentRoute, { force: true });
+  } catch {
+    // 后台皮肤刷新失败不影响当前页面
+  }
+});
+
+function commandActions() {
+  const pages = [
+    ['home', '首页', '总览与最近游玩', 'home'],
+    ['news', '新闻', '版本与活动', 'file-text'],
+    ['multiplayer', '联机', '房间号与自动开服', 'globe'],
+    ['versions', '游戏库', '实例与版本', 'layers'],
+    ['resources', '资源中心', '整合包与 Mod', 'compass'],
+    ['skins', '皮肤工坊', '正版皮肤与预览', 'shirt'],
+    ['settings', '设置', '账户、Java、更新', 'settings'],
+  ];
+  const actions = pages.map(([route, label, hint, iconName]) => ({
+    label, hint, iconName, section: '页面', run: () => navigate(route),
+  }));
+  actions.push(
+    { label: '安装新版本', hint: '下载 Minecraft 或整合包', iconName: 'download', section: '操作', run: () => ctx.openLatestInstall() },
+    { label: '检查更新', hint: '查看 TYCL 新版本', iconName: 'megaphone', section: '操作', run: () => ctx.openUpdates() },
+    { label: '账户', hint: '登录、切换或离线账户', iconName: 'user', section: '操作', run: () => ctx.openAccount() },
+  );
+  for (const instance of state.instances) {
+    actions.push({
+      label: instance.name,
+      hint: `${instance.baseVersion} · ${instance.loaderLabel || '原版'} · 打开实例管理`,
+      iconName: 'box',
+      section: '实例',
+      run: () => ctx.openInstanceManager(instance),
+    });
+  }
+  return actions;
+}
+
+let commandItems = [];
+let commandActive = 0;
+
+function closeCommandPalette() {
+  const root = document.getElementById('command-palette');
+  if (!root || root.hidden) return;
+  root.hidden = true;
+  document.getElementById('command-input').value = '';
+}
+
+function renderCommandResults(query = '') {
+  const results = document.getElementById('command-results');
+  if (!results) return;
+  const needle = query.trim().toLowerCase();
+  const all = commandActions();
+  commandItems = needle
+    ? all.filter((item) => `${item.label} ${item.hint}`.toLowerCase().includes(needle))
+    : all;
+  commandActive = Math.min(commandActive, Math.max(0, commandItems.length - 1));
+  if (!commandItems.length) {
+    results.innerHTML = `<div class="manager-empty">没有找到“${escapeHtml(query)}”</div>`;
+    return;
+  }
+  let lastSection = '';
+  results.innerHTML = commandItems.map((item, index) => {
+    const header = item.section !== lastSection ? `<div class="command-section">${escapeHtml(item.section)}</div>` : '';
+    lastSection = item.section;
+    return `${header}<button class="command-item ${index === commandActive ? 'active' : ''}" data-command-index="${index}">
+      <span class="command-icon">${icon(item.iconName, 13)}</span>
+      <span><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.hint)}</span></span>
+    </button>`;
+  }).join('');
+  results.querySelectorAll('[data-command-index]').forEach((button) => {
+    button.addEventListener('click', () => runCommand(Number(button.dataset.commandIndex)));
+  });
+}
+
+function runCommand(index) {
+  const item = commandItems[index];
+  if (!item) return;
+  closeCommandPalette();
+  item.run();
+}
+
+function openCommandPalette() {
+  const root = document.getElementById('command-palette');
+  if (!root) return;
+  root.hidden = false;
+  commandActive = 0;
+  renderCommandResults('');
+  const input = document.getElementById('command-input');
+  input.value = '';
+  input.focus();
+}
+
+function setupCommandPalette() {
+  const root = document.getElementById('command-palette');
+  const input = document.getElementById('command-input');
+  if (!root || !input) return;
+  document.getElementById('command-trigger')?.addEventListener('click', openCommandPalette);
+  root.querySelector('[data-command-close]')?.addEventListener('click', closeCommandPalette);
+  input.addEventListener('input', () => { commandActive = 0; renderCommandResults(input.value); });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { event.preventDefault(); closeCommandPalette(); return; }
+    if (event.key === 'ArrowDown') { event.preventDefault(); commandActive = Math.min(commandItems.length - 1, commandActive + 1); renderCommandResults(input.value); return; }
+    if (event.key === 'ArrowUp') { event.preventDefault(); commandActive = Math.max(0, commandActive - 1); renderCommandResults(input.value); return; }
+    if (event.key === 'Enter') { event.preventDefault(); runCommand(commandActive); }
+  });
+}
+
+
 function setupChrome() {
+  setupCommandPalette();
   document.getElementById('quick-theme')?.addEventListener('click', () => {
     const actual = resolveTheme(state.settings.theme);
     ctx.setTheme(actual === 'dark' ? 'light' : 'dark');
@@ -321,6 +433,13 @@ function setupChrome() {
   });
 
   window.addEventListener('keydown', (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      const root = document.getElementById('command-palette');
+      if (root && !root.hidden) closeCommandPalette();
+      else openCommandPalette();
+      return;
+    }
     if (event.ctrlKey && !event.shiftKey && !event.altKey) {
       const routes = { '1': 'home', '2': 'versions', '3': 'resources', '4': 'skins', '5': 'settings' };
       if (routes[event.key]) {

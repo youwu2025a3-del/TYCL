@@ -589,7 +589,7 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.5';
+  const version = ctx.state.system?.appVersion || '1.4.0';
   const releases = [
     {
       version: '1.3.4',
@@ -884,14 +884,14 @@ export function openUpdatesModal(ctx) {
         `;
         progressEl.querySelector('[data-download-update]').addEventListener('click', async (evt) => {
           const downloadButton = evt.currentTarget;
-          if (!result.manifest?.downloadUrl) {
+          if (!result.manifest?.downloadUrl && !(result.manifest?.downloadUrls || []).length) {
             toast({ title: '更新源没有提供下载地址', message: '请使用“导入更新包”，或在更新清单中填写 downloadUrl', type: 'info' });
             return;
           }
           downloadButton.disabled = true;
           downloadButton.innerHTML = `<span class="spinner" style="width:13px;height:13px"></span> 下载中`;
           try {
-            const prepared = await ctx.api.downloadUpdate({ url: result.manifest.downloadUrl, sha256: result.manifest.sha256 });
+            const prepared = await ctx.api.downloadUpdate({ url: result.manifest.downloadUrl, downloadUrls: result.manifest.downloadUrls || [], sha256: result.manifest.sha256 });
             showPreparedUpdate(prepared, result.manifest.source || '更新源');
           } catch (error) {
             toast({ title: '下载更新失败', message: error.message, type: 'error' });
@@ -937,7 +937,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.5';
+  const version = ctx.state.system?.appVersion || '1.4.0';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',

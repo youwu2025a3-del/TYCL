@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS = {
   firstRun: true,
   accountMode: 'offline',
   microsoftClientId: '00000000402b5328',
-  updateFeedUrl: 'https://tycl-updates-a3y8.youwu2025a3.workers.dev/update.json',
+  updateFeedUrl: 'https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/update.json',
   betaUpdateFeedUrl: '',
   curseForgeApiKey: '',
   curseForgeProxyUrl: 'https://tycl-curseforge.youwu2025a3.workers.dev',

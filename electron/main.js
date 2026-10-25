@@ -589,10 +589,9 @@ if (!gotLock) {
     const skipSplash = process.argv.includes('--no-splash') || consumeUpdateRestartFlag() || consumeLegacyUpdateRestart();
     if (!skipSplash) createSplashWindow();
     if (store.getSettings().accountMode === 'microsoft') {
-      await Promise.race([
-        auth.ensureAccountSkin().catch(() => null),
-        new Promise((resolve) => setTimeout(resolve, 6000)),
-      ]);
+      auth.ensureAccountSkin()
+        .then(() => broadcast('bootstrap:changed'))
+        .catch(() => null);
     }
     createWindow({ immediate: skipSplash });
     if (isDev && mainWindow) mainWindow.webContents.openDevTools({ mode: 'detach' });

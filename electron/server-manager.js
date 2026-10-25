@@ -234,6 +234,7 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
     startedAt: Date.now(),
     status: 'starting',
     logs: [],
+    players: [],
     mods,
     fingerprint,
     config,
@@ -244,6 +245,10 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
   const append = (line) => {
     state.logs.push(String(line).trimEnd());
     if (state.logs.length > 240) state.logs.splice(0, state.logs.length - 240);
+    const joined = String(line).match(/: ([A-Za-z0-9_]{1,16}) joined the game/);
+    if (joined && !state.players.includes(joined[1])) state.players.push(joined[1]);
+    const left = String(line).match(/: ([A-Za-z0-9_]{1,16}) left the game/);
+    if (left) state.players = state.players.filter((name) => name !== left[1]);
   };
   child.stdout.on('data', (chunk) => {
     const text = String(chunk);
@@ -284,6 +289,7 @@ function getServerState() {
     instanceId: active.instanceId,
     instanceName: active.instanceName,
     port: active.port,
+    players: active.players || [],
     root: active.root,
     startedAt: active.startedAt,
     logs: active.logs.slice(-80),

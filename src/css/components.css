@@ -1142,3 +1142,23 @@ body[data-theme="dark"] .notice.warn {
     max-height: calc(100vh - 28px);
   }
 }
+
+/* Command palette */
+.command-trigger { width: auto; padding: 0 8px; gap: 5px; }
+.command-trigger kbd { font: inherit; font-size: 7.5px; color: var(--faint); background: var(--surface-subtle); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
+.command-palette { position: fixed; inset: 0; z-index: 9000; display: flex; align-items: flex-start; justify-content: center; padding-top: 13vh; }
+.command-palette[hidden] { display: none; }
+.command-backdrop { position: absolute; inset: 0; background: rgba(10, 18, 15, .42); backdrop-filter: blur(5px); }
+.command-panel { position: relative; width: min(580px, calc(100vw - 32px)); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 24px 80px rgba(8, 24, 18, .28); overflow: hidden; animation: command-in .16s ease; }
+@keyframes command-in { from { opacity: 0; transform: translateY(-8px) scale(.985); } to { opacity: 1; transform: none; } }
+.command-search { display: flex; align-items: center; gap: 9px; padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--muted); }
+.command-search input { flex: 1; border: 0; background: transparent; color: var(--text-strong); font: inherit; font-size: 12px; outline: none; }
+.command-search kbd, .command-foot kbd { font: inherit; font-size: 7.5px; color: var(--faint); background: var(--surface-subtle); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
+.command-results { max-height: 46vh; overflow: auto; padding: 5px; }
+.command-section { padding: 6px 8px 3px; font-size: 7.5px; letter-spacing: .08em; color: var(--faint); text-transform: uppercase; }
+.command-item { width: 100%; display: flex; align-items: center; gap: 9px; border: 0; background: transparent; color: var(--text); text-align: left; padding: 8px 9px; border-radius: 8px; cursor: pointer; }
+.command-item:hover, .command-item.active { background: var(--accent-soft); color: var(--text-strong); }
+.command-item .command-icon { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; background: var(--surface-subtle); color: var(--accent-strong); flex: 0 0 24px; }
+.command-item strong { display: block; font-size: 10px; font-weight: 600; }
+.command-item span { display: block; font-size: 8px; color: var(--faint); margin-top: 1px; }
+.command-foot { display: flex; gap: 14px; padding: 8px 13px; border-top: 1px solid var(--line); color: var(--faint); font-size: 8px; }

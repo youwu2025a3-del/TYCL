@@ -99,7 +99,7 @@ export async function render(container, ctx) {
           <div class="room-live ${room ? '' : 'hidden'}" data-room-live>
             <div class="room-live-main">
               <span class="status-dot ok"></span>
-              <div><strong>${room ? `${room.mode === 'server' ? '服务端' : '局域网世界'} · 端口 ${room.port}` : ''}</strong><span data-room-status>房间运行中</span></div>
+              <div><strong>${room ? `${room.mode === 'server' ? '服务端' : '局域网世界'} · 端口 ${room.port}` : ''}</strong><span data-room-status>房间运行中</span><span data-room-players style="margin-left:8px;color:var(--faint)"></span></div>
             </div>
             <div class="room-live-actions">
               <button class="btn btn-secondary btn-sm" data-enter-local ${room ? '' : 'disabled'}>${icon('play', 12)} 进入我的房间</button>
@@ -183,6 +183,8 @@ export async function render(container, ctx) {
     });
     const status = body.querySelector('[data-room-status]');
     if (status && room) status.textContent = room.mode === 'server' ? '服务端与公网隧道运行中' : '公网隧道运行中';
+    const players = body.querySelector('[data-room-players]');
+    if (players && room) players.textContent = server?.players?.length ? `· 在线 ${server.players.length} 人` : '';
     renderServer();
   };
 
@@ -418,8 +420,8 @@ export async function render(container, ctx) {
   }
   renderRoom();
   renderServer();
-  lanTimer = setInterval(refreshLan, 2400);
-  serverTimer = setInterval(refreshServer, 1800);
+  lanTimer = setInterval(refreshLan, 4000);
+  serverTimer = setInterval(refreshServer, 3000);
 
   return () => {
     if (lanTimer) clearInterval(lanTimer);
