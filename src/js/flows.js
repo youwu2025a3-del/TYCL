@@ -589,7 +589,7 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.4';
+  const version = ctx.state.system?.appVersion || '1.3.5';
   const releases = [
     {
       version: '1.3.4',
@@ -937,7 +937,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.4';
+  const version = ctx.state.system?.appVersion || '1.3.5';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',

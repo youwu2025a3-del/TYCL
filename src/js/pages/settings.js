@@ -102,10 +102,9 @@ export async function render(container, ctx) {
               </div>
               <button class="switch ${settings.showSnapshots ? 'on' : ''}" data-snapshots aria-label="显示快照"></button>
             </div>
-            <div class="field">
-              <div class="field-label">CurseForge API Key <span class="field-hint" style="font-weight:400">可选</span></div>
-              <input class="input input-sm" data-curseforge-key value="${escapeHtml(settings.curseForgeApiKey || '')}" placeholder="在 console.curseforge.com 申请" spellcheck="false">
-              <div class="field-hint">填写后可在资源页搜索 CurseForge Mod。密钥只保存在本机。</div>
+            <div class="notice">
+              ${icon('info', 15)}
+              <span>CurseForge 通过内置代理访问，无需填写 API Key。</span>
             </div>
             <div class="notice">
               ${icon('info', 15)}
@@ -121,7 +120,7 @@ export async function render(container, ctx) {
           <div class="settings-card-body">
             <div class="setting-row">
               <div class="setting-copy">
-                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.3.4')}</strong>
+                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.3.5')}</strong>
                 <span>${microsoft ? '正版账户已连接。' : ''}支持检查更新、导入本地更新包并在后台替换应用资源。</span>
               </div>
               <button class="btn btn-primary btn-sm" data-open-updates>${icon('megaphone', 12)} 更新公告</button>
@@ -252,7 +251,7 @@ export async function render(container, ctx) {
               </div>
             </div>
             <div class="about-meta">
-              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.3.4')}</span>
+              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.3.5')}</span>
               <span>${icon('cpu', 11)} ${escapeHtml(state.system?.platform || 'win32')} / ${escapeHtml(state.system?.arch || 'x64')}</span>
               <span>${icon('terminal', 11)} Electron</span>
               <span>${icon('file-text', 11)} MIT License</span>
