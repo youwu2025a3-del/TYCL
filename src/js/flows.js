@@ -588,8 +588,20 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.0';
+  const version = ctx.state.system?.appVersion || '1.3.1';
   const releases = [
+    {
+      version: '1.3.1',
+      date: '2026.10.25',
+      title: '自动服务端 · 房间号',
+      items: [
+        '联机页重做为房间中心：房间号大号显示，一键复制、加入和关闭。',
+        '新增自动开服：启动器下载服务端、生成 EULA 与 server.properties，并启动本地服务端。',
+        '服务端自动过滤客户端专用 Mod，只把服务端 Mod 复制到服务端目录。',
+        '开房后可直接进入自己的房间，朋友输入房间号即可连接。',
+        '提示消息改为居中显示，房间状态、服务端日志和 Mod 过滤结果集中展示。',
+      ],
+    },
     {
       version: '1.3.0',
       date: '2026.10.25',
@@ -745,8 +757,8 @@ export function openUpdatesModal(ctx) {
       <div class="update-hero">
         <div class="update-hero-icon">${icon('megaphone', 24)}</div>
         <div style="flex:1">
-          <strong>和朋友，进同一个世界。</strong>
-          <span>TYCL 1.3.0 新增联机中心：公网房间、局域网发现与服务器一键进入。</span>
+          <strong>一个房间号，直接进世界。</strong>
+          <span>TYCL 1.3.1 自动开服、房间号直连，并自动过滤客户端 Mod。</span>
         </div>
         <span class="badge badge-accent">LATEST</span>
       </div>
@@ -888,7 +900,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.0';
+  const version = ctx.state.system?.appVersion || '1.3.1';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',

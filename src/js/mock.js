@@ -339,7 +339,7 @@ function bootstrap() {
       platform: 'win32',
       arch: 'x64',
       totalMemoryMb: 32768,
-      appVersion: '1.3.0',
+      appVersion: '1.3.1',
       gameDir: state.settings.gameDir,
       isMaximized: false,
       demo: true,
@@ -508,20 +508,20 @@ const api = {
   async checkUpdates() {
     await new Promise((r) => setTimeout(r, 600));
     return {
-      currentVersion: '1.3.0',
+      currentVersion: '1.3.1',
       packaged: false,
       canAutoUpdate: false,
       feedUrl: state.settings.updateFeedUrl,
       configured: false,
       hasUpdate: false,
-      latestVersion: '1.3.0',
+      latestVersion: '1.3.1',
       notes: '',
       error: state.settings.updateFeedUrl ? '' : '尚未配置更新源（演示模式）',
       checkedAt: Date.now(),
     };
   },
   async getUpdateInfo() {
-    return { currentVersion: '1.3.0', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
+    return { currentVersion: '1.3.1', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
   },
   async chooseUpdatePackage() {
     return { canceled: true };
@@ -632,6 +632,10 @@ const api = {
   async stopTunnel() { return { ok: true }; },
   async getTunnelState() { return { active: false }; },
   async startLanDiscovery() { return { ok: true }; },
+  async startServer(options) { await new Promise((r) => setTimeout(r, 900)); return { active: true, status: 'running', instanceId: options.instanceId, instanceName: 'Mock', port: options.port || 25565, logs: ['[Server] Starting minecraft server', '[Server] Done (2.100s)!'], mods: { kept: [{ file: 'fabric-api.jar', name: 'Fabric API' }], skipped: [{ file: 'sodium.jar', name: 'Sodium' }, { file: 'iris.jar', name: 'Iris' }] } }; },
+  async getServerState() { return { active: false }; },
+  async stopServer() { return { ok: true }; },
+  async forceStopServer() { return { ok: true }; },
   async listLanWorlds() { return [{ address: '192.168.1.8:54321', motd: 'Steve 的世界', lastSeen: Date.now() }]; },
   async showInFolder() {
     return { ok: true };
@@ -691,7 +695,7 @@ const api = {
     return {
       generatedAt: new Date().toISOString(),
       level: 'ok',
-      appVersion: '1.3.0',
+      appVersion: '1.3.1',
       system: { platform: 'win32', arch: 'x64', totalMemoryMb: 32768, cpus: 16 },
       environment: { gameDir: state.settings.gameDir, javaPath: '', javaRequired: 17, javaList: javaList.map((item) => ({ path: item.path, major: item.major })), memoryMb: state.settings.memoryMb },
       instance: instance ? { id: instance.id, name: instance.name, baseVersion: instance.baseVersion, versionId: instance.versionId, loader: instance.loader, loaderLabel: instance.loaderLabel, gameDir: instance.gameDir, modsCount: instance.modsCount } : null,

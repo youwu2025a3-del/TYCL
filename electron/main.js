@@ -24,6 +24,7 @@ const network = require('./network');
 const servers = require('./servers');
 const tunnel = require('./tunnel');
 const lan = require('./lan');
+const serverManager = require('./server-manager');
 
 let mainWindow = null;
 let loginWindow = null;
@@ -394,6 +395,10 @@ function registerIpc() {
   ipcMain.handle('tunnel:state', async () => tunnel.getTunnelState());
   ipcMain.handle('lan:start', async () => lan.start());
   ipcMain.handle('lan:list', async () => lan.list());
+  ipcMain.handle('server:start', async (_, options) => serverManager.startDedicatedServer(options.instanceId, options));
+  ipcMain.handle('server:state', async () => serverManager.getServerState());
+  ipcMain.handle('server:stop', async () => serverManager.stopDedicatedServer());
+  ipcMain.handle('server:force-stop', async () => serverManager.forceStopServer());
   ipcMain.handle('instances:delete', async (_, instanceId) => deleteInstance(instanceId));
   ipcMain.handle('instances:details', async (_, instanceId) => {
     const instance = getInstance(instanceId);
@@ -567,6 +572,7 @@ app.on('before-quit', () => {
   if (tasks) tasks.cancelAll();
   try { tunnel.stopTunnel(); } catch { /* ignore */ }
   try { lan.stop(); } catch { /* ignore */ }
+  try { serverManager.forceStopServer(); } catch { /* ignore */ }
 });
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
