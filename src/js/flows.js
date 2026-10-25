@@ -589,8 +589,80 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.4.0';
+  const version = ctx.state.system?.appVersion || '1.4.1';
   const releases = [
+    {
+      version: '1.4.1',
+      date: '2026.10.25',
+      title: '更新公告与更新源修复',
+      items: [
+        '更新公告补充 1.4.0 / 1.4.1 内容。',
+        '旧版 Cloudflare 更新源自动迁移到 COS。',
+        '设置页更新源地址显示当前 COS 地址。',
+      ],
+    },
+    {
+      version: '1.4.0',
+      date: '2026.10.25',
+      title: 'COS 国内更新 · skinview3d',
+      items: [
+        '默认更新源切换为腾讯云 COS，国内无需 VPN。',
+        '更新检查顺序：COS → Cloudflare → jsDelivr → GitHub。',
+        '3D 皮肤改用 skinview3d，修正显示并支持鼠标拖动。',
+        '启动不再等待皮肤缓存，最多减少 6 秒等待。',
+        '联机轮询降频，实例管理不再全量计算 Mod SHA-1。',
+        'Ctrl+K 命令面板、实例直接管理、房间在线人数。',
+      ],
+    },
+    {
+      version: '1.3.9',
+      date: '2026.10.25',
+      title: '优化测试版',
+      items: [
+        '启动、联机轮询、实例管理的性能优化测试包。',
+        '3D 皮肤切换 skinview3d。',
+        '更新源多线路回退原型。',
+      ],
+    },
+    {
+      version: '1.3.8',
+      date: '2026.10.25',
+      title: '更新线路回退',
+      items: [
+        '更新源增加 GitHub Raw / jsDelivr 回退。',
+        'update.json 支持 downloadUrls 多地址。',
+        '更新包支持多地址重试与 SHA-256 校验。',
+      ],
+    },
+    {
+      version: '1.3.7',
+      date: '2026.10.25',
+      title: '3D 皮肤重做',
+      items: [
+        '3D 皮肤改用 skinview3d，修正相机和全身显示。',
+        'WebGL 失败静态回退。',
+        'Ctrl+K 命令面板、在线玩家数量、实例直接管理。',
+      ],
+    },
+    {
+      version: '1.3.6',
+      date: '2026.10.25',
+      title: '体验升级',
+      items: [
+        '全局命令面板与顶部搜索入口。',
+        '实例卡片点击直接打开管理，弹窗宽度 1120px。',
+        '联机房间玩家数量解析。',
+      ],
+    },
+    {
+      version: '1.3.5',
+      date: '2026.10.25',
+      title: 'CurseForge 代理',
+      items: [
+        'CurseForge 通过 Cloudflare Worker 代理，客户端不保存 Key。',
+        'Windows 安装器与更新包构建。',
+      ],
+    },
     {
       version: '1.3.4',
       date: '2026.10.25',
@@ -937,7 +1009,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.4.0';
+  const version = ctx.state.system?.appVersion || '1.4.1';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',

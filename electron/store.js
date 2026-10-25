@@ -76,7 +76,12 @@ function normalizeSettings(input, previous = {}) {
     firstRun: Boolean(base.firstRun),
     accountMode: base.accountMode === 'microsoft' ? 'microsoft' : 'offline',
     microsoftClientId: String(base.microsoftClientId || '00000000402b5328').trim() || '00000000402b5328',
-    updateFeedUrl: typeof base.updateFeedUrl === 'string' ? base.updateFeedUrl.trim() : '',
+    updateFeedUrl: (() => {
+      const value = typeof base.updateFeedUrl === 'string' ? base.updateFeedUrl.trim() : '';
+      return !value || /^https:\/\/tycl-updates-a3y8\.youwu2025a3\.workers\.dev\/update\.json$/i.test(value)
+        ? DEFAULT_SETTINGS.updateFeedUrl
+        : value;
+    })(),
     betaUpdateFeedUrl: typeof base.betaUpdateFeedUrl === 'string' ? base.betaUpdateFeedUrl.trim() : '',
     curseForgeApiKey: typeof base.curseForgeApiKey === 'string' ? base.curseForgeApiKey.trim() : '',
     curseForgeProxyUrl: typeof base.curseForgeProxyUrl === 'string' ? base.curseForgeProxyUrl.trim().replace(/\/$/, '') : 'https://tycl-curseforge.youwu2025a3.workers.dev',
