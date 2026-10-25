@@ -1,5 +1,14 @@
 # TYCL Windows 代码签名方案
 
+## 申请状态
+
+- **2026-10-25**：已通过 SignPath Foundation 官网提交 TYCL 的免费开源代码签名申请。
+- 项目：https://github.com/youwu2025a3-del/TYCL
+- 构建系统：GitHub Actions
+- 状态：等待 SignPath Foundation 审核
+
+审核结果会通过申请邮箱通知。收到通过邮件后，再接入 SignPath 的签名步骤和证书。
+
 当前 TYCL 的安装器和主程序都未签名。Windows SmartScreen 会把未知发布者的安装器标成风险，用户必须先点“更多信息 → 仍要运行”，这不是靠改代码能彻底消除的。
 
 签名后仍然可能需要积累一段时间信誉，但至少发布者名称会固定显示，后续版本被拦截的概率会明显下降。
