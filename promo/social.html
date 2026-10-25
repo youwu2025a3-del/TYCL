@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1280px; height: 640px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: #132019;
+    background:
+      radial-gradient(700px 380px at 92% 12%, rgba(137, 210, 179, .45), transparent 65%),
+      radial-gradient(500px 500px at 4% 100%, rgba(243, 216, 143, .24), transparent 70%),
+      #f6f8f5;
+  }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(31,71,52,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(31,71,52,.04) 1px, transparent 1px); background-size: 36px 36px; mask-image: radial-gradient(circle at 50% 50%, black, transparent 85%); }
+  .top { position: absolute; left: 58px; top: 42px; display: flex; align-items: center; gap: 11px; }
+  .logo { width: 37px; height: 37px; border-radius: 10px; box-shadow: 0 10px 26px rgba(20,80,54,.18); }
+  .brand { font-size: 18px; font-weight: 800; letter-spacing: .06em; }
+  .brand small { margin-left: 3px; color: #8b9a90; font-size: 8px; letter-spacing: .22em; }
+  .content { position: absolute; left: 58px; top: 132px; width: 515px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 7px; height: 25px; padding: 0 10px; border: 1px solid rgba(27,130,91,.2); border-radius: 99px; background: rgba(255,255,255,.55); color: #167a55; font-size: 9px; font-weight: 750; letter-spacing: .07em; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: #20a877; box-shadow: 0 0 0 3px rgba(32,168,119,.12); }
+  h1 { margin: 18px 0 12px; font-size: 61px; line-height: .98; letter-spacing: -.065em; font-weight: 850; }
+  h1 em { color: #168a60; font-style: normal; }
+  .lead { margin: 0; width: 480px; color: #596b60; font-size: 14px; line-height: 1.75; }
+  .pills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 20px; width: 500px; }
+  .pill { padding: 7px 9px; border-radius: 7px; border: 1px solid rgba(22,94,66,.12); background: rgba(255,255,255,.65); color: #365846; font-size: 9px; font-weight: 650; }
+  .foot { position: absolute; left: 58px; bottom: 38px; display: flex; gap: 13px; color: #60766a; font-size: 9px; }
+  .foot b { color: #1e3d2e; }
+  .shot-wrap { position: absolute; right: -120px; top: 92px; width: 760px; transform: rotate(-2.2deg); }
+  .shot-frame { padding: 10px; border-radius: 17px; background: rgba(255,255,255,.82); border: 1px solid rgba(255,255,255,.9); box-shadow: 0 35px 70px rgba(27,67,49,.22), 0 6px 18px rgba(27,67,49,.09); }
+  .shot-frame img { display: block; width: 100%; border-radius: 11px; }
+  .version { position: absolute; right: 52px; bottom: 34px; color: #7b8c82; font-size: 8px; letter-spacing: .15em; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="top"><img class="logo" src="../src/assets/icon-128.png" alt=""><div class="brand">TYCL <small>LAUNCHER</small></div></div>
+  <div class="content">
+    <div class="eyebrow"><span class="dot"></span> TYCL 1.2.0 · WINDOWS</div>
+    <h1>世界，就在<br>下一次<em>点击</em></h1>
+    <p class="lead">简洁、安静的 Minecraft 启动器。安装、实例、Mod、皮肤与更新，收在一个刚刚好的地方。</p>
+    <div class="pills">
+      <span class="pill">版本隔离</span><span class="pill">下载续传</span><span class="pill">实例备份</span>
+      <span class="pill">Mod 更新</span><span class="pill">崩溃分析</span><span class="pill">新闻汉化</span>
+    </div>
+  </div>
+  <div class="shot-wrap"><div class="shot-frame"><img src="../screenshots/home.png" alt=""></div></div>
+  <div class="foot"><span><b>github.com/youwu2025a3-del/TYCL</b></span><span>MIT · 开源</span><span>制作者 A3Y8</span></div>
+  <div class="version">MINECRAFT JAVA EDITION</div>
+</body>
+</html>

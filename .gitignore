@@ -18,3 +18,4 @@ _*.js
 _*.py
 _*.jar
 _*.txt
+.promo-profile/
