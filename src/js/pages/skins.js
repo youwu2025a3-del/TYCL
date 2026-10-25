@@ -114,10 +114,16 @@ export async function render(container, ctx) {
   `;
 
   const stage = container.querySelector('[data-skin-stage]');
-  viewer = createSkinViewer(stage, {
-    dataUrl: selectedSkin().dataUrl,
-    model: selectedModel,
-  });
+  try {
+    viewer = createSkinViewer(stage, {
+      dataUrl: selectedSkin().dataUrl,
+      model: selectedModel,
+    });
+  } catch (error) {
+    console.error('3D skin viewer failed', error);
+    stage.innerHTML = `<div class="skin-fallback"><img src="${selectedSkin().dataUrl}" alt="${escapeHtml(selectedSkin().name)}"><span>3D 预览不可用，已切换为静态皮肤</span></div>`;
+    toast({ title: '3D 预览不可用', message: '已切换为静态皮肤，不影响启动游戏。', type: 'info', duration: 5000 });
+  }
 
   const fileInput = container.querySelector('[data-file-input]');
 

@@ -4898,3 +4898,26 @@ body[data-theme="dark"] .hero-meta-link:hover {
 .room-advanced-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .room-advanced-row label { display: flex; flex-direction: column; gap: 3px; color: var(--faint); font-size: 8.5px; }
 .room-advanced-row .input { height: 27px; font-size: 9px; padding: 0 7px; }
+
+.modal.instance-manager-modal {
+  width: min(1120px, 96vw);
+}
+
+.instance-card { cursor: pointer; }
+.instance-card:hover { transform: translateY(-2px); }
+
+.skin-fallback {
+  height: 100%;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.skin-fallback img {
+  width: 220px;
+  image-rendering: pixelated;
+}

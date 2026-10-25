@@ -589,8 +589,19 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.3';
+  const version = ctx.state.system?.appVersion || '1.3.4';
   const releases = [
+    {
+      version: '1.3.4',
+      date: '2026.10.25',
+      title: '实例交互 · 3D 回退 · 稳定性',
+      items: [
+        '点击游戏库实例卡片直接打开实例管理，弹窗加宽到 1120px。',
+        '3D 皮肤预览失败时自动切换为静态皮肤，不再让页面报错。',
+        '联机高级设置、白名单、端口避让和 Mod 指纹校验。',
+        'Mod 哈希延迟计算，减少打开实例时的卡顿。',
+      ],
+    },
     {
       version: '1.3.3',
       date: '2026.10.25',
@@ -926,7 +937,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.3';
+  const version = ctx.state.system?.appVersion || '1.3.4';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',
@@ -1150,7 +1161,8 @@ export async function openInstanceManager(ctx, instance) {
   const modal = openModal({
     title: '实例管理',
     subtitle: instance.name,
-    size: 'modal-lg',
+    size: 'modal-xl',
+    className: 'instance-manager-modal',
     body: `<div class="loading-block"><span class="spinner"></span> 读取实例文件…</div>`,
     footer: `<button class="btn btn-secondary btn-sm" data-manager-folder>${icon('folder', 13)} 打开实例目录</button>
       <button class="btn btn-primary btn-sm" data-modal-close>关闭</button>`,
