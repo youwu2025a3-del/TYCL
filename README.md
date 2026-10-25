@@ -8,6 +8,8 @@
 
 **[下载最新版](https://github.com/youwu2025a3-del/TYCL/releases/latest)** · [宣传素材](PROMO.md) · [签名说明](SIGNING.md) · [打包说明](PACKAGING.md)
 
+![TYCL 宣传图](promo/TYCL-banner.png)
+
 TYCL 是一个面向 Windows 的 Minecraft Java 版桌面启动器。它以干净的白色界面为基底，把游戏安装、实例管理、Mod / 整合包下载、正版登录与皮肤预览收拢在一个地方。界面基于 Electron 构建，游戏启动核心使用开源库 `minecraft-launcher-core`，资源来自 Modrinth。
 
 **制作者：A3Y8** · **BUG 反馈：tianyi76@yeah.net**
