@@ -3,7 +3,8 @@
 param(
   [string]$Version,
   [switch]$SkipBuild,
-  [switch]$GitHub
+  [switch]$GitHub,
+  [switch]$Cos
 )
 
 $ErrorActionPreference = 'Stop'
@@ -102,6 +103,12 @@ $manifest = [ordered]@{
 }
 $manifestPath = Join-Path $root "dist\COS-update-$Version.json"
 Write-Utf8 $manifestPath (($manifest | ConvertTo-Json -Depth 5) + "`n")
+
+if ($Cos) {
+  Write-Host "==> 上传 COS" -ForegroundColor Cyan
+  node scripts/upload-cos.js --version $Version --manifest $manifestPath --installer $installer --update $updateZip --server $serverZip
+  if ($LASTEXITCODE -ne 0) { throw 'COS 上传失败' }
+}
 
 Write-Host ""
 Write-Host "==> 完成" -ForegroundColor Green
