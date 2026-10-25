@@ -4594,3 +4594,168 @@ body[data-theme="dark"] .hero-meta-link:hover {
 }
 
 .btn.danger { color: #c43a48; }
+
+/* Multiplayer */
+.multi-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  gap: 12px;
+}
+
+.multi-card {
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.multi-open-card {
+  background:
+    radial-gradient(520px 230px at 100% 0, rgba(var(--accent-rgb), .1), transparent 70%),
+    var(--surface);
+}
+
+.multi-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 14px;
+}
+
+.multi-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.multi-card h2 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-strong);
+}
+
+.multi-card-head p,
+.multi-section-head p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 9.5px;
+  line-height: 1.5;
+}
+
+.multi-note {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin-top: 13px;
+  color: var(--faint);
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.multi-address {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(var(--accent-rgb), .2);
+  border-radius: 10px;
+  background: var(--accent-softer);
+}
+
+.multi-address.hidden { display: none; }
+.multi-address-label { display: block; color: var(--muted); font-size: 9px; }
+.multi-address strong { display: block; margin: 3px 0 8px; color: var(--accent-strong); font-family: var(--mono); font-size: 14px; word-break: break-all; }
+.multi-address-actions { display: flex; gap: 6px; }
+
+.multi-join { display: flex; flex-direction: column; gap: 10px; }
+.multi-join .field { margin: 0; }
+
+.multi-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.multi-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.multi-add-server {
+  display: grid;
+  grid-template-columns: minmax(0, .7fr) minmax(0, 1fr) auto;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.server-list, .lan-list { display: flex; flex-direction: column; gap: 6px; }
+
+.server-row, .lan-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface-subtle);
+}
+
+.server-row.online { border-color: rgba(var(--accent-rgb), .16); }
+
+.server-favicon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--accent-strong);
+}
+
+.server-favicon img { width: 100%; height: 100%; object-fit: cover; }
+.server-main, .lan-main { flex: 1; min-width: 0; }
+.server-title { display: flex; align-items: center; gap: 5px; }
+.server-title strong { color: var(--text-strong); font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.server-main > span, .lan-main span { display: block; color: var(--muted); font-size: 9px; margin-top: 2px; }
+.server-main small { display: block; color: var(--faint); font-size: 8.5px; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.server-status { margin-left: auto; color: var(--muted); font-size: 8.5px; }
+.status-dot { width: 5px; height: 5px; border-radius: 50%; background: #c9d1cc; }
+.status-dot.ok { background: #20a877; box-shadow: 0 0 0 3px rgba(32,168,119,.1); }
+.status-dot.off { background: #d66b73; }
+.server-actions { display: flex; gap: 2px; flex: 0 0 auto; }
+
+.lan-row { padding: 8px 9px; }
+.lan-icon {
+  width: 28px; height: 28px; flex: 0 0 28px; border-radius: 7px;
+  display: grid; place-items: center; background: var(--accent-soft); color: var(--accent-strong);
+}
+.lan-main strong { display: block; color: var(--text-strong); font-size: 10.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.multi-empty {
+  min-height: 86px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 18px;
+  color: var(--faint);
+  text-align: center;
+  font-size: 9.5px;
+}
+
+@media (max-width: 900px) {
+  .multi-layout, .multi-bottom { grid-template-columns: 1fr; }
+  .multi-add-server { grid-template-columns: 1fr; }
+}

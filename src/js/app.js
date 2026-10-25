@@ -18,6 +18,7 @@ import {
 } from './flows.js';
 import * as homePage from './pages/home.js';
 import * as newsPage from './pages/news.js';
+import * as multiplayerPage from './pages/multiplayer.js';
 import * as versionsPage from './pages/versions.js';
 import * as resourcesPage from './pages/resources.js';
 import * as skinsPage from './pages/skins.js';
@@ -31,6 +32,7 @@ const navItems = Array.from(document.querySelectorAll('.nav-item[data-route]'));
 const PAGE_META = {
   home: { label: '首页', title: '首页' },
   news: { label: '新闻', title: '新闻' },
+  multiplayer: { label: '联机', title: '联机' },
   versions: { label: '游戏库', title: '游戏库' },
   resources: { label: '资源中心', title: '资源中心' },
   skins: { label: '皮肤工坊', title: '皮肤工坊' },
@@ -40,6 +42,7 @@ const PAGE_META = {
 const PAGES = {
   home: homePage,
   news: newsPage,
+  multiplayer: multiplayerPage,
   versions: versionsPage,
   resources: resourcesPage,
   skins: skinsPage,

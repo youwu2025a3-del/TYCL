@@ -588,8 +588,20 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.2.1';
+  const version = ctx.state.system?.appVersion || '1.3.0';
   const releases = [
+    {
+      version: '1.3.0',
+      date: '2026.10.25',
+      title: '联机中心',
+      items: [
+        '新增联机页面：一键开启公网房间，朋友通过地址直接进入。',
+        '内置开源隧道组件 bore，不需要路由器端口映射。',
+        '自动发现同一局域网内开放的 Minecraft 世界。',
+        '服务器收藏、玩家数、延迟、MOTD 状态检测与一键进入。',
+        '启动游戏时使用 Minecraft quickPlay 直接连接服务器。',
+      ],
+    },
     {
       version: '1.2.1',
       date: '2026.10.25',
@@ -733,8 +745,8 @@ export function openUpdatesModal(ctx) {
       <div class="update-hero">
         <div class="update-hero-icon">${icon('megaphone', 24)}</div>
         <div style="flex:1">
-          <strong>正版皮肤，回来了。</strong>
-          <span>TYCL 1.2.1 自动读取 Microsoft 官方皮肤，头像和 3D 预览都会同步显示。</span>
+          <strong>和朋友，进同一个世界。</strong>
+          <span>TYCL 1.3.0 新增联机中心：公网房间、局域网发现与服务器一键进入。</span>
         </div>
         <span class="badge badge-accent">LATEST</span>
       </div>
@@ -876,7 +888,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.2.1';
+  const version = ctx.state.system?.appVersion || '1.3.0';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',

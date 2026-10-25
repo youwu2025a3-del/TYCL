@@ -339,7 +339,7 @@ function bootstrap() {
       platform: 'win32',
       arch: 'x64',
       totalMemoryMb: 32768,
-      appVersion: '1.2.1',
+      appVersion: '1.3.0',
       gameDir: state.settings.gameDir,
       isMaximized: false,
       demo: true,
@@ -508,20 +508,20 @@ const api = {
   async checkUpdates() {
     await new Promise((r) => setTimeout(r, 600));
     return {
-      currentVersion: '1.2.1',
+      currentVersion: '1.3.0',
       packaged: false,
       canAutoUpdate: false,
       feedUrl: state.settings.updateFeedUrl,
       configured: false,
       hasUpdate: false,
-      latestVersion: '1.2.1',
+      latestVersion: '1.3.0',
       notes: '',
       error: state.settings.updateFeedUrl ? '' : '尚未配置更新源（演示模式）',
       checkedAt: Date.now(),
     };
   },
   async getUpdateInfo() {
-    return { currentVersion: '1.2.1', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
+    return { currentVersion: '1.3.0', packaged: false, canAutoUpdate: false, feedUrl: state.settings.updateFeedUrl };
   },
   async chooseUpdatePackage() {
     return { canceled: true };
@@ -618,6 +618,21 @@ const api = {
   async openPath() {
     return { ok: true };
   },
+  async listServers() {
+    return [
+      { id: 'demo-1', name: 'Hypixel', address: 'mc.hypixel.net:25565', host: 'mc.hypixel.net', port: 25565 },
+      { id: 'demo-2', name: '本地测试服', address: '127.0.0.1:25565', host: '127.0.0.1', port: 25565 },
+    ];
+  },
+  async addServer(payload) { return { id: 'demo-new', ...payload }; },
+  async removeServer() { return { ok: true }; },
+  async pingServer(address) { return { address, online: true, latency: 42, players: { online: 128, max: 500 }, version: '1.20.1', motd: 'A Minecraft Server' }; },
+  async pingAllServers() { return (await this.listServers()).map((s) => ({ ...s, status: { online: true, latency: 42, players: { online: 128, max: 500 }, version: '1.20.1', motd: 'A Minecraft Server' } })); },
+  async startTunnel() { await new Promise((r) => setTimeout(r, 700)); return { ok: true, address: 'bore.pub:35720', localPort: 25565 }; },
+  async stopTunnel() { return { ok: true }; },
+  async getTunnelState() { return { active: false }; },
+  async startLanDiscovery() { return { ok: true }; },
+  async listLanWorlds() { return [{ address: '192.168.1.8:54321', motd: 'Steve 的世界', lastSeen: Date.now() }]; },
   async showInFolder() {
     return { ok: true };
   },
@@ -676,7 +691,7 @@ const api = {
     return {
       generatedAt: new Date().toISOString(),
       level: 'ok',
-      appVersion: '1.2.1',
+      appVersion: '1.3.0',
       system: { platform: 'win32', arch: 'x64', totalMemoryMb: 32768, cpus: 16 },
       environment: { gameDir: state.settings.gameDir, javaPath: '', javaRequired: 17, javaList: javaList.map((item) => ({ path: item.path, major: item.major })), memoryMb: state.settings.memoryMb },
       instance: instance ? { id: instance.id, name: instance.name, baseVersion: instance.baseVersion, versionId: instance.versionId, loader: instance.loader, loaderLabel: instance.loaderLabel, gameDir: instance.gameDir, modsCount: instance.modsCount } : null,

@@ -17,7 +17,7 @@ if (!fs.existsSync(asarFile)) {
 }
 
 const notes =
-  '本次更新：修复 Microsoft 正版账户皮肤不显示的问题，自动缓存官方皮肤并识别经典/纤细模型。';
+  '本次更新：新增联机中心，支持公网房间、局域网发现、服务器收藏与一键进入。';
 
 const channel = process.env.UPDATE_CHANNEL === 'beta' ? 'beta' : 'stable';
 const updateManifest = {

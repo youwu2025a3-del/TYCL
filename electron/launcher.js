@@ -52,7 +52,7 @@ function sanitizeInstalledVersionFiles(instance) {
   }
 }
 
-function launchInstance(instanceId, task, { onStatus }) {
+function launchInstance(instanceId, task, { onStatus, serverAddress = '' } = {}) {
   return new Promise(async (resolve, reject) => {
     try {
       if (activeGame) {
@@ -102,6 +102,7 @@ function launchInstance(instanceId, task, { onStatus }) {
       const options = {
         authorization: launchAccount.authorization,
         root: settings.gameDir,
+        ...(serverAddress ? { quickPlay: { type: 'multiplayer', identifier: /:\d+$/.test(serverAddress) ? serverAddress : `${serverAddress}:25565` } } : {}),
         version: {
           number: instance.baseVersion,
           type: 'release',

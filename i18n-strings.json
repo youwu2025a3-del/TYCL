@@ -1,0 +1,5252 @@
+[
+  {
+    "text": "\n                        <option value=\"__download\">＋ 下载新版本…</option>\n                      </select>\n                      ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "\n              </div>\n            </div>\n            <div class=\"field\">\n              <div class=\"field-label\">强调色</div>\n              <div class=\"accent-row\" data-accent-row>\n                ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\n              <span>更新包只替换应用的 app.asar，不会删除游戏、存档、皮肤和账户数据。安装完成后 TYCL 会自动重启。</span>\n            </div>\n          </div>\n        </section>\n        </div>\n        <div class=\"settings-col\">\n        <section class=\"settings-card\">\n          <div class=\"settings-card-head\">\n            <div class=\"settings-icon\">",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\n              <span>将创建一个新的独立实例，并自动安装 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n              <span>离线模式适合单人游戏与局域网联机。需要正版验证的服务器无法加入。</span>\n            </div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n              <span>下载源只影响游戏文件。安装 Mod 与整合包时始终从 Modrinth 获取内容。</span>\n            </div>\n          </div>\n        </section>\n        <section class=\"settings-card\">\n          <div class=\"settings-card-head\">\n            <div class=\"settings-icon\">",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\n            <span>登录页由 Microsoft 官方提供。验证码、密码等信息不会经过 TYCL 的服务器。账户令牌仅保存在本机。</span>\n          </div>\n        </div>\n      ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n          <div class=\"update-ready\">\n            <div>\n              <strong>发现新版本 v",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n          <h3>Herobrine was here.</h3>\n          <p>雾里有两盏白色的灯。你确定刚才那里没有人。</p>\n          <span class=\"egg-sign\">别回头</span>\n        </div>\n      ",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "\n          <input class=\"input\" data-search placeholder=\"搜索",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "\n          <input type=\"search\" placeholder=\"搜索新闻标题…\" data-news-search value=\"",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "\n          <span>首次安装会下载游戏核心、依赖与资源文件。实际大小取决于版本，通常为 250–500 MB。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n          <strong>登录失败</strong>\n          <span style=\"max-width:360px\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n        </div>\n        <button class=\"modal-close\" aria-label=\"关闭\">",
+    "files": [
+      "src\\js\\components.js"
+    ]
+  },
+  {
+    "text": "\n        </div>\n        <div class=\"field\">\n          <div class=\"field-label\">加载器状态</div>\n          <input class=\"input\" value=\"",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n        </div>\n        <div class=\"manager-toolbar\" style=\"margin-top:14px\"><span>截图</span><button class=\"btn btn-secondary btn-sm\" data-manager-folder>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n        </div>\n        <div class=\"select-wrap\">\n          <select class=\"select select-sm\" data-loader style=\"min-width:120px\">\n            <option value=\"\">全部加载器</option>\n            <option value=\"fabric\">Fabric</option>\n            <option value=\"forge\">Forge</option>\n            <option value=\"quilt\">Quilt</option>\n          </select>\n          ",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "\n        </div>\n        <div class=\"select-wrap\">\n          <select class=\"select select-sm\" data-sort style=\"min-width:122px\">\n            <option value=\"downloads\">按下载量</option>\n            <option value=\"relevance\">按相关性</option>\n            <option value=\"newest\">最新发布</option>\n            <option value=\"updated\">最近更新</option>\n          </select>\n          ",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "\n        </div>\n      </div>\n      <div class=\"install-form-row\" style=\"margin-top:-4px\">\n        <div class=\"field\">\n          <div class=\"field-label\">加载器版本</div>\n          ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n        <div class=\"manager-form\">\n          <label class=\"field\"><span class=\"field-label\">实例名称</span><input class=\"input\" data-manager-name maxlength=\"64\" value=\"",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n        <div class=\"manager-grid\">\n          <div class=\"manager-stat\"><span>版本</span><strong>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n        <div>\n          <h3>你找到了藏在 TYCL 里的苦力怕。</h3>\n          <p>它一直站在这里，只是你刚好点到了它。</p>\n          <span class=\"egg-sign\">A3Y8 · 2026</span>\n        </div>\n      </div>\n    ",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "\n        <div>\n          <h3>A3Y8 把它留在了这里。</h3>\n          <p>没有任务，没有提示，也没有成就。只是在漫长的加载和下载之间，留一点奖励。</p>\n          <span class=\"egg-sign\">A3Y8 · 2026 · 谢谢路过</span>\n        </div>\n      </div>\n    ",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "\n        <span>TYCL 不隶属于 Mojang Studios 或 Microsoft。Minecraft 是 Mojang Studios 的商标。本启动器仅用于管理你已经拥有的游戏。</span>\n      </div>\n    ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n      </div>\n\n      <div class=\"results-count\">\n        <span data-count>正在寻找",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "\n      <div class=\"about-box\">\n        <div class=\"about-logo\"><img src=\"./assets/icon-128.png\" alt=\"TYCL\"></div>\n        <div>\n          <div class=\"about-title\">TYCL <span>LAUNCHER</span></div>\n          <p class=\"about-desc\">为每一次进入世界，保留一点仪式感。<br>游戏、Mod、整合包、正版登录与皮肤，都在一个干净的地方。</p>\n        </div>\n      </div>\n      <div class=\"about-links\">\n        <button class=\"about-link\" data-link=\"https://modrinth.com/minecraft\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n      <div class=\"detail-tabs\"><span class=\"detail-tab active\">安装选项</span></div>\n      ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n      <div class=\"field\">\n        <div class=\"field-label\">版本</div>\n        ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n      <div class=\"field\">\n        <div class=\"field-label\">选择模组加载器</div>\n        <div class=\"loader-grid\">\n          ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n      <div class=\"install-layout\">\n        <div class=\"field\">\n          <div class=\"field-label\">\n            <span>Minecraft 版本</span>\n            <button class=\"section-link\" data-browse-versions>浏览全部版本 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n      <div class=\"update-ready\">\n        <div>\n          <strong>更新包已准备就绪",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\n    </div>\n    <button class=\"toast-close\" aria-label=\"关闭\">",
+    "files": [
+      "src\\js\\components.js"
+    ]
+  },
+  {
+    "text": "\n    <div class=\"page news-page\">\n      <div class=\"page-header\">\n        <div>\n          <div class=\"page-eyebrow\">MINECRAFT NEWS</div>\n          <h1 class=\"page-title\">新闻</h1>\n          <p class=\"page-subtitle\">来自 Minecraft 官方的全部消息。点击卡片查看简介，并可一键翻译成中文。</p>\n        </div>\n        <div class=\"page-actions\">\n          <button class=\"btn btn-secondary btn-sm\" data-news-refresh>",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "\n    <div class=\"page\">\n      <div class=\"page-header\">\n        <div>\n          <div class=\"page-eyebrow\">DISCOVER</div>\n          <h1 class=\"page-title\">资源中心</h1>\n          <p class=\"page-subtitle\">从 Modrinth 发现精心制作的整合包与 Mod，选中兼容版本，一键安装到你的实例。</p>\n        </div>\n        <div class=\"page-actions\">\n          <span class=\"badge badge-outline\" style=\"height:28px\">",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "\n    <div class=\"page\">\n      <div class=\"page-header\">\n        <div>\n          <div class=\"page-eyebrow\">LIBRARY</div>\n          <h1 class=\"page-title\">游戏库</h1>\n          <p class=\"page-subtitle\">管理本地的 Minecraft 实例，或从版本库安装一个新的世界。</p>\n        </div>\n        <div class=\"page-actions\">\n          <button class=\"btn btn-secondary\" data-refresh>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "\n    <div class=\"page\">\n      <div class=\"page-header\">\n        <div>\n          <div class=\"page-eyebrow\">PREFERENCES</div>\n          <h1 class=\"page-title\">设置</h1>\n          <p class=\"page-subtitle\">把 TYCL 调整成你喜欢的样子。所有设置都会自动保存在本机。</p>\n        </div>\n        <div class=\"page-actions\">\n          <button class=\"btn btn-secondary\" data-open-dir>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\n    <div class=\"page\">\n      <div class=\"page-header\">\n        <div>\n          <div class=\"page-eyebrow\">WARDROBE</div>\n          <h1 class=\"page-title\">皮肤工坊</h1>\n          <p class=\"page-subtitle\">为你的角色挑一身新衣服。拖动预览、导入自己的皮肤，让每次出发都更像你。</p>\n        </div>\n        <div class=\"page-actions\">\n          <button class=\"btn btn-secondary\" data-account>",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": " · 更新会自动完成，不需要重新下载整个启动器",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " · 更新于 ",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": " · 今天想回到哪个世界？</p>\n        </div>\n        <div class=\"greeting-side\">\n          <div class=\"status-pill\">\n            <i style=\"",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " · 来自 Modrinth",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " · 皮肤</span></div>\n        </div>\n      </section>\n\n      <div class=\"stats-row\">\n        <div class=\"stat-card\">\n          <div class=\"stat-icon accent\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " · 推荐",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " · 退出代码 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " · 已在本地实例中使用",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " · 找到 ",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": " · 制作者 A3Y8",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 安装 Mod",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 安装</button>\n          </div>\n        </div>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 安装整合包",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 版本 ",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 版本库</button>\n        </div>\n        <div class=\"toolbar-spacer\"></div>\n      </div>\n\n      <div id=\"versions-body\"></div>\n    </div>\n  ",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 保存实例设置</button>\n        </div>\n      ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 备份当前实例</button><button class=\"btn btn-secondary btn-sm\" data-manager-import>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 测速",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 测速</button></div>\n              <div class=\"source-options\">\n                <button class=\"source-option ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 次下载</span>\n            <span>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 打开目录</button></div>\n        <div class=\"manager-list\">\n          ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 打开实例目录</button>\n      <button class=\"btn btn-primary btn-sm\" data-modal-close>关闭</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 打开游戏目录</button>\n        </div>\n      </div>\n\n      <div class=\"settings-grid\">\n        <div class=\"settings-col\">\n        <section class=\"settings-card\">\n          <div class=\"settings-card-head\">\n            <div class=\"settings-icon\">",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 导入</button>\n              </div>\n              <div class=\"field-hint\" data-update-status>没有配置更新源时，也可以把 update.json 放到 TYCL.exe 同目录，或直接导入 .zip/.asar 更新包。</div>\n            </div>\n            <div class=\"notice\">\n              ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 导入</button>\n            </div>\n            <div class=\"skin-library-grid\" data-skin-library>",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": " 导入</button></div></div>\n        <div class=\"manager-list\">\n          ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 导入更新包",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 导入更新包</button>\n          </div>\n        </div>\n        <div data-update-progress></div>\n      </div>\n      <div class=\"feedback-card\">\n        <div class=\"feedback-icon\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 导入皮肤</button>\n        <button class=\"btn btn-primary btn-sm\" data-apply style=\"flex:1\">",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": " 的加载器列表…</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 翻译成中文",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 翻译成中文</button>\n          <button class=\"btn btn-secondary btn-sm\" data-news-original>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 分",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 分钟",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 分钟前",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 复制</button>\n      </div>\n      <div class=\"notice\" style=\"margin-top:16px\">\n        ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 复制</button>\n      <button class=\"btn btn-secondary btn-sm\" data-open-folder>打开日志文件夹</button>\n      <button class=\"btn btn-primary btn-sm\" data-modal-close>关闭</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 复制报告</button>\n      <button class=\"btn btn-secondary btn-sm\" data-diag-folder>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 复制邮箱</button>\n              </div>\n            </div>\n            <div class=\"about-meta\">\n              <span>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 复制邮箱</button>\n      </div>\n    ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个 Java",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个 Mod · ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个 Mod 冲突，请在 Mods 页查看。</span></div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个 Mod 更新",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个 Mod 已就绪</span></div>\n        </div>\n        <div class=\"hero-float-card two\">\n          <div class=\"hero-float-avatar\" data-hero-avatar></div>\n          <div><strong>",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 个 Mod</span>\n                              <span class=\"dot\"></span>\n                              <span>",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 个 Mod</span>\n                          <span>·</span>\n                          <span>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 个 Mod</span>\n          </div>\n          <span class=\"badge ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个版本</span>\n        </div>\n        <div class=\"version-table\" data-version-list></div>\n        <div data-load-more-wrap></div>\n      </div>\n    ",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 个版本可选",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个备份</span><div><button class=\"btn btn-secondary btn-sm\" data-manager-backup>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个冲突",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个冲突</span><div><button class=\"btn btn-secondary btn-sm\" data-mod-check>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个存档 · ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个错误 · ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个结果",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": " 个实例</span>\n            <button class=\"hero-meta-link\" data-all-versions-link>全部版本 ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 个提醒",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 个文件下载失败，请查看日志",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": " 个游戏实例</strong><span>",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 更新公告</button>\n            </div>\n            <div class=\"field\">\n              <div class=\"field-label\">更新通道</div>\n              <select class=\"input input-sm\" data-update-channel>\n                <option value=\"stable\" ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 更新公告</button>\n      <span class=\"foot-note\">用 Minecraft 的方式，慢慢来。</span>\n      <button class=\"btn btn-primary btn-sm\" data-modal-close>好的</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 关注</span>\n            <span>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 官网新闻</button>\n        </div>\n      </div>\n      <div class=\"news-shell\">\n        <div class=\"news-loading\" data-news-loading>\n          <div class=\"news-skeleton hero\"></div>\n          <div class=\"news-skeleton-grid\">\n            ",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": " 管理</button>\n            </div>\n            <div class=\"divider\"></div>\n            <div class=\"setting-row\">\n              <div class=\"setting-copy\">\n                <strong>皮肤与角色外观</strong>\n                <span>导入新的皮肤，调整经典或纤细模型。</span>\n              </div>\n              <button class=\"btn btn-soft btn-sm\" data-goto-skins>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 汉化介绍",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 机器翻译，仅供参考 · 点击「显示原文」恢复官方内容</div>\n    ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 机器翻译，仅供参考 · 点击「原文」恢复官方描述</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 基于开源组件构建</span>\n      </div>\n      <div class=\"feedback-card\" style=\"margin-top:16px\">\n        <div class=\"feedback-icon\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 检查",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 检查</button>\n                <button class=\"btn btn-secondary btn-sm\" data-import-update>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 检查更新",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 检查更新</button>\n            <button class=\"btn btn-primary btn-sm\" data-import-update>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 检查更新</button></div></div>\n        ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 检查结果</div>\n        <div class=\"diag-checks\">\n          ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 截图目录</button></div>\n        <div class=\"manager-screens\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 剧情 · RPG</span>\n                <h4>Prominence II: Hasturian Era</h4>\n                <p>在虚空入侵之前，写下属于你的终章。</p>\n                <div class=\"featured-pack-meta\">\n                  <span>1.20.1</span>\n                  <span>·</span>\n                  <span>Fabric</span>\n                  <span>·</span>\n                  <span>",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 款</span></h3>\n              <button class=\"section-link\" data-upload-link>",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": " 浏览</button>\n              </div>\n              <div class=\"java-list\" data-java-list>\n                <div class=\"loading-block\" style=\"padding:12px\"><span class=\"spinner\"></span> 正在检测 Java…</div>\n              </div>\n              <div class=\"field-hint\">游戏启动时会优先使用这里的 Java。未指定时按版本自动匹配；缺少对应版本时，TYCL 会在首次启动前自动下载 Microsoft OpenJDK（Windows x64）。</div>\n            </div>\n          </div>\n        </section>\n        <section class=\"settings-card\">\n          <div class=\"settings-card-head\">\n            <div class=\"settings-icon\">",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 浏览</button></div></label>\n          <button class=\"btn btn-primary btn-sm\" data-manager-save>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 浏览整合包</button></div>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 吗？",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 吗？未保存的进度可能会丢失。",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 皮肤工坊</button>\n            </div>\n            <div class=\"divider\"></div>\n            <div class=\"field\">\n              <div class=\"field-label\">Microsoft Client ID <span class=\"field-hint\" style=\"font-weight:400\">高级</span></div>\n              <input class=\"input input-sm\" data-ms-client-id value=\"",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 皮肤工坊</button>\n      <span class=\"foot-note\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 前往版本库</button>\n      </div>\n    ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 日 · ",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 如果加载器没有列出可用版本，可以回到原版安装或更换游戏版本。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 刷新",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": " 刷新</button>\n          <button class=\"btn btn-dark btn-sm\" data-news-site>",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": " 刷新</button>\n          <button class=\"btn btn-primary\" data-download>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 提供，仅供参考",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 天前",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 条",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": " 退出正版账户</button>\n            </div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 万",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 下载</span>\n                </div>\n              </div>\n            </button>\n          </div>\n\n          <div class=\"tip-card\">\n            <div class=\"tip-card-head\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 下载并安装</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 下载游戏</button>\n                  </div>",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 下载游戏</button>\n        </div>\n      </div>\n\n      <div class=\"page-toolbar\">\n        <div class=\"tabs\">\n          <button class=\"tab ",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 下载游戏</button><button class=\"btn btn-secondary btn-sm\" data-empty-packs>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 显示原文",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 项检查 · ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 小时",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 小时 ",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 小时前",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 小提示</div>\n            <p>安装 Mod 前，先确认实例的加载器与游戏版本。TYCL 会自动筛选兼容的版本，并补齐必需的前置模组。</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " 新闻内容来自 Minecraft 官方启动器内容接口，保持官方英文原文。配图版权归 Mojang Studios 所有。</div>\n    ",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": " 选择</button>\n                <button class=\"btn btn-secondary btn-sm\" data-game-dir-open title=\"打开目录\">",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 已安装 <span class=\"tab-count\">",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 已加入下载队列",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 已应用",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": " 已准备好</strong>\n          <span>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 亿",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 应用皮肤",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": " 应用皮肤</button>\n      </div>\n      <div class=\"upload-zone\" data-dropzone>\n        <div class=\"upload-zone-icon\">",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": " 与对应加载器。整合包内包含的 Mod 会一并下载。</span>\n            </div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 月 ",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": " 阅读原文</button>\n        </div>\n      </div>\n      <h2 class=\"news-detail-title\" data-news-title>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 在 Modrinth 查看</button>\n      <span class=\"foot-note\"></span>\n      <button class=\"btn btn-secondary btn-sm\" data-modal-close>关闭</button>\n      <button class=\"btn btn-primary btn-sm\" data-install-resource ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 张截图</small></div>\n          <div class=\"manager-stat\"><span>内存</span><strong>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 张截图</span><button class=\"btn btn-secondary btn-sm\" data-manager-folder>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 整合包</button>\n          <button class=\"tab ",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": " 制作者 A3Y8</span>\n        <span>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 重试</button>\n        <button class=\"btn btn-ghost btn-sm\" data-browse-versions>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 重试</button></div>\n        </div></div>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": " 重试翻译",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 重试下载",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 重新登录</button>\n              <button class=\"btn btn-ghost btn-sm\" data-ms-logout>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 重新加载</button>\n      </div>",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": " 重新检测</button></div>\n              <div class=\"path-field\">\n                <input class=\"input input-sm\" readonly value=\"",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " 最近崩溃报告</div>\n               <div class=\"diag-crash-file\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " 最近启动日志</summary><pre class=\"diag-pre\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " BMCLAPI 镜像</strong>\n                  <span>国内访问更快 · 推荐</span>\n                </button>\n                <button class=\"source-option ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " Forge 安装器会在下载完成后自动运行。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " GB 内存</span>\n          </div>\n          <span class=\"badge badge-accent\" data-version-badge style=\"margin-left:auto\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " GB</span></div>\n              <div class=\"field-hint\">建议 4–8 GB。大型整合包可以适当增加。</div>\n            </div>\n            <div class=\"setting-row\">\n              <div class=\"setting-copy\">\n                <strong>版本隔离</strong>\n                <span>每个实例拥有独立的 mods、存档、资源包和日志，互不污染。</span>\n              </div>\n              <span class=\"badge badge-accent\">默认开启</span>\n            </div>\n            <div class=\"divider\"></div>\n            <div class=\"field\">\n              <div class=\"field-label\">Java 路径 <button class=\"section-link\" data-java-refresh>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": " GB</strong><small>实例独立设置</small></div>\n        </div>\n        <div class=\"manager-actions\">\n          <button class=\"manager-action\" data-manager-backup>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " GB</strong><small>系统共 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " MINECRAFT · JAVA EDITION</div>\n          <h2>世界，就在<br><span class=\"accent-serif\">下一次点击</span></h2>\n          <p>从熟悉的方块开始，去往没有边界的远方。TYCL 已经为你准备好一切，只差一次出发。</p>\n          <div class=\"hero-launch\">\n            ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": " Minecraft 官方</span>\n      </div>\n      <div class=\"news-detail-toolbar\">\n        <div>\n          <strong>看不懂英文？</strong>\n          <span>可以先把标题和简介翻译成中文。</span>\n        </div>\n        <div class=\"news-detail-actions\">\n          <button class=\"btn btn-primary btn-sm news-translate\" data-news-translate>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " Minecraft 官网</button>\n        <button class=\"about-link\" data-link=\"https://fabricmc.net/\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " Modrinth 资源</button>\n        <button class=\"about-link\" data-link=\"https://www.minecraft.net/\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": " Mojang 官方</strong>\n                  <span>直连官方服务器</span>\n                </button>\n              </div>\n            </div>\n            <div class=\"setting-row\">\n              <div class=\"setting-copy\">\n                <strong>在版本库中显示快照</strong>\n                <span>默认只展示稳定版本，开启后可安装预览版。</span>\n              </div>\n              <button class=\"switch ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "--- 崩溃报告 ---",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "--- 最近日志 ---",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "，可在更新公告中下载或导入更新包。",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "，需要 64×64 或 64×32",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "……它眨了一下眼。",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "…</span>\n        <span style=\"color:var(--faint)\">内容与下载来自 Modrinth</span>\n      </div>\n\n      <div class=\"resource-grid\" data-grid>",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "。安装后 TYCL 会自动重启，旧版本会保留为 app.asar.bak。</span>\n        </div>\n        <button class=\"btn btn-primary btn-sm\" data-install-update>安装并重启</button>\n      </div>\n    ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "。安装后 TYCL 会自动重启，是否继续？",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\" aria-label=\"更多操作\">",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "\" autocomplete=\"off\" spellcheck=\"false\">\n              <div class=\"field-hint\">3–16 位，仅支持英文字母、数字与下划线。离线 UUID 会根据用户名在本地生成。</div>\n              <div class=\"field-hint\" data-name-error style=\"color:#c43a48\"></div>\n            </div>\n            <div class=\"notice\" style=\"margin-top:14px\">\n              ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\" data-memory>\n              <div class=\"memory-scale\"><span>1 GB</span><span>系统内存 ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\" data-model=\"classic\">\n            <span><strong>经典</strong><br><span style=\"font-size:9.5px\">4px 手臂</span></span>\n            ",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "\" data-model=\"slim\">\n            <span><strong>纤细</strong><br><span style=\"font-size:9.5px\">3px 手臂</span></span>\n            ",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "\" data-snapshots aria-label=\"显示快照\"></button>\n            </div>\n            <div class=\"notice\">\n              ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\" placeholder=\"留空使用全局 Java\"><button class=\"btn btn-secondary btn-sm\" data-manager-java-browse>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\" spellcheck=\"false\">\n              <div class=\"field-hint\">用于 Microsoft 登录的公共客户端 ID。默认值适用于大多数用户，登录异常时再修改。</div>\n            </div>\n          </div>\n        </section>\n        </div>\n        <section class=\"settings-card full\">\n          <div class=\"settings-card-head\">\n            <div class=\"settings-icon\">",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "\" title=\"查看并安装\">",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "\" title=\"继续任务\">",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "\" title=\"启动\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "\" title=\"启动游戏\">",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "\" title=\"取消\">",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "\" title=\"取消任务\">",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "\" title=\"暂停任务\">",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "\">\n          </div>\n          <div class=\"field\">\n            <div class=\"field-label\">下载源</div>\n            <input class=\"input\" value=\"",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\"></label>\n          <label class=\"field\"><span class=\"field-label\">独立内存（MB）</span><input class=\"input\" type=\"number\" min=\"1024\" max=\"65536\" step=\"512\" data-manager-memory value=\"",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\"><span class=\"field-hint\">留空或 0 会使用全局内存设置。</span></label>\n          <label class=\"field\"><span class=\"field-label\">独立 Java 路径</span><div class=\"path-field\"><input class=\"input\" data-manager-java value=\"",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\">备份</button></div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\">恢复</button></div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\">快照</button>\n            <button data-filter-type=\"all\" class=\"",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "\">全部</button>\n          </div>\n          <div class=\"toolbar-spacer\"></div>\n          <span class=\"badge\">共 ",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "\">全部</button>\n          </div>\n        </div>\n        <div class=\"version-loading\">\n          ",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "\">删除</button>\n            </div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "\">正式版</button>\n            <button data-filter-type=\"snapshot\" class=\"",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "[TYCL] 演示模式日志",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "[TYCL] 演示模式诊断日志\n[game] Setting user: Steve\n[game] LWJGL Version: 3.3.3",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "」的存档、Mod 与配置。共享的游戏版本文件不会受到影响。此操作不可撤销。",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "【演示汉化】",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "</button>\n              </div>\n              <div class=\"field-hint\">游戏版本、资源与实例都存放在这里。切换目录后，游戏库会显示对应目录中的实例。</div>\n            </div>\n            <div class=\"field\">\n              <div class=\"field-label\">分配内存 <span class=\"memory-value\" data-memory-value>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "</button>\n            <button class=\"skin-control-btn\" data-spin title=\"暂停 / 继续旋转\">",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "</button>\n        </div>\n      </div>\n\n      <div class=\"resource-toolbar\">\n        <div class=\"select-wrap\">\n          <select class=\"select select-sm\" data-game-version style=\"min-width:132px\">\n            <option value=\"\">全部游戏版本</option>\n            ",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "</button>\n        </div>\n      </div>\n\n      <div class=\"skin-layout\">\n        <div class=\"skin-stage-card\">\n          <div class=\"skin-stage-top\">\n            <span class=\"status-pill\"><i></i> 实时预览</span>\n            <span class=\"badge badge-outline\" style=\"background:rgba(255,255,255,.55)\">3D VIEW</span>\n          </div>\n          <div class=\"skin-figure-wrap\" data-skin-stage></div>\n          <div class=\"skin-stage-hint\">拖动旋转 · 双击复位</div>\n          <div class=\"skin-controls\">\n            <button class=\"skin-control-btn\" data-reset title=\"复位视角\">",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "</button><span>已显示 ",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "</div>\n                    <strong>还没有游戏实例</strong>\n                    <p>下载一个 Minecraft 版本，开始你的第一段旅程。</p>\n                    <button class=\"btn btn-primary btn-sm\" data-empty-download>",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "</div>\n              <div class=\"ms-login-copy\">\n                <strong>使用 Microsoft 账户登录</strong>\n                <span>加入正版服务器，自动使用你的官方皮肤与披风。</span>\n              </div>\n              <button class=\"btn btn-primary btn-sm\" data-ms-login>登录</button>\n            </div>\n            <div class=\"account-or\"><span>或者继续使用离线账户</span></div>\n            <div class=\"field\">\n              <div class=\"field-label\">离线游戏内用户名</div>\n              <input class=\"input\" data-player-name maxlength=\"16\" value=\"",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</div>\n            <div><h3>更新与公告</h3><p>无需重下整个启动器</p></div>\n          </div>\n          <div class=\"settings-card-body\">\n            <div class=\"setting-row\">\n              <div class=\"setting-copy\">\n                <strong>当前版本 v",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "</div>\n            <div><h3>关于 TYCL</h3><p>制作者、反馈与开源信息</p></div>\n          </div>\n          <div class=\"settings-card-body\">\n            <div class=\"about-box\">\n              <div class=\"about-logo\"><img src=\"./assets/icon-128.png\" alt=\"TYCL\"></div>\n              <div style=\"flex:1\">\n                <div class=\"about-title\">TYCL <span>LAUNCHER</span></div>\n                <p class=\"about-desc\">简洁、安静、专注的 Minecraft 启动器。游戏、Mod、整合包、正版登录与皮肤，在一个地方恰到好处地相遇。</p>\n                <div class=\"creator-line\">制作者 <strong>A3Y8</strong> · 反馈 BUG：<button class=\"inline-link\" data-feedback>tianyi76@yeah.net</button></div>\n              </div>\n              <div style=\"display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end\">\n                <button class=\"btn btn-secondary btn-sm\" data-about>更多信息 ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "</div>\n            <div><h3>外观</h3><p>选择你习惯的明暗与强调色</p></div>\n          </div>\n          <div class=\"settings-card-body\">\n            <div class=\"field\">\n              <div class=\"field-label\">主题</div>\n              <div class=\"theme-grid\" data-theme-grid>\n                ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "</div>\n            <div><h3>下载</h3><p>选择游戏文件的下载来源</p></div>\n          </div>\n          <div class=\"settings-card-body\">\n            <div class=\"field\">\n              <div class=\"field-label\">下载源 <button class=\"section-link\" data-speedtest>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "</div>\n            <div><h3>游戏与性能</h3><p>内存分配与 Java 运行环境</p></div>\n          </div>\n          <div class=\"settings-card-body\">\n            <div class=\"field\">\n              <div class=\"field-label\">游戏目录</div>\n              <div class=\"path-field\">\n                <input class=\"input input-sm\" readonly value=\"",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "</div>\n            <div><h3>账户</h3><p>Microsoft 正版或本地离线账户</p></div>\n          </div>\n          <div class=\"settings-card-body\">\n            <div class=\"setting-row\">\n              <div style=\"display:flex;align-items:center;gap:11px;min-width:0\">\n                <span class=\"player-avatar\" data-settings-avatar style=\"width:42px;height:42px;flex-basis:42px\"></span>\n                <div class=\"setting-copy\">\n                  <strong style=\"font-size:13px\">",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "</div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"dashboard-grid\">\n        <div class=\"panel\">\n          <div class=\"panel-head\">\n            <div>\n              <h3>最近游玩</h3>\n              <p>从上次停下的地方继续</p>\n            </div>\n            <button class=\"section-link\" data-all-versions>全部实例 ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "</div>\n          <div class=\"skin-library-card\">\n            <div class=\"section-head\" style=\"margin-bottom:10px\">\n              <h3 class=\"section-title\">皮肤库 <span class=\"muted\">",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "</div>\n          <div class=\"spinner\" style=\"width:22px;height:22px\"></div>\n          <strong>请在登录窗口中完成 Microsoft 登录</strong>\n          <p>登录窗口已经打开。完成账户验证后会自动返回 TYCL，请稍候…</p>\n          <div class=\"notice\" style=\"width:100%;text-align:left\">\n            ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</div>\n        <div style=\"flex:1\">\n          <strong>发现问题？给 A3Y8 写封邮件</strong>\n          <span>BUG 反馈与建议：<button class=\"inline-link\" data-mail>tianyi76@yeah.net</button></span>\n        </div>\n        <button class=\"btn btn-ghost btn-sm\" data-copy-mail>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</div>\n        <div style=\"flex:1\">\n          <strong>拖入 PNG 皮肤文件</strong>\n          <span>64×64 或 64×32 · 支持经典与纤细模型</span>\n        </div>\n      </div>\n      <div class=\"notice\" style=\"margin-top:12px\">\n        ",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "</div>\n        <div style=\"flex:1\">\n          <strong>正版皮肤，回来了。</strong>\n          <span>TYCL 1.2.1 自动读取 Microsoft 官方皮肤，头像和 3D 预览都会同步显示。</span>\n        </div>\n        <span class=\"badge badge-accent\">LATEST</span>\n      </div>\n      <div class=\"release-list\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</div>\n        <div style=\"flex:1\">\n          <strong>BUG 反馈</strong>\n          <span>遇到问题请发送邮件至 <button class=\"inline-link\" data-feedback>tianyi76@yeah.net</button></span>\n        </div>\n        <button class=\"btn btn-ghost btn-sm\" data-copy-feedback>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</div>\n        <span class=\"news-read strong\">查看简介 ",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "</div>\n      <div class=\"update-actions-card\">\n        <div class=\"update-actions-head\">\n          <div>\n            <strong>软件更新</strong>\n            <span data-update-status>可导入本地更新包，或在设置中配置更新源。</span>\n          </div>\n          <div style=\"display:flex;gap:7px;flex-wrap:wrap\">\n            <button class=\"btn btn-secondary btn-sm\" data-check-update>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</small></div>\n          <div class=\"diag-cell\"><span>内存</span><strong>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</small></div>\n          <div class=\"diag-cell\"><span>实例</span><strong>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</small></div>\n          <div class=\"manager-stat\"><span>存档</span><strong>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</span>\n                <strong>发现 Mod</strong>\n                <span>来自 Modrinth 社区</span>\n              </button>\n              <button class=\"quick-action\" data-quick=\"packs\">\n                <span class=\"quick-action-icon\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "</span>\n                <strong>更换皮肤</strong>\n                <span>导入并实时预览</span>\n              </button>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"home-side\">\n          <div class=\"panel\" style=\"padding:15px\">\n            <div class=\"section-head\" style=\"margin-bottom:10px\">\n              <h3 class=\"section-title\">编辑推荐 <span class=\"muted\">WEEKLY</span></h3>\n              <button class=\"section-link\" data-all-packs>更多 ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "</span>\n                <strong>下载游戏</strong>\n                <span>原版 · Fabric · Forge</span>\n              </button>\n              <button class=\"quick-action\" data-quick=\"mods\">\n                <span class=\"quick-action-icon\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "</span>\n                <strong>整合包</strong>\n                <span>一键安装完整世界</span>\n              </button>\n              <button class=\"quick-action\" data-quick=\"skin\">\n                <span class=\"quick-action-icon\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "</span>\n            </div>\n            <button class=\"btn btn-primary btn-sm\" data-download-update>下载更新</button>\n          </div>\n        ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</span>\n        </div>\n        <div class=\"install-summary\">\n          <span>正在安装 <strong>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</span>\n        </div>\n        <div data-loader-section>\n          <div class=\"loading-block\" style=\"padding:24px\"><span class=\"spinner\"></span> 正在获取加载器版本…</div>\n        </div>\n        <div class=\"install-form-row\">\n          <div class=\"field\">\n            <div class=\"field-label\">实例名称 <span class=\"field-hint\" style=\"font-weight:400\">可选</span></div>\n            <input class=\"input\" data-instance-name maxlength=\"64\" value=\"",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</span><button class=\"btn btn-secondary btn-sm\" data-news-retry style=\"margin-top:12px\">重新加载</button></div>",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "</span><button class=\"btn btn-secondary btn-sm\" data-retry style=\"margin-top:10px\">重新尝试</button></div></div>",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "</span><button class=\"btn btn-secondary btn-sm\" data-retry-page style=\"margin-top:10px\">重新加载</button></div></div>",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "</span><strong>本次更新</strong></div>\n          <span class=\"release-date\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</strong>\n            <span>Java 版 · 版本隔离 · 独立 mods / 存档 · 默认使用 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</strong>\n          <span>来源：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</strong></span>\n          <span>Java 路径 <strong>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "</strong><span>最后修改 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<br>请检查网络，或在设置中切换下载源。</span></div>\n          <div style=\"margin-top:12px\"><button class=\"btn btn-secondary btn-sm\" data-retry>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "<br>请检查网络后重试，或稍后再来。</span></div>\n        <button class=\"btn btn-secondary btn-sm\" data-retry>",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "<br>请检查网络连接，或在设置中切换下载源后重试。</span></div>\n      <div style=\"margin-top:14px;display:flex;gap:8px\">\n        <button class=\"btn btn-secondary btn-sm\" data-retry-versions>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-primary btn-sm\" data-egg-gold>收下金苹果</button>\n      <button class=\"btn btn-secondary btn-sm\" data-modal-close>下次吧</button>",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-primary btn-sm\" data-save>保存离线角色</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-secondary btn-sm\" data-cancel-login>取消登录</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-secondary btn-sm\" data-close>关闭</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-secondary btn-sm\" data-egg-brave>盯着它</button>\n        <button class=\"btn btn-primary btn-sm\" data-modal-close>假装没看见</button>",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-secondary btn-sm\" data-egg-fire>放个烟花</button>\n      <button class=\"btn btn-primary btn-sm\" data-modal-close>溜了</button>",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-secondary btn-sm\" data-load-more>加载更多</button>",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-secondary btn-sm\" data-modal-close>关闭</button>",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<button class=\"btn btn-secondary btn-sm\" data-modal-close>稍后</button>\n      <button class=\"btn btn-ghost btn-sm\" data-open-update-notes>更新公告</button>\n      <button class=\"btn btn-primary btn-sm\" data-update-now>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"app-boot\"><div class=\"app-boot-logo\"><img src=\"./assets/icon-128.png\" alt=\"\"></div><span>正在准备你的世界…</span></div>",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "<div class=\"field\" style=\"margin-bottom:13px\">\n              <div class=\"field-label\">安装到实例</div>\n              ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"hero-select\">\n                    <div class=\"select-wrap\">\n                      <select class=\"select\" data-hero-version aria-label=\"选择实例\">\n                        ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "<div class=\"load-more-row\"><button class=\"btn btn-secondary btn-sm\" data-load-more>加载更多版本（",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "<div class=\"loading-block\" style=\"padding:12px\"><span class=\"spinner\"></span> 正在检测 Java…</div>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "<div class=\"loading-block\" style=\"padding:24px\"><span class=\"spinner\"></span> 正在获取 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"loading-block\"><span class=\"spinner\"></span> 读取日志中…</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"loading-block\"><span class=\"spinner\"></span> 读取实例文件…</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"loading-block\"><span class=\"spinner\"></span> 正在获取 Minecraft 版本列表…</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"loading-block\"><span class=\"spinner\"></span> 正在检查 Java、实例文件与最近日志…</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"loading-block\"><span class=\"spinner\"></span> 正在连接 Modrinth…</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"manager-empty\">还没有备份</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"manager-empty\">还没有存档</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"manager-empty\">还没有截图</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"manager-empty\">mods 目录为空</div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<div class=\"news-more\"><button class=\"btn btn-secondary btn-sm\" data-news-more>加载更多 ",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "<input class=\"input input-sm\" placeholder=\"搜索版本号，例如 1.20.1\" data-search value=\"",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "<input class=\"input\" value=\"无需加载器\" disabled>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<optgroup label=\"快照 / 旧版本\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<optgroup label=\"正式版\">",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<option value=\"\">暂无可用版本</option>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<small>个</small></div>\n            <div class=\"stat-label\">已安装 Mod</div>\n          </div>\n        </div>\n        <div class=\"stat-card\">\n          <div class=\"stat-icon\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "<small>个</small></div>\n            <div class=\"stat-label\">已安装实例</div>\n          </div>\n        </div>\n        <div class=\"stat-card\">\n          <div class=\"stat-icon\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "<small>小时</small></div>\n            <div class=\"stat-label\">累计游戏时长</div>\n          </div>\n        </div>\n        <div class=\"stat-card\">\n          <div class=\"stat-icon\">",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "<span class=\"account-verified\" style=\"margin-left:4px\">正版</span>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "<span class=\"account-verified\">正版</span>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"badge badge-accent badge-dot\">运行中</span>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "<span class=\"badge badge-accent\">已选择</span>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "<span class=\"badge badge-accent\">运行中</span>",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "<span class=\"badge badge-accent\">Microsoft 正版</span>",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "<span class=\"badge\">最新</span>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "<span class=\"foot-note\">游戏文件会安装到当前游戏目录</span>\n      <button class=\"btn btn-secondary btn-sm\" data-modal-close>取消</button>\n      <button class=\"btn btn-primary btn-sm\" data-install disabled>开始安装</button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"news-read\">查看简介 ",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:11px;height:11px\"></span> 测速中",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:12px;height:12px\"></span> 备份中",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:12px;height:12px\"></span> 翻译中",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:12px;height:12px\"></span> 检查中",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:12px;height:12px\"></span> 刷新中",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:12px;height:12px\"></span> 正在下载",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px;border-color:rgba(255,255,255,.3);border-top-color:#fff\"></span> 启动中",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px\"></span> 处理中",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px\"></span> 翻译中",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px\"></span> 加载中",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px\"></span> 检查中",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px\"></span> 下载中",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px\"></span> 正在打开",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span class=\"spinner\" style=\"width:13px;height:13px\"></span> 正在准备",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span data-update-prompt-status>下载完成后 TYCL 会自动退出、替换应用资源并重新打开。</span></div>\n    ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>当前版本已经是最新版本。</span></div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>读取失败：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>还没有可用的游戏实例。请先在游戏库中安装一个对应的游戏版本。</span></div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>还没有配置更新源。可以在“设置 → 更新与公告”填写 update.json 地址，或把 update.json 放在 TYCL.exe 同目录，也可以直接导入本地更新包。</span></div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>检测到 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>检测失败：",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "<span>没有检测到 Java。请安装 Java 21 或手动选择 java.exe。</span></div>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "<span>没有找到与当前实例兼容的版本。</span></div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>每个实例拥有独立的存档、Mod 与设置。删除实例不会删除共享的游戏资源，重新安装会更快。</span></div>",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "<span>启动游戏时会使用该 Microsoft 账户完成 Xbox Live 验证。正版服务器、官方皮肤与披风会正常工作。</span></div>\n            <div class=\"account-actions\">\n              <button class=\"btn btn-secondary btn-sm\" data-ms-login>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>请确认网络可以访问 login.live.com 与 xboxlive.com。也可以尝试在设置中更换 Microsoft Client ID。</span></div>\n        </div>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>无法获取 Minecraft 版本列表：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>无法获取版本列表：",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "<span>无法获取项目详情：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>无法连接 Modrinth：",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "<span>诊断失败：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>诊断只读取本机文件，不会上传日志。修复建议仅供参考，修改 Mod 或 Java 前建议先备份实例。</span></div>\n      ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<span>Mod 更新来自 Modrinth 的文件哈希匹配；未收录的 Mod 不会显示更新。</span></div>\n      ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<strong>导出实例</strong><span>生成可分享的 .zip 实例包</span></button>\n          <button class=\"manager-action\" data-manager-import>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<strong>导入实例</strong><span>从 TYCL 实例包恢复</span></button>\n          <button class=\"manager-action\" data-manager-repair>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<strong>更新整合包</strong><span>同步整合包的新版本文件</span></button>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<strong>立即备份</strong><span>保存当前实例的 Mod、存档和配置</span></button>\n          <button class=\"manager-action\" data-manager-export>",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<strong>没有找到相关新闻</strong><span>换一个关键词，或切换分类看看。</span></div>",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "<strong>下载队列是空的</strong><span>安装游戏、Mod 或整合包后，任务会显示在这里。</span></div>",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "<strong>新闻加载失败</strong><span>",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "<strong>页面加载失败</strong><span>",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "<strong>一键修复</strong><span>补全缺失的游戏版本和依赖</span></button>\n          ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "<strong>TYCL 启动失败</strong><span>",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": ">测试版 Beta</option>\n              </select>\n              <div class=\"field-hint\">测试版会读取同目录下的 beta-update.json；没有配置时回退到稳定版地址。</div>\n            </div>\n            <div class=\"field\">\n              <div class=\"field-label\">更新源地址 <span class=\"field-hint\" style=\"font-weight:400\">可选</span></div>\n              <div class=\"path-field\">\n                <input class=\"input input-sm\" data-update-feed value=\"",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": ">稳定版 Stable</option>\n                <option value=\"beta\" ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "0 分钟",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "1.21.4 · 原版",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "100+ 现代枪械随机配发，从经典步枪到科幻武器，每局都有全新的战术体验。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "3D 皮肤预览与本地皮肤库",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安全登录 · TYCL 不会接触你的密码",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安装 ",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "安装 Minecraft",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安装 Minecraft ",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "安装 Mod",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安装 Mod · ",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "安装、Mod、整合包与启动任务",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "安装本地更新",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "安装并重启",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "安装更新并重启",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安装了必需的前置 Mod 时，TYCL 会自动下载它们。安装完成后重新启动游戏即可生效。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安装模组加载器",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "安装失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安装游戏",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "安装游戏环境",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "安装整合包",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "安装整合包 · ",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "把标题和介绍翻译成中文",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "版本",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "版本不匹配",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "版本隔离默认开启：每个实例独立 mods、存档、资源包和日志。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "版本文件完整",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "包含最新修复与改进。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "薄荷",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "薄荷苏打",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "保存失败",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "北境雪原的静默行者",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "备份",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "备份失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "备份已恢复",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "本次游玩 ",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "本地导入",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "本地导入的皮肤",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "本地更新包",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "本地更新包已就绪",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "标题栏图标点击修复",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "不可用",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "部分段落翻译失败，已保留原文",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "部分内容保留原文",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "操作失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "测速失败",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "测速完成",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "查看启动日志",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "尝试更短的关键词，或更换游戏版本 / 加载器筛选。",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "处理中",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "传奇",
+    "files": [
+      "src\\js\\news-mock.js",
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "创建游戏实例",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "从黄昏出发的冒险者",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "从未启动",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "存储",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "存档 / 截图",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "存档已备份",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "存档与截图集中管理，单个存档可独立备份。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "打开更新公告即可安装",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "打开实例目录",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "打开右上角更新公告即可安装。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "代码角落里的一点甜",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "当前版本 v",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "当前实例与这个 Mod 的加载器或游戏版本不匹配，请选择其他实例。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "当前使用离线账户",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "当前为 ",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "导出失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "导入",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "导入皮肤失败",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "导入失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "地牢",
+    "files": [
+      "src\\js\\news-mock.js",
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "地牢 II",
+    "files": [
+      "src\\js\\news-mock.js"
+    ]
+  },
+  {
+    "text": "地形",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "登录",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "登录 Microsoft",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "点击「原文」即可恢复官方英文介绍，翻译内容不会修改本地文件。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "顶部栏新增下载队列和红点数量提示，可查看安装、Mod、整合包进度。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "读取日志失败：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "多人",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "发生错误",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "发现 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "发现新版本 v",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "发现需要处理的问题",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "翻译返回结果不完整",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "翻译结果由 Google / MyMemory 提供，并针对 Fabric、Loader、原版等 Minecraft 术语做了修正。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "翻译失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "反馈邮箱已复制",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "复制失败",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "复制实例路径",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "该版本暂无此加载器",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "概览",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "刚刚",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "跟随系统",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "更新包已准备就绪",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "更新公告",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新检查 · 代理网络修复",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新检查和更新包下载改用 Electron 网络栈，自动跟随系统代理。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新清单没有 downloadUrl",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新清单仍使用 no-cache 请求，避免拿到旧版本信息。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新设置新增稳定版 / 测试版通道。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新失败",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "更新失败：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新完成后第一次进入会自动展示本次更新内容。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新已下载",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新源",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新源没有提供下载地址",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "更新源已保存",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "更新源已配置，可以检查更新。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "共 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "构建启动参数",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "关于 TYCL",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "官方下载源",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "管理",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "还没有游戏记录",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "汉化介绍",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "汉化失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "琥珀",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "欢迎回来，",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "环境看起来正常",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "换个筛选条件或关键词试试。",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "恢复失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "恢复实例备份",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "会导入为一个新实例，不会覆盖当前实例。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "会在后台同步新版文件",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "饥饿值已恢复。",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "机器翻译",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "机制",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "基岩版",
+    "files": [
+      "src\\js\\news-mock.js",
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "加载器列表获取失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "加载失败",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "加载失败，可安装原版",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "兼容",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "兼容 OptiFine 光影包的高性能光影加载器，让世界拥有更真实的光线与色彩。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "减少冗余动画并适配系统“减少动态效果”设置。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "检测到 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "检查 Java",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "检查更新",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "检查更新失败：",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "检查前置依赖",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "检查失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "检查运行环境与实例文件",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "简单、安静、刚刚好的 Minecraft 启动器",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "简洁白色界面与主题切换",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "建议更新到最新版本以获得修复与新功能。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "建议检查",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "建筑",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "将宝可梦带入 Minecraft 的开源 Mod，探索、捕捉、对战与培育你的伙伴。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "将删除「",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "交通",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "角色扮演",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "解析 Mod 文件",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "解析版本信息",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "解析整合包",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "金苹果 +1",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "仅支持 PNG 文件",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "尽可能压榨每一帧的性能向整合包，适合低配设备与追求高帧率的玩家。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "进行中",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "禁用",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "经典",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "经典 · 大型整合包首选",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "经典的物品与配方查询工具，保持你的合成桌整洁有序，随时找到需要的配方。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "经济",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "开发中的快照版本",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "开始安装",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "开始更新 Mod",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "开始更新整合包",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "开始修复实例",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "开箱即用的更新源",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "开源许可",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "科技",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "可能只是显卡驱动",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "可用",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "苦力怕害羞地跑开了",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "快照",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "离线角色已更新",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "离线账户",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\flows.js",
+      "src\\js\\pages\\home.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "离线账户 · 就绪",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "离线账户无需登录，适合单人与局域网游戏",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "立即备份",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "路径已复制",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "冒险",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "没有检测到 Java",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "没有找到",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "没有找到版本",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "没有找到匹配的内容",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "玫瑰",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "每次启动自动检查更新，发现新版本时直接弹窗提示，可一键下载并安装。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "每个实例可单独设置 Java 路径与内存，不再共用全局配置。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "面向 Fabric 的原版增强整合包，兼顾内容与性能，适合与朋友一同开服。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "模型",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "模型</span>\n        </div>\n      </div>\n      <div class=\"skin-field\">\n        <div class=\"field-label\">手臂模型 <span class=\"field-hint\" style=\"font-weight:400\">保存后生效</span></div>\n        <div class=\"skin-model-toggle\">\n          <button class=\"skin-model-option ",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "魔法",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "默认皮肤",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "目录：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "暮色旅人",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "内存设置已保存",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "内置 TYCL 官方更新源，安装后会自动检查新版本，不再需要手动填写地址。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "你好像踩到了什么",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "你看见了什么",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "跑酷",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "皮肤保存在本机，仅由 TYCL 展示。离线账户无法在官方服务器同步皮肤。",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "皮肤尺寸不正确",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "皮肤工坊",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "皮肤文件不应超过 2 MB",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "皮肤已导入并应用",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "皮肤已应用",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "匹配",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "启动 ",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "启动安装失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "启动后的后台更新检查更安静，不会打断正在进行的操作。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "启动器头像、皮肤工坊和 3D 预览会显示正版皮肤，不再回退到本地默认皮肤。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "启动日志",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "启动失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "启动游戏",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\mock.js",
+      "src\\js\\pages\\home.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "启动诊断",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "启动诊断 · 崩溃分析",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "启用",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "前置",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "浅色",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "切换到浅色主题",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "切换到深色主题",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "切换目录失败",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "轻量",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "轻量 · 更新快 · 生态活跃",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "轻量、稳定、开箱即用的性能整合包，在保持原版风格的同时显著提升帧率。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "请查看启动日志",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "请更换目标实例或 Minecraft 版本。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "请检查网络后重试",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "请检查网络或 Java 设置后重试",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "请稍后重试",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "请使用“导入更新包”，或在更新清单中填写 downloadUrl",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "请先关闭当前游戏",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "请选择 Minecraft 皮肤 PNG 文件",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "取消",
+    "files": [
+      "src\\js\\components.js",
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "全部",
+    "files": [
+      "src\\js\\pages\\news.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "缺失的版本文件会在后台补全",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "确定要关闭 ",
+    "files": [
+      "src\\js\\pages\\home.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "确认",
+    "files": [
+      "src\\js\\components.js"
+    ]
+  },
+  {
+    "text": "确认操作",
+    "files": [
+      "src\\js\\components.js"
+    ]
+  },
+  {
+    "text": "任务",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "任务失败",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "任务已取消",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "任务已暂停",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "仍可安装原版游戏",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "日志已复制到剪贴板",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "删除",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "删除 Mod",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "删除失败",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "删除实例",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "删除游戏实例",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "上次游玩 ",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "尚未出发",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "尚未配置更新源（演示模式）",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "设置",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "设置页仍可修改或清空更新源，方便使用自己的服务器。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "深色",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "生成时间：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "生物",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "失败",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "实例：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "实例：无",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "实例备份-2026-10-25.zip",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "实例管理",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "实例管理 · 下载续传 · 稳定分发",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "实例设置已保存",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "实例已备份",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "实例已导出",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "实例已导入",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "实例已删除",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "实用",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "食物",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "使用原版方块重塑地形生成，新增数十种生物群系与壮观的自然景观。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "使用正版皮肤",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "视觉",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "收集、培育与对战宝可梦的完整整合体验，包含地图、任务与音乐。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "首页",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "舒服的原版增强体验：新的生物群系、地牢与冒险内容，为 1.20.1 打造。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "数据包",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "霜蓝",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "嘶——",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "松林与旧木屋的气息",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "搜索",
+    "files": [
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "搜索结果",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "所有文件",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "提高游戏资源下载并发数，并在任务中显示下载速度。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "挑战",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "停止游戏",
+    "files": [
+      "src\\js\\pages\\home.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "退出 Microsoft 账户",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "退出登录",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "退出后将切换为离线账户。保存在本机的登录令牌会被清除，需要重新登录才能再次使用正版服务器。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "退出失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "拖动预览看看吧",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "完成",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "晚上好",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "微风、汽水与夏天",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "未配置更新源",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "未配置更新源。可填写 update.json 地址，或直接导入本地更新包。",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "未选择",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "未选择实例",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "未知版本",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "未知错误",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "文件过大",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "文件已写入实例的 mods 目录",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "我的皮肤",
+    "files": [
+      "src\\js\\mock.js",
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "无冲突",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "无法导入更新包",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "无法自动下载更新",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "系统：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "系统剪贴板不可用",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "下次登录时生效",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "下次见。",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "下午好",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "下载 Mod",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "下载队列",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "下载队列支持暂停、继续与断点续传，失败文件会单独重试。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "下载更新",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "下载更新失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "下载完成，正在重启并安装…",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "下载一个 Minecraft 版本，或安装一个整合包，让第一个世界出现在这里。",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "下载游戏",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "下载游戏弹窗可直接选择任意正式版、快照或旧版本，不再局限于最新版。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "下载游戏核心",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "下载游戏依赖",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "下载游戏资源",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "下载源已更新",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "下载源增加测速，自动比较 BMCLAPI、Mojang 与 Modrinth。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "下载整合包内容",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "纤细",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "显示原文",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "项目不存在",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "项目介绍已汉化",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "写入 mods 目录",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "写入覆盖文件",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "新的实例已加入游戏库",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "新的世界",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "新的整合包实例已创建",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "新闻",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "新闻详情可在应用内查看简介，并加入醒目的中文翻译按钮。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新闻已翻译",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新闻中心 · 设置排版 · 动效优化",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新增 Microsoft 正版登录，支持正版服务器、官方皮肤与正版验证。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新增 Minecraft 官方新闻中心，可浏览、筛选和搜索全部官方消息。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新增 TY 启动动画、更新公告与制作者信息。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新增 Windows 安装器，安装后自动创建开始菜单、桌面快捷方式和卸载入口。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新增启动诊断和崩溃分析，游戏异常退出时自动检查最近日志与崩溃报告。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "新增实例管理：备份、导出、导入、恢复、一键修复。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "星期二",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "星期六",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "星期日",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "星期三",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "星期四",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "星期五",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "星期一",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "修复更新重启后偶发卡在启动动画、需要强制结束进程的问题；更新后的首次启动会跳过动画并清理渲染缓存。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "修复加载器列表与版本列表的兼容细节，启动前会自动清理错误的 natives。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "修复开启代理后检查更新超时、无法下载更新包的问题。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "修复皮肤工坊 3D 底座与人物不随视角同步的问题。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "修复失败",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "需要 Java ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "需要修复",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "选择 Java 可执行文件",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "选择 java.exe",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "选择 Minecraft 游戏目录",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "选择任意正式版或快照，再决定加载器",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "选择失败",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "选择一个实例后诊断",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "颜色保存失败",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "演示翻译",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "演示模式不支持安装更新",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "演示模式不支持下载更新",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "夜深了",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "一个精心制作的 Minecraft 模组，适用于对应版本与加载器。安装到实例后，启动游戏即可体验。\n\n如果该 Mod 需要前置依赖，TYCL 会在安装时自动为你补齐。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "一颗金苹果",
+    "files": [
+      "src\\js\\easter.js"
+    ]
+  },
+  {
+    "text": "移除侧栏重复的更新公告入口，保留右上角喇叭入口。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "已创建实例，但有 ",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "已经是最新版本 v",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "已开始安装",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "已切换到测试版通道",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "已切换到稳定版通道",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "已取消",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "已是最新版本 v",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "已手动指定",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "已退出正版账户",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "已完成",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "已暂停",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "以 Sodium 为核心，辅以少量实用优化模组，让原版世界更顺滑。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "以旋转动力与机械结构为核心的科技 Mod，用齿轮、传送带与列车建造你的工业世界。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "以自定义内容构建的剧情向 RPG 整合包，升级天赋树、锻造神器并挑战强大首领。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "应用内更新 · 自动重启</span>\n        </div>\n        <span class=\"badge badge-accent\">NEW</span>\n      </div>\n      <div class=\"release-card latest\" style=\"margin-bottom:12px\">\n        <div class=\"release-head\">\n          <div><span class=\"release-version\">v",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "应用皮肤",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "应用皮肤失败",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "用户名需要 3–16 位，且只能包含英文字母、数字和下划线。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "优化",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "优化设置页双栏排版，移除外观卡片下方多余的空白区域。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "由 ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "邮箱已复制",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "游戏",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "游戏安装完成",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "游戏库",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "游戏库还是空的",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "游戏库已刷新",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "游戏目录已更新",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "游戏内用户名：",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "游戏已经在运行",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "游戏已启动",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "游戏已退出",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "游戏运行出错",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "游戏运行中",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "有一些提醒",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "原版",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\mock.js",
+      "src\\js\\pages\\home.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "原汁原味的 Minecraft",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "远空",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "云杉",
+    "files": [
+      "src\\js\\mock.js",
+      "src\\js\\pages\\home.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "在保留原版手感的前提下，补全细节、提升性能并加入恰到好处的生活化内容。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "在屏幕角落显示周围地形、玩家与生物的实时小地图，并支持路径点标记。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "暂无日志，启动一次游戏后会在这里显示。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "早上好",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "增大左上角 TYCL 图标的可点击区域，更容易点中。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "战斗",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "账户令牌只保存在本机",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "账户与角色",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "这个更新源没有提供下载地址，请打开更新公告手动处理。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "这个整合包围绕探索与成长构建了一套完整的体验。它保留了 Minecraft 熟悉的节奏，同时加入恰到好处的新内容：新的地形、任务与工具，让你每次打开世界都有新的目标。\n\n整合包已经为你配置好推荐的模组组合与性能设置，安装完成后即可直接开始游戏。你也可以在实例目录中继续添加自己的 Mod。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "这条新闻没有外部链接",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "这条新闻暂时没有简介，可以点击下方“阅读原文”查看完整内容。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "诊断 · 下载队列 · 体验修复",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "诊断报告已复制",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "整合包",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\mock.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "整合包安装完成",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "整合包实例支持直接更新新版本，不必重新创建实例。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "整合包已加入安装队列",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正版登录 · 本地更新 · 新版本选择",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正版登录需要能访问 Microsoft 与 Xbox Live 的网络",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正版皮肤来自 Microsoft 账户，启动器会显示你当前的官方皮肤。本地导入的皮肤只用于启动器预览，不会自动上传到 Mojang。",
+    "files": [
+      "src\\js\\pages\\skins.js"
+    ]
+  },
+  {
+    "text": "正版皮肤显示修复",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正版账户已连接，可用于正版服务器与官方皮肤",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正版账户已连接。",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "正常",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正式版",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "正在安装更新",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "正在从 Modrinth 获取信息…",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正在获取 Minecraft 版本列表…",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正在解压",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "正在启动",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "正在下载",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "正在下载更新包，请保持网络连接…",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正在写入",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "正在运行",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "正在运行当前实例",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "正在准备运行环境…",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "支持检查更新、导入本地更新包并在后台替换应用资源。</span>\n              </div>\n              <button class=\"btn btn-primary btn-sm\" data-open-updates>",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "支持应用内导入更新包或从更新源检查更新，无需重新下载整个启动器。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "中午好",
+    "files": [
+      "src\\js\\utils.js"
+    ]
+  },
+  {
+    "text": "重新调整页面进入、卡片悬停与新闻加载动效，整体更轻盈顺滑。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "重新实现 Minecraft 渲染管线，显著提升帧率并减少卡顿，几乎必装的性能 Mod。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "重做更新服务器首页，加入安装器下载、版本信息和更新说明。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "主题保存失败",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "装备",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "装饰",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "准备中",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "资源详情",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "资源中心",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "紫藤",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "自定义",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "自动检测",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "自动识别正版皮肤的经典 / 纤细模型，并标记为 Microsoft 正版。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "自动选择最合适的 Java",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "综合",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "阻止图标区域的双击事件传给标题栏，连续点击时不会误最大化窗口。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "最大 ",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "最近的游戏日志",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "最快：",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "最新版",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "最新版本",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "最新消息",
+    "files": [
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "BMCLAPI 镜像",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\mock.js",
+      "src\\js\\pages\\home.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "Fabric 的开放分支",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Fabric 生态的基础 API，大多数 Fabric Mod 都需要它才能正常运行。",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "Java 版",
+    "files": [
+      "src\\js\\news-mock.js",
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "Java 路径已保存",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "Java 运行环境",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "Microsoft 登录成功",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Microsoft 正版",
+    "files": [
+      "src\\js\\app.js",
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "Microsoft 正版 · 已连接",
+    "files": [
+      "src\\js\\pages\\home.js"
+    ]
+  },
+  {
+    "text": "Microsoft 正版账户",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "Microsoft 正版账户登录后会自动读取并缓存官方皮肤。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Microsoft Client ID 已保存",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "Minecraft 官方",
+    "files": [
+      "src\\js\\news-mock.js",
+      "src\\js\\pages\\news.js"
+    ]
+  },
+  {
+    "text": "Minecraft 官方新闻",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "Minecraft 官方新闻 · ",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Minecraft 下载、Forge / Fabric / Quilt 安装",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Minecraft 新闻",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Minecraft 正在启动",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "Minecraft Java Edition · 稳定版本",
+    "files": [
+      "src\\js\\pages\\versions.js"
+    ]
+  },
+  {
+    "text": "Mod 安装完成",
+    "files": [
+      "src\\js\\app.js"
+    ]
+  },
+  {
+    "text": "Mod 都是最新的",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Mod 详情 · 一键汉化",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Mod 已加入安装队列",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Mod 与整合包详情汉化按钮加粗放大，更容易找到。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Mod 与整合包详情页新增「汉化」按钮，点击即可翻译项目标题与介绍。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Modrinth 作者",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\pages\\resources.js"
+    ]
+  },
+  {
+    "text": "Modrinth Mod 与整合包下载",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Mods 页面支持启用/禁用、删除、更新检查和冲突提示。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "Mojang 官方",
+    "files": [
+      "src\\js\\flows.js",
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "Mojang 官方源",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "TYCL 当前版本 v",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "TYCL 即将重启",
+    "files": [
+      "src\\js\\pages\\settings.js"
+    ]
+  },
+  {
+    "text": "TYCL 即将重启完成安装",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "TYCL 即将重启完成更新",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "TYCL 将关闭并在后台替换应用资源，随后自动重新启动。请先保存正在进行的操作。",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "TYCL 启动诊断 v",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "TYCL 首次发布",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  },
+  {
+    "text": "TYCL 运行正常",
+    "files": [
+      "src\\js\\mock.js"
+    ]
+  },
+  {
+    "text": "Windows 安装器 · 自动更新提示",
+    "files": [
+      "src\\js\\flows.js"
+    ]
+  }
+]

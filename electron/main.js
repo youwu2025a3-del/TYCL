@@ -21,6 +21,9 @@ const news = require('./news');
 const translate = require('./translate');
 const diagnostics = require('./diagnostics');
 const network = require('./network');
+const servers = require('./servers');
+const tunnel = require('./tunnel');
+const lan = require('./lan');
 
 let mainWindow = null;
 let loginWindow = null;
@@ -372,15 +375,25 @@ function registerIpc() {
     });
   });
 
-  ipcMain.handle('instances:launch', async (_, instanceId) => {
+  ipcMain.handle('instances:launch', async (_, instanceId, options = {}) => {
     const instance = getInstance(instanceId);
     if (!instance) throw new Error('实例不存在');
     return tasks.start({
       kind: 'launch',
-      title: `启动 ${instance.name}`,
-      worker: (task) => launchInstance(instanceId, task, { onStatus: (status) => broadcast('game:status', status) }),
+      title: options.serverAddress ? `联机 · ${instance.name}` : `启动 ${instance.name}`,
+      worker: (task) => launchInstance(instanceId, task, { onStatus: (status) => broadcast('game:status', status), serverAddress: options.serverAddress || '' }),
     });
   });
+  ipcMain.handle('servers:list', async () => servers.listServers());
+  ipcMain.handle('servers:add', async (_, payload) => servers.addServer(payload));
+  ipcMain.handle('servers:remove', async (_, id) => servers.removeServer(id));
+  ipcMain.handle('servers:ping', async (_, address) => servers.pingServer(address));
+  ipcMain.handle('servers:ping-all', async () => servers.pingAll());
+  ipcMain.handle('tunnel:start', async (_, options) => tunnel.startTunnel(options));
+  ipcMain.handle('tunnel:stop', async () => tunnel.stopTunnel());
+  ipcMain.handle('tunnel:state', async () => tunnel.getTunnelState());
+  ipcMain.handle('lan:start', async () => lan.start());
+  ipcMain.handle('lan:list', async () => lan.list());
   ipcMain.handle('instances:delete', async (_, instanceId) => deleteInstance(instanceId));
   ipcMain.handle('instances:details', async (_, instanceId) => {
     const instance = getInstance(instanceId);
@@ -552,6 +565,8 @@ if (!gotLock) {
 
 app.on('before-quit', () => {
   if (tasks) tasks.cancelAll();
+  try { tunnel.stopTunnel(); } catch { /* ignore */ }
+  try { lan.stop(); } catch { /* ignore */ }
 });
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
