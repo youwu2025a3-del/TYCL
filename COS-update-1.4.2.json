@@ -1,0 +1,10 @@
+{
+    "sha256":  "d5c50b3f469dffe8e6ae7a3d346df4a7809557157716c8f6a1e17ce2de2ac1f0",
+    "version":  "1.4.2",
+    "publishedAt":  "2026-10-26T12:50:28.2441976Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.4.2.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.4.2.zip"
+                     ],
+    "notes":  "直进最近存档；Java 搜索支持 Zulu、GraalVM、BellSoft 与注册表路径；Mod 必装前置自动安装。"
+}

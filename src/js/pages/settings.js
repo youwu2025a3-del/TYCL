@@ -120,7 +120,7 @@ export async function render(container, ctx) {
           <div class="settings-card-body">
             <div class="setting-row">
               <div class="setting-copy">
-                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.4.1')}</strong>
+                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.4.3')}</strong>
                 <span>${microsoft ? '正版账户已连接。' : ''}支持检查更新、导入本地更新包并在后台替换应用资源。</span>
               </div>
               <button class="btn btn-primary btn-sm" data-open-updates>${icon('megaphone', 12)} 更新公告</button>
@@ -251,7 +251,7 @@ export async function render(container, ctx) {
               </div>
             </div>
             <div class="about-meta">
-              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.4.1')}</span>
+              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.4.3')}</span>
               <span>${icon('cpu', 11)} ${escapeHtml(state.system?.platform || 'win32')} / ${escapeHtml(state.system?.arch || 'x64')}</span>
               <span>${icon('terminal', 11)} Electron</span>
               <span>${icon('file-text', 11)} MIT License</span>

@@ -1,6 +1,6 @@
 import { icon } from '../icons.js';
 import { escapeHtml } from '../utils.js';
-import { toast, confirmDialog } from '../components.js';
+import { toast, confirmDialog, openModal } from '../components.js';
 
 function statusText(status) {
   if (!status) return '未检测';
@@ -102,6 +102,7 @@ export async function render(container, ctx) {
               <div><strong>${room ? `${room.mode === 'server' ? '服务端' : '局域网世界'} · 端口 ${room.port}` : ''}</strong><span data-room-status>房间运行中</span><span data-room-players style="margin-left:8px;color:var(--faint)"></span></div>
             </div>
             <div class="room-live-actions">
+              <button class="btn btn-secondary btn-sm" data-room-time ${room && room.mode === 'server' ? '' : 'disabled'}>${icon('clock', 12)} 时光机</button>
               <button class="btn btn-secondary btn-sm" data-enter-local ${room ? '' : 'disabled'}>${icon('play', 12)} 进入我的房间</button>
               <button class="btn btn-ghost btn-sm" data-room-close ${room ? '' : 'disabled'}>关闭房间</button>
             </div>
@@ -348,7 +349,7 @@ export async function render(container, ctx) {
       const actualPort = server.active ? server.port : port;
       tunnel = await ctx.api.startTunnel({ port: actualPort });
       const code = String(tunnel.address).split(':').pop();
-      room = { code, address: tunnel.address, port: actualPort, mode: hostMode, fingerprint: server.fingerprint || '' };
+      room = { code, address: tunnel.address, port: actualPort, mode: hostMode, fingerprint: server.fingerprint || '', instanceId };
       renderRoom();
       toast({ title: '房间已开启', message: `房间号 ${code}`, type: 'success', duration: 6500 });
     } catch (error) {
@@ -371,6 +372,57 @@ export async function render(container, ctx) {
     room = null;
     renderRoom();
     toast({ title: '房间已关闭', type: 'info' });
+  });
+
+  body.querySelector('[data-room-time]').addEventListener('click', async () => {
+    if (!room || !room.instanceId) return;
+    const renderSnapshots = async (modal) => {
+      const list = modal.body.querySelector('[data-snapshot-list]');
+      const snapshots = await ctx.api.listSnapshots(room.instanceId).catch(() => []);
+      list.innerHTML = snapshots.length
+        ? snapshots.map((snap) => `<div class="manager-row">
+            <div class="manager-row-main"><strong>${escapeHtml(snap.label || '房间快照')}</strong><span>${escapeHtml(new Date(snap.createdAt).toLocaleString('zh-CN'))} · ${(snap.size / 1024 / 1024).toFixed(1)} MB</span></div>
+            <button class="btn btn-secondary btn-xs" data-snapshot-restore="${escapeHtml(snap.id)}">回到这里</button>
+          </div>`).join('')
+        : '<div class="manager-empty">还没有快照。开房时会自动生成一张。</div>';
+      list.querySelectorAll('[data-snapshot-restore]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const ok = await confirmDialog({ title: '回到这个时间点？', message: '当前世界会被替换，正在房间里的玩家会断开。', confirmText: '回滚' });
+          if (!ok) return;
+          button.disabled = true;
+          try {
+            await ctx.api.restoreSnapshot(room.instanceId, button.dataset.snapshotRestore);
+            server = { active: false };
+            if (tunnel.active) {
+              server = await ctx.api.startServer({ instanceId: room.instanceId, port: room.port, motd: 'TYCL Room' });
+            }
+            renderRoom();
+            toast({ title: '世界已回滚', message: tunnel.active ? '服务端已重新启动，房间号不变' : '重新开房即可使用' });
+            modal.close?.();
+          } catch (error) {
+            button.disabled = false;
+            toast({ title: '回滚失败', message: error.message, type: 'error' });
+          }
+        });
+      });
+    };
+    const modal = openModal({
+      title: '房间时光机',
+      subtitle: '炸服、坏档、误删 Mod 时，回到之前的房间状态',
+      size: 'modal-md',
+      body: `<div class="manager-toolbar"><span>最多保留 3 份开房快照</span><button class="btn btn-secondary btn-sm" data-snapshot-create>${icon('camera', 12)} 现在拍快照</button></div><div class="manager-list" data-snapshot-list><div class="loading-block"><span class="spinner"></span> 读取快照…</div></div>`,
+      footer: `<button class="btn btn-secondary btn-sm" data-modal-close>关闭</button>`,
+    });
+    modal.body.querySelector('[data-snapshot-create]').addEventListener('click', async () => {
+      try {
+        await ctx.api.createSnapshot(room.instanceId, '手动快照');
+        await renderSnapshots(modal);
+        toast({ title: '快照已保存' });
+      } catch (error) {
+        toast({ title: '快照失败', message: error.message, type: 'error' });
+      }
+    });
+    await renderSnapshots(modal);
   });
 
   body.querySelector('[data-copy-room]').addEventListener('click', async () => {
@@ -411,7 +463,7 @@ export async function render(container, ctx) {
     server = await ctx.api.getServerState();
     if (tunnel.active) {
       const code = String(tunnel.address).split(':').pop();
-      room = { code, address: tunnel.address, port: tunnel.localPort, mode: server.active ? 'server' : 'lan' };
+      room = { code, address: tunnel.address, port: tunnel.localPort, mode: server.active ? 'server' : 'lan', instanceId: server.instanceId || instanceId };
       const portInput = body.querySelector('[data-host-port]');
       if (portInput) portInput.value = tunnel.localPort;
     }

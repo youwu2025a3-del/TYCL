@@ -589,8 +589,30 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.4.1';
+  const version = ctx.state.system?.appVersion || '1.4.3';
   const releases = [
+    {
+      version: '1.4.3',
+      date: '2026.10.26',
+      title: '房间时光机',
+      items: [
+        '开房自动保存世界快照，最多保留 3 份。',
+        '炸服、坏档、误删 Mod 后，一键回到之前的房间状态。',
+        '回滚后自动重启服务端，房间号不变。',
+        '修复 Minecraft 26.x 版本判断导致无法自动进服。',
+        'Java 搜索支持 Zulu、GraalVM、BellSoft 与注册表路径。',
+      ],
+    },
+    {
+      version: '1.4.2',
+      date: '2026.10.26',
+      title: '直进存档 · Java 搜索增强',
+      items: [
+        '点击启动后自动进入最近修改的存档，不再停在主菜单。',
+        'Mod 安装继续自动处理必需前置依赖。',
+        'Java 搜索新增 Zulu、GraalVM、BellSoft、Android Studio JBR 和注册表安装路径。',
+      ],
+    },
     {
       version: '1.4.1',
       date: '2026.10.25',
@@ -1009,7 +1031,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.4.1';
+  const version = ctx.state.system?.appVersion || '1.4.3';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',
@@ -1116,7 +1138,14 @@ export async function launchInstance(ctx, instance, button = null) {
     button.innerHTML = `<span class="spinner" style="width:13px;height:13px;border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> 启动中`;
   }
   try {
-    await ctx.api.startLaunch(instance.id);
+    let worldName = '';
+    try {
+      const worlds = await ctx.api.listWorlds(instance.id);
+      if (worlds?.length) worldName = worlds[0].name;
+    } catch {
+      // 没有存档时正常进入主菜单
+    }
+    await ctx.api.startLaunch(instance.id, { worldName });
   } catch (error) {
     if (button) {
       button.disabled = false;

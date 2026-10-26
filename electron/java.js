@@ -76,7 +76,32 @@ function scanJavaRoot(root, set, depth = 2) {
   }
 }
 
-function candidatePaths() {
+function queryJavaRegistry() {
+  if (process.platform !== 'win32') return Promise.resolve([]);
+  const keys = [
+    'HKLM\\SOFTWARE\\JavaSoft\\JDK',
+    'HKLM\\SOFTWARE\\JavaSoft\\JRE',
+    'HKLM\\SOFTWARE\\Eclipse Adoptium\\JDK',
+    'HKLM\\SOFTWARE\\Azul Systems\\Zulu',
+    'HKLM\\SOFTWARE\\GraalVM',
+    'HKCU\\SOFTWARE\\JavaSoft\\JDK',
+    'HKCU\\SOFTWARE\\Eclipse Adoptium\\JDK',
+  ];
+  const readKey = (key) => new Promise((resolve) => {
+    execFile('reg', ['query', key, '/s'], { windowsHide: true, timeout: 5000 }, (error, stdout) => {
+      if (error) return resolve([]);
+      const paths = [];
+      for (const line of String(stdout || '').split(/\r?\n/)) {
+        const match = line.match(/(?:JavaHome|InstallationPath|Path)\s+REG_[A-Z_]+\s+(.+)$/i);
+        if (match) paths.push(match[1].trim());
+      }
+      resolve(paths);
+    });
+  });
+  return Promise.all(keys.map(readKey)).then((groups) => groups.flat());
+}
+
+async function candidatePaths() {
   const candidates = new Set();
   const settings = store.getSettings();
   addCandidate(candidates, settings.javaPath);
@@ -93,11 +118,16 @@ function candidatePaths() {
     'C:\\Program Files\\BellSoft',
     'C:\\Program Files\\Semeru',
     'C:\\Program Files\\JetBrains',
+    'C:\\Program Files\\GraalVM',
+    'C:\\Program Files\\Azul',
+    'C:\\Program Files\\BellSoft',
+    'C:\\Program Files\\Android\\Android Studio\\jbr',
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Microsoft'),
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Eclipse Adoptium'),
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Amazon Corretto'),
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Zulu'),
     path.join(os.homedir(), '.jdks'),
+    path.join(os.homedir(), '.sdkman', 'candidates', 'java'),
     path.join(os.homedir(), 'scoop', 'apps'),
     paths.runtimes(),
     '/usr/lib/jvm',
@@ -106,13 +136,17 @@ function candidatePaths() {
     '/usr/local/opt',
   ];
   for (const root of roots) scanJavaRoot(root, candidates, 2);
+  for (const home of await queryJavaRegistry()) {
+    addCandidate(candidates, path.join(home, 'bin', JAVA_EXE));
+    addCandidate(candidates, path.join(home, JAVA_EXE));
+  }
 
   return Array.from(candidates);
 }
 
 async function detectJava({ refresh = false } = {}) {
   if (refresh) JAVA_CACHE.clear();
-  const candidates = candidatePaths();
+  const candidates = await candidatePaths();
   const results = [];
   const seen = new Set();
   for (const candidate of candidates) {

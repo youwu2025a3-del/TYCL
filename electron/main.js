@@ -384,10 +384,11 @@ function registerIpc() {
     if (!instance) throw new Error('实例不存在');
     return tasks.start({
       kind: 'launch',
-      title: options.serverAddress ? `联机 · ${instance.name}` : `启动 ${instance.name}`,
-      worker: (task) => launchInstance(instanceId, task, { onStatus: (status) => broadcast('game:status', status), serverAddress: options.serverAddress || '' }),
+      title: options.serverAddress ? `联机 · ${instance.name}` : options.worldName ? `继续 · ${instance.name}` : `启动 ${instance.name}`,
+      worker: (task) => launchInstance(instanceId, task, { onStatus: (status) => broadcast('game:status', status), serverAddress: options.serverAddress || '', worldName: options.worldName || '' }),
     });
   });
+  ipcMain.handle('instances:worlds', async (_, instanceId) => instanceTools.listWorlds(instanceId));
   ipcMain.handle('servers:list', async () => servers.listServers());
   ipcMain.handle('servers:add', async (_, payload) => servers.addServer(payload));
   ipcMain.handle('servers:remove', async (_, id) => servers.removeServer(id));
@@ -402,6 +403,9 @@ function registerIpc() {
   ipcMain.handle('server:state', async () => serverManager.getServerState());
   ipcMain.handle('server:stop', async () => serverManager.stopDedicatedServer());
   ipcMain.handle('server:force-stop', async () => serverManager.forceStopServer());
+  ipcMain.handle('server:snapshots', async (_, instanceId) => serverManager.listSnapshots(instanceId));
+  ipcMain.handle('server:snapshot-create', async (_, instanceId, label) => serverManager.takeSnapshot(instanceId, label));
+  ipcMain.handle('server:snapshot-restore', async (_, instanceId, snapshotId) => serverManager.restoreSnapshot(instanceId, snapshotId));
   ipcMain.handle('instances:server-fingerprint', async (_, instanceId) => serverManager.getServerFingerprint(instanceId));
   ipcMain.handle('instances:delete', async (_, instanceId) => deleteInstance(instanceId));
   ipcMain.handle('instances:details', async (_, instanceId) => {

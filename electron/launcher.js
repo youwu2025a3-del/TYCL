@@ -52,7 +52,7 @@ function sanitizeInstalledVersionFiles(instance) {
   }
 }
 
-function launchInstance(instanceId, task, { onStatus, serverAddress = '' } = {}) {
+function launchInstance(instanceId, task, { onStatus, serverAddress = '', worldName = '' } = {}) {
   return new Promise(async (resolve, reject) => {
     try {
       if (activeGame) {
@@ -99,14 +99,22 @@ function launchInstance(instanceId, task, { onStatus, serverAddress = '' } = {})
       if (instance.loader === 'forge' && !forgeInstaller) {
         throw new Error('找不到 Forge 安装器，请重新安装该实例');
       }
-      const quickPlayType = (() => {
+      const quickPlay = (() => {
         const parts = String(instance.baseVersion || '').split('.').map(Number);
-        return (parts[1] || 0) >= 20 ? 'multiplayer' : 'legacy';
+        const modern = (parts[0] || 0) >= 20 || ((parts[0] || 0) === 1 && (parts[1] || 0) >= 20);
+        if (!modern) return null;
+        if (serverAddress) return { type: 'multiplayer', identifier: /:\d+$/.test(serverAddress) ? serverAddress : `${serverAddress}:25565` };
+        if (worldName) return { type: 'singleplayer', identifier: worldName };
+        return null;
       })();
+      const quickPlayArgs = quickPlay
+        ? quickPlay.type === 'multiplayer'
+          ? ['--quickPlayMultiplayer', quickPlay.identifier]
+          : ['--quickPlaySingleplayer', quickPlay.identifier]
+        : [];
       const options = {
         authorization: launchAccount.authorization,
         root: settings.gameDir,
-        ...(serverAddress ? { quickPlay: { type: quickPlayType, identifier: /:\d+$/.test(serverAddress) ? serverAddress : `${serverAddress}:25565` } } : {}),
         version: {
           number: instance.baseVersion,
           type: 'release',
@@ -115,7 +123,7 @@ function launchInstance(instanceId, task, { onStatus, serverAddress = '' } = {})
         ...(forgeInstaller ? { forge: forgeInstaller } : {}),
         memory: { max: memoryToMlc(max), min: memoryToMlc(max, 0.25) },
         javaPath: java.path,
-        customArgs: ['-Dfile.encoding=UTF-8', '-Djava.awt.headless=false', `-Djava.io.tmpdir=${gameTemp}`],
+        customArgs: ['-Dfile.encoding=UTF-8', '-Djava.awt.headless=false', `-Djava.io.tmpdir=${gameTemp}`, ...quickPlayArgs],
         window: { width: 1280, height: 760, fullscreen: false },
         overrides: {
           gameDirectory: instance.gameDir,

@@ -278,6 +278,7 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
     stopDedicatedServer();
     throw new Error(state.error || '服务端启动超时，请查看日志');
   }
+  try { takeSnapshot(instanceId, '开房快照'); } catch { /* 快照失败不影响开房 */ }
   return { ...getServerState(), root, mods };
 }
 
@@ -299,6 +300,70 @@ function getServerState() {
   };
 }
 
+
+function snapshotsRoot(instance) {
+  return path.join(serverRoot(instance), 'snapshots');
+}
+
+function takeSnapshot(instanceId, label = '开房快照') {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const root = serverRoot(instance);
+  const world = path.join(root, 'world');
+  if (!fs.existsSync(world)) return null;
+  const id = String(Date.now());
+  const dir = path.join(snapshotsRoot(instance), id);
+  ensureDir(dir);
+  fs.cpSync(world, path.join(dir, 'world'), { recursive: true });
+  for (const name of ['server.properties', 'whitelist.json', 'ops.json']) {
+    const file = path.join(root, name);
+    if (fs.existsSync(file)) fs.copyFileSync(file, path.join(dir, name));
+  }
+  const meta = { id, label, createdAt: new Date().toISOString() };
+  fs.writeFileSync(path.join(dir, 'snapshot.json'), JSON.stringify(meta, null, 2), 'utf8');
+  const entries = fs.readdirSync(snapshotsRoot(instance), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .sort((a, b) => b.name.localeCompare(a.name));
+  for (const entry of entries.slice(3)) fs.rmSync(path.join(snapshotsRoot(instance), entry.name), { recursive: true, force: true });
+  return meta;
+}
+
+function listSnapshots(instanceId) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const root = snapshotsRoot(instance);
+  if (!fs.existsSync(root)) return [];
+  return fs.readdirSync(root, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(root, entry.name, 'snapshot.json')))
+    .map((entry) => {
+      const dir = path.join(root, entry.name);
+      const meta = JSON.parse(fs.readFileSync(path.join(dir, 'snapshot.json'), 'utf8'));
+      const stat = fs.statSync(path.join(dir, 'world'));
+      return { ...meta, size: stat.size, path: dir };
+    })
+    .sort((a, b) => b.id.localeCompare(a.id));
+}
+
+async function restoreSnapshot(instanceId, snapshotId) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const root = serverRoot(instance);
+  const dir = path.join(snapshotsRoot(instance), String(snapshotId));
+  const source = path.join(dir, 'world');
+  if (!fs.existsSync(source)) throw new Error('快照不存在或已损坏');
+  if (active) {
+    forceStopServer();
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+  }
+  const target = path.join(root, 'world');
+  fs.rmSync(target, { recursive: true, force: true });
+  fs.cpSync(source, target, { recursive: true });
+  for (const name of ['server.properties', 'whitelist.json', 'ops.json']) {
+    const file = path.join(dir, name);
+    if (fs.existsSync(file)) fs.copyFileSync(file, path.join(root, name));
+  }
+  return { ok: true, snapshotId: String(snapshotId) };
+}
 function stopDedicatedServer() {
   if (!active) return { ok: true };
   const state = active;
@@ -333,4 +398,4 @@ function getServerFingerprint(instanceId) {
   return { fingerprint: modFingerprint(kept), count: kept.length };
 }
 
-module.exports = { startDedicatedServer, getServerState, stopDedicatedServer, forceStopServer, syncServerMods, modSide, getServerFingerprint };
+module.exports = { startDedicatedServer, getServerState, stopDedicatedServer, forceStopServer, syncServerMods, modSide, getServerFingerprint, takeSnapshot, listSnapshots, restoreSnapshot };
