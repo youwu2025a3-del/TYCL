@@ -314,7 +314,9 @@ function takeSnapshot(instanceId, label = '开房快照') {
   const id = String(Date.now());
   const dir = path.join(snapshotsRoot(instance), id);
   ensureDir(dir);
-  fs.cpSync(world, path.join(dir, 'world'), { recursive: true });
+  const snapshotWorld = path.join(dir, 'world');
+  ensureDir(snapshotWorld);
+  fs.cpSync(world, snapshotWorld, { recursive: true, force: true, filter: (source) => path.basename(source) !== 'session.lock' });
   for (const name of ['server.properties', 'whitelist.json', 'ops.json']) {
     const file = path.join(root, name);
     if (fs.existsSync(file)) fs.copyFileSync(file, path.join(dir, name));
@@ -328,6 +330,15 @@ function takeSnapshot(instanceId, label = '开房快照') {
   return meta;
 }
 
+function directorySize(dir) {
+  let total = 0;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const file = path.join(dir, entry.name);
+    total += entry.isDirectory() ? directorySize(file) : fs.statSync(file).size;
+  }
+  return total;
+}
+
 function listSnapshots(instanceId) {
   const instance = getInstance(instanceId);
   if (!instance) throw new Error('实例不存在');
@@ -338,8 +349,7 @@ function listSnapshots(instanceId) {
     .map((entry) => {
       const dir = path.join(root, entry.name);
       const meta = JSON.parse(fs.readFileSync(path.join(dir, 'snapshot.json'), 'utf8'));
-      const stat = fs.statSync(path.join(dir, 'world'));
-      return { ...meta, size: stat.size, path: dir };
+      return { ...meta, size: directorySize(path.join(dir, 'world')), path: dir };
     })
     .sort((a, b) => b.id.localeCompare(a.id));
 }
