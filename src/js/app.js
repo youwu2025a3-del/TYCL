@@ -18,6 +18,7 @@ import {
 } from './flows.js';
 import * as homePage from './pages/home.js';
 import * as newsPage from './pages/news.js';
+import * as aiPage from './pages/ai.js';
 import * as multiplayerPage from './pages/multiplayer.js';
 import * as versionsPage from './pages/versions.js';
 import * as resourcesPage from './pages/resources.js';
@@ -32,6 +33,7 @@ const navItems = Array.from(document.querySelectorAll('.nav-item[data-route]'));
 const PAGE_META = {
   home: { label: '首页', title: '首页' },
   news: { label: '新闻', title: '新闻' },
+  ai: { label: 'AI 助手', title: 'AI 助手' },
   multiplayer: { label: '联机', title: '联机' },
   versions: { label: '游戏库', title: '游戏库' },
   resources: { label: '资源中心', title: '资源中心' },
@@ -42,6 +44,7 @@ const PAGE_META = {
 const PAGES = {
   home: homePage,
   news: newsPage,
+  ai: aiPage,
   multiplayer: multiplayerPage,
   versions: versionsPage,
   resources: resourcesPage,
@@ -289,7 +292,201 @@ const ctx = {
 
 window.tyclContext = ctx;
 
+let launchTaskId = '';
+let launchHideTimer = null;
+
+function updateLaunchProgress(payload) {
+  const overlay = document.getElementById('launch-overlay');
+  if (!overlay || payload.id !== launchTaskId) return;
+  overlay.hidden = false;
+  const percent = Math.max(0, Math.min(100, Number(payload.percent) || 0));
+  const circle = document.getElementById('launch-ring-value');
+  if (circle) circle.style.strokeDashoffset = String(314 - (314 * percent) / 100);
+  document.getElementById('launch-percent').textContent = `${Math.round(percent)}%`;
+  document.getElementById('launch-stage').textContent = payload.stage || '正在启动游戏…';
+  document.getElementById('launch-detail').textContent = payload.detail || '';
+}
+
+function showLaunchProgress(taskId, instanceName = '') {
+  launchTaskId = taskId;
+  const overlay = document.getElementById('launch-overlay');
+  if (!overlay) return;
+  overlay.hidden = false;
+  const title = document.getElementById('launch-title');
+  if (title) title.textContent = instanceName ? `正在启动 · ${instanceName}` : '正在启动游戏';
+  updateLaunchProgress({ id: taskId, percent: 0, stage: '准备 Java 与游戏文件…' });
+}
+
+function hideLaunchProgress() {
+  const overlay = document.getElementById('launch-overlay');
+  if (overlay) overlay.hidden = true;
+  launchTaskId = '';
+}
+
+document.querySelector('[data-launch-hide]')?.addEventListener('click', hideLaunchProgress);
+
+api.onTaskProgress((payload) => updateLaunchProgress(payload));
+api.onTaskDone((payload) => {
+  if (payload.id !== launchTaskId) return;
+  updateLaunchProgress({ ...payload, percent: 100, stage: '游戏已启动' });
+  clearTimeout(launchHideTimer);
+  launchHideTimer = setTimeout(hideLaunchProgress, 900);
+});
+api.onTaskError((payload) => {
+  if (payload.id === launchTaskId) hideLaunchProgress();
+});
+
+ctx.showLaunchProgress = showLaunchProgress;
+
+api.onBootstrapChanged?.(async () => {
+  try {
+    const data = await api.getBootstrap();
+    applyBootstrap(data);
+    if (currentRoute === 'skins' || currentRoute === 'home') await renderRoute(currentRoute, { force: true });
+  } catch {
+    // 后台皮肤刷新失败不影响当前页面
+  }
+});
+
+function commandActions() {
+  const pages = [
+    ['home', '首页', '总览与最近游玩', 'home'],
+    ['news', '新闻', '版本与活动', 'file-text'],
+    ['ai', 'AI 助手', '自然语言找包与规划', 'sparkles'],
+    ['multiplayer', '联机', '房间号与自动开服', 'globe'],
+    ['versions', '游戏库', '实例与版本', 'layers'],
+    ['resources', '资源中心', '整合包与 Mod', 'compass'],
+    ['skins', '皮肤工坊', '正版皮肤与预览', 'shirt'],
+    ['settings', '设置', '账户、Java、更新', 'settings'],
+  ];
+  const actions = pages.map(([route, label, hint, iconName]) => ({
+    label, hint, iconName, section: '页面', run: () => navigate(route),
+  }));
+  actions.push(
+    { label: '安装新版本', hint: '下载 Minecraft 或整合包', iconName: 'download', section: '操作', run: () => ctx.openLatestInstall() },
+    { label: '检查更新', hint: '查看 TYCL 新版本', iconName: 'megaphone', section: '操作', run: () => ctx.openUpdates() },
+    { label: '账户', hint: '登录、切换或离线账户', iconName: 'user', section: '操作', run: () => ctx.openAccount() },
+  );
+  for (const instance of state.instances) {
+    actions.push({
+      label: instance.name,
+      hint: `${instance.baseVersion} · ${instance.loaderLabel || '原版'} · 打开实例管理`,
+      iconName: 'box',
+      section: '实例',
+      run: () => ctx.openInstanceManager(instance),
+    });
+  }
+  return actions;
+}
+
+let commandItems = [];
+let commandActive = 0;
+
+function closeCommandPalette() {
+  const root = document.getElementById('command-palette');
+  if (!root || root.hidden) return;
+  root.hidden = true;
+  document.getElementById('command-input').value = '';
+}
+
+function renderCommandResults(query = '') {
+  const results = document.getElementById('command-results');
+  if (!results) return;
+  const needle = query.trim().toLowerCase();
+  const all = commandActions();
+  commandItems = needle
+    ? all.filter((item) => `${item.label} ${item.hint}`.toLowerCase().includes(needle))
+    : all;
+  commandActive = Math.min(commandActive, Math.max(0, commandItems.length - 1));
+  if (!commandItems.length) {
+    results.innerHTML = `<div class="manager-empty">没有找到“${escapeHtml(query)}”</div>`;
+    return;
+  }
+  let lastSection = '';
+  results.innerHTML = commandItems.map((item, index) => {
+    const header = item.section !== lastSection ? `<div class="command-section">${escapeHtml(item.section)}</div>` : '';
+    lastSection = item.section;
+    return `${header}<button class="command-item ${index === commandActive ? 'active' : ''}" data-command-index="${index}">
+      <span class="command-icon">${icon(item.iconName, 13)}</span>
+      <span><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.hint)}</span></span>
+    </button>`;
+  }).join('');
+  results.querySelectorAll('[data-command-index]').forEach((button) => {
+    button.addEventListener('click', () => runCommand(Number(button.dataset.commandIndex)));
+  });
+}
+
+function runCommand(index) {
+  const item = commandItems[index];
+  if (!item) return;
+  closeCommandPalette();
+  item.run();
+}
+
+function openCommandPalette() {
+  const root = document.getElementById('command-palette');
+  if (!root) return;
+  root.hidden = false;
+  commandActive = 0;
+  renderCommandResults('');
+  const input = document.getElementById('command-input');
+  input.value = '';
+  input.focus();
+}
+
+function setupCommandPalette() {
+  const root = document.getElementById('command-palette');
+  const input = document.getElementById('command-input');
+  if (!root || !input) return;
+  document.getElementById('command-trigger')?.addEventListener('click', openCommandPalette);
+  root.querySelector('[data-command-close]')?.addEventListener('click', closeCommandPalette);
+  input.addEventListener('input', () => { commandActive = 0; renderCommandResults(input.value); });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { event.preventDefault(); closeCommandPalette(); return; }
+    if (event.key === 'ArrowDown') { event.preventDefault(); commandActive = Math.min(commandItems.length - 1, commandActive + 1); renderCommandResults(input.value); return; }
+    if (event.key === 'ArrowUp') { event.preventDefault(); commandActive = Math.max(0, commandActive - 1); renderCommandResults(input.value); return; }
+    if (event.key === 'Enter') { event.preventDefault(); runCommand(commandActive); }
+  });
+}
+
+
+async function openAiDrawer() {
+  if (document.querySelector('.ai-drawer')) return;
+  const root = document.createElement('div');
+  root.className = 'ai-drawer';
+  root.innerHTML = `<div class="ai-drawer-panel"><button class="ai-drawer-close" aria-label="关闭 AI">×</button><div class="ai-drawer-content"></div></div>`;
+  document.body.appendChild(root);
+  let closed = false;
+  const close = () => {
+    if (closed) return;
+    closed = true;
+    root.classList.remove('open');
+    root.classList.add('closing');
+    setTimeout(() => root.remove(), 220);
+  };
+  root.querySelector('.ai-drawer-close').addEventListener('click', close);
+  root.addEventListener('click', (event) => { if (event.target === root) close(); });
+  const onKey = (event) => {
+    if (event.key === 'Escape') {
+      close();
+      document.removeEventListener('keydown', onKey);
+    }
+  };
+  document.addEventListener('keydown', onKey);
+  const drawerCtx = {
+    ...ctx,
+    navigate: (...args) => { close(); return ctx.navigate(...args); },
+    openProject: (...args) => { close(); return ctx.openProject(...args); },
+    openDiagnostics: (...args) => { close(); return ctx.openDiagnostics(...args); },
+    openInstanceManager: (...args) => { close(); return ctx.openInstanceManager(...args); },
+  };
+  requestAnimationFrame(() => root.classList.add('open'));
+  await aiPage.render(root.querySelector('.ai-drawer-content'), drawerCtx);
+}
+
 function setupChrome() {
+  setupCommandPalette();
+  document.getElementById('chrome-ai')?.addEventListener('click', () => openAiDrawer());
   document.getElementById('quick-theme')?.addEventListener('click', () => {
     const actual = resolveTheme(state.settings.theme);
     ctx.setTheme(actual === 'dark' ? 'light' : 'dark');
@@ -321,6 +518,13 @@ function setupChrome() {
   });
 
   window.addEventListener('keydown', (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      const root = document.getElementById('command-palette');
+      if (root && !root.hidden) closeCommandPalette();
+      else openCommandPalette();
+      return;
+    }
     if (event.ctrlKey && !event.shiftKey && !event.altKey) {
       const routes = { '1': 'home', '2': 'versions', '3': 'resources', '4': 'skins', '5': 'settings' };
       if (routes[event.key]) {
@@ -571,7 +775,13 @@ function setupTaskEvents() {
   api.onTaskDone(async (payload) => {
     const kind = payload.kind;
     finishTaskCard(payload.id, 'done', '已完成');
-    if (kind === 'install') {
+    if (kind === 'ai') {
+      toast({ title: 'AI 准备完成', message: payload.result?.room ? '房间已开好' : payload.result?.warning || '整合包已安装', duration: 6000 });
+      if (payload.result?.room) {
+        await refreshAfterTask();
+        navigate('multiplayer');
+      }
+    } else if (kind === 'install') {
       toast({ title: '游戏安装完成', message: payload.result?.instance?.name || '新的实例已加入游戏库' });
       await refreshAfterTask();
     } else if (kind === 'modpack') {
@@ -617,6 +827,51 @@ function setupTaskEvents() {
   });
 }
 
+async function openCrashAssistant(instance, payload = {}) {
+  if (!instance) return;
+  const modal = openModal({
+    title: '游戏异常退出',
+    subtitle: instance.name,
+    size: 'modal-lg',
+    body: `<div class="loading-block"><span class="spinner"></span> 正在读取日志、Mod 和 Java 环境…</div>`,
+    footer: `<button class="btn btn-secondary btn-sm" data-crash-diag>${icon('activity', 13)} 完整诊断</button><button class="btn btn-primary btn-sm" data-crash-fix>${icon('sparkles', 13)} 帮我解决</button>`,
+  });
+  const body = modal.body;
+  try {
+    const data = await api.analyzeCrash(instance.id);
+    const findings = data.findings || [];
+    body.innerHTML = `
+      <div class="notice warn">${icon('alert-triangle', 15)}<span>${escapeHtml(data.summary || '游戏没有正常启动或异常退出。')}${payload.code ? ` 退出码 ${escapeHtml(String(payload.code))}` : ''}</span></div>
+      <div class="manager-section-title" style="margin-top:12px">可能原因</div>
+      <div class="diag-checks">${findings.map((item) => `<div class="diag-check warn"><span class="diag-dot"></span><div><strong>${escapeHtml(item)}</strong></div></div>`).join('')}</div>
+      <div class="notice" style="margin-top:10px">${icon('info', 14)}<span>「帮我解决」只处理能确定的安全项：内存不足、Java 版本错误、重复 Mod。不会删除存档，不会保证所有崩溃都能自动修复。</span></div>
+      <div data-crash-result></div>
+    `;
+  } catch (error) {
+    body.innerHTML = `<div class="notice warn">${icon('alert-triangle', 14)}<span>分析失败：${escapeHtml(error.message)}</span></div>`;
+  }
+  body.querySelector('[data-crash-diag]')?.addEventListener('click', () => { modal.close?.(); ctx.openDiagnostics(instance, { crash: true }); });
+  body.querySelector('[data-crash-fix]')?.addEventListener('click', async () => {
+    const resultBox = body.querySelector('[data-crash-result]');
+    const button = body.querySelector('[data-crash-fix]');
+    if (button) button.disabled = true;
+    resultBox.innerHTML = `<div class="loading-block"><span class="spinner"></span> 正在尝试安全修复…</div>`;
+    try {
+      const result = await api.fixCrash(instance.id);
+      const lines = [
+        ...(result.fixed || []).map((item) => `已处理：${item}`),
+        ...(result.manual || []).map((item) => `需要手动：${item}`),
+      ];
+      resultBox.innerHTML = `<div class="notice ${result.fixed?.length ? '' : 'warn'}">${icon(result.fixed?.length ? 'check' : 'info', 14)}<span>${lines.map(escapeHtml).join('<br>') || '没有可自动处理的项。'}</span></div>`;
+      await refreshAfterTask();
+    } catch (error) {
+      resultBox.innerHTML = `<div class="notice warn">${icon('alert-triangle', 14)}<span>修复失败：${escapeHtml(error.message)}</span></div>`;
+    } finally {
+      if (button) button.disabled = false;
+    }
+  });
+}
+
 function setupGameEvents() {
   api.onAccountChanged?.((account) => {
     if (account) {
@@ -643,12 +898,62 @@ function setupGameEvents() {
       toast({ title: '游戏已退出', message: seconds ? `本次游玩 ${Math.max(1, Math.round(seconds / 60))} 分钟` : '下次见。', type: 'info' });
       if (payload.code && Number(payload.code) !== 0) {
         const instance = state.instances.find((item) => item.id === payload.instanceId);
-        setTimeout(() => openDiagnosticsModal(ctx, instance, { code: payload.code, crash: true }), 700);
+        setTimeout(() => openCrashAssistant(instance, payload), 500);
       }
       await refreshAfterTask();
     } else if (payload.type === 'error') {
-      toast({ title: '游戏运行出错', message: payload.message || '请查看启动日志', type: 'error', duration: 6000 });
+      const instance = state.instances.find((item) => item.id === payload.instanceId) || state.instances[0];
+      setTimeout(() => openCrashAssistant(instance, payload), 400);
+      toast({ title: '游戏运行出错', message: payload.message || '正在读取日志', type: 'error', duration: 6000 });
     }
+  });
+}
+
+async function enforceDisclaimer() {
+  await api.setDisclaimerPending?.(true);
+  return new Promise((resolve) => {
+    appEl.innerHTML = `
+      <div class="disclaimer-gate">
+        <div class="disclaimer-card">
+          <div class="disclaimer-brand">${icon('shield', 22)}<strong>TYCL · 使用前请阅读</strong></div>
+          <h1>免责声明</h1>
+          <div class="disclaimer-text">
+            <p>TYCL 是非官方 Minecraft 启动器，与 Mojang、Microsoft、Modrinth、CurseForge 无隶属关系。</p>
+            <p>AI 只负责解析需求、检索公开来源和给出建议，不保证第三方 Mod、整合包、资源包、光影、服务器文件的完整性、合法性或安全性。</p>
+            <p>自动检索、下载、更新和安装可能修改实例文件。请先备份存档；因使用第三方资源、自动更新或误操作造成的存档损坏、账号问题、版权纠纷或其他损失，由用户自行承担。</p>
+            <p>TYCL 不绕过正版验证，不重新分发付费内容，不提供盗版资源。请支持正版 Minecraft 和支持作者。</p>
+            <p>继续使用即表示你已理解并同意以上内容。</p>
+          </div>
+          <label class="disclaimer-check"><input type="checkbox" data-disclaimer-accept> 我已阅读并同意以上内容，且永久不再显示</label>
+          <div class="disclaimer-actions">
+            <button class="btn btn-danger" data-disclaimer-decline>不同意并退出</button>
+            <button class="btn btn-primary" data-disclaimer-agree disabled>同意并进入</button>
+          </div>
+        </div>
+      </div>
+    `;
+    hydrateIcons();
+    const checkbox = appEl.querySelector('[data-disclaimer-accept]');
+    const agree = appEl.querySelector('[data-disclaimer-agree]');
+    checkbox.addEventListener('change', () => { agree.disabled = !checkbox.checked; });
+    agree.addEventListener('click', async () => {
+      if (!checkbox.checked) return;
+      agree.disabled = true;
+      try {
+        await api.saveSettings({ disclaimerAccepted: true });
+        state.settings.disclaimerAccepted = true;
+        await api.setDisclaimerPending?.(false);
+        resolve(true);
+      } catch (error) {
+        agree.disabled = false;
+        await confirmDialog({ title: '保存失败', message: error.message, confirmText: '知道了' });
+      }
+    });
+    appEl.querySelector('[data-disclaimer-decline]').addEventListener('click', async () => {
+      await api.setDisclaimerPending?.(false);
+      await api.quitApp?.();
+      resolve(false);
+    });
   });
 }
 
@@ -665,6 +970,10 @@ async function init() {
   try {
     const data = await api.getBootstrap();
     applyBootstrap(data);
+    if (!state.settings.disclaimerAccepted) {
+      const accepted = await enforceDisclaimer();
+      if (!accepted) return;
+    }
     const initialRoute = (location.hash || '#home').slice(1);
     currentRoute = '';
     await renderRoute(PAGES[initialRoute] ? initialRoute : 'home', { force: true });

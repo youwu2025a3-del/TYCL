@@ -64,7 +64,7 @@ export async function render(container, ctx) {
             }
             <button class="btn btn-dark hero-play" data-hero-play>
               ${instances.length ? (running ? icon('stop', 16) : icon('play', 16)) : icon('download', 16)}
-              <span>${instances.length ? (running ? '停止游戏' : '启动游戏') : '下载游戏'}</span>
+              <span>${instances.length ? (running ? '停止游戏' : '继续最近世界') : '下载游戏'}</span>
             </button>
           </div>
           <div class="hero-meta">
@@ -222,6 +222,7 @@ export async function render(container, ctx) {
   `;
 
   setAvatar(container.querySelector('[data-hero-avatar]'), state.activeSkin?.dataUrl);
+  container.querySelector('[data-hero-avatar]')?.addEventListener('click', () => ctx.navigate('skins'));
 
   const versionSelect = container.querySelector('[data-hero-version]');
   versionSelect?.addEventListener('change', async () => {

@@ -1,0 +1,10 @@
+{
+    "sha256":  "3f9078a050baf72c932a91a216cc003b3092364c465a4caa06cc9fbf2ecb027b",
+    "version":  "2.1.1",
+    "publishedAt":  "2026-10-31T05:59:23.5790462Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.1.1.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.1.1.zip"
+                     ],
+    "notes":  "新闻恢复到左侧导航；官方新闻接口失败时自动使用本地缓存/内置新闻，不再整页加载失败。"
+}

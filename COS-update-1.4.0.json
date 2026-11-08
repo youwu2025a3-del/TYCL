@@ -1,0 +1,10 @@
+{
+    "sha256":  "258e8d9d42951cb5f8dc96194814f7805738700d160eb65bc43abfd5602b16f8",
+    "version":  "1.4.0",
+    "publishedAt":  "2026-10-25T12:47:37.8332798Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.4.0.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.4.0.zip"
+                     ],
+    "notes":  "COS 国内更新源已启用；3D 皮肤改用 skinview3d，启动更快，联机轮询更省资源。"
+}

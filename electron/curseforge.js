@@ -49,7 +49,7 @@ async function search({ query = '', type = 'mod', gameVersion = '', loader = '',
   });
   if (gameVersion) params.set('gameVersion', gameVersion);
   if (loader && LOADER_IDS[loader]) params.set('modLoaderType', String(LOADER_IDS[loader]));
-  const data = await fetchJson(`${API}/mods/search?${params.toString()}`, { timeout: 25000, headers: headers() });
+  const data = await fetchJson(`${baseUrl()}/mods/search?${params.toString()}`, { timeout: 25000, headers: headers() });
   return {
     hits: (data.data || []).map(normalize),
     total: data.pagination?.totalCount || 0,
@@ -65,7 +65,7 @@ function fileUrl(file) {
 async function compatibleFile(projectId, instance) {
   const params = new URLSearchParams({ gameVersion: instance.baseVersion, pageSize: '50' });
   if (LOADER_IDS[instance.loader]) params.set('modLoaderType', String(LOADER_IDS[instance.loader]));
-  const data = await fetchJson(`${API}/mods/${projectId}/files?${params.toString()}`, { timeout: 25000, headers: headers() });
+  const data = await fetchJson(`${baseUrl()}/mods/${projectId}/files?${params.toString()}`, { timeout: 25000, headers: headers() });
   const files = data.data || [];
   return files.find((file) => file.releaseType === 1) || files[0] || null;
 }
@@ -73,11 +73,11 @@ async function compatibleFile(projectId, instance) {
 async function installCurseModTask(task, { instanceId, modId, fileId }) {
   const instance = getInstance(instanceId);
   if (!instance) throw new Error('实例不存在');
-  const projectData = await fetchJson(`${API}/mods/${modId}`, { timeout: 25000, headers: headers() });
+  const projectData = await fetchJson(`${baseUrl()}/mods/${modId}`, { timeout: 25000, headers: headers() });
   const project = projectData.data;
   let file;
   if (fileId) {
-    const fileData = await fetchJson(`${API}/mods/${modId}/files/${fileId}`, { timeout: 25000, headers: headers() });
+    const fileData = await fetchJson(`${baseUrl()}/mods/${modId}/files/${fileId}`, { timeout: 25000, headers: headers() });
     file = fileData.data;
   } else {
     file = await compatibleFile(modId, instance);
@@ -98,7 +98,7 @@ async function installCurseModTask(task, { instanceId, modId, fileId }) {
     try {
       const depFile = await compatibleFile(dep.modId, instance);
       if (!depFile) continue;
-      const depData = await fetchJson(`${API}/mods/${dep.modId}`, { timeout: 25000, headers: headers() });
+      const depData = await fetchJson(`${baseUrl()}/mods/${dep.modId}`, { timeout: 25000, headers: headers() });
       const depTarget = path.join(modsDir, path.basename(depFile.fileName));
       if (!fs.existsSync(depTarget)) {
         await downloadToFile([fileUrl(depFile)], depTarget, { signal: task.signal, timeout: 180000 });

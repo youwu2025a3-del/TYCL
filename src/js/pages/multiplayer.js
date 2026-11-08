@@ -1,6 +1,6 @@
 import { icon } from '../icons.js';
 import { escapeHtml } from '../utils.js';
-import { toast, confirmDialog } from '../components.js';
+import { toast, confirmDialog, openModal } from '../components.js';
 
 function statusText(status) {
   if (!status) return '未检测';
@@ -72,6 +72,7 @@ export async function render(container, ctx) {
               <label class="room-check"><input type="checkbox" data-cfg-online> 开启正版验证</label>
               <label class="room-check"><input type="checkbox" data-cfg-whitelist> 启用白名单</label>
               <input class="input" data-cfg-names placeholder="白名单玩家名，逗号分隔" spellcheck="false">
+              <input class="input" type="password" data-cfg-password placeholder="房间密码（可选，启用后自动开白名单）" spellcheck="false">
               <div class="room-advanced-row">
                 <label>人数 <input class="input" type="number" min="1" max="100" value="20" data-cfg-max></label>
                 <label>视距 <input class="input" type="number" min="3" max="32" value="10" data-cfg-view></label>
@@ -90,18 +91,25 @@ export async function render(container, ctx) {
             </div>
           </div>
           <div class="field">
+            <div class="field-label">单机世界 <span class="field-hint" style="font-weight:400">可选</span></div>
+            <div class="select-wrap"><select class="select" data-host-world><option value="">不导入，使用服务端世界</option></select></div>
+            <div class="field-hint">选择后会把该存档复制到服务端再开房，原存档不会被修改。</div>
+          </div>
+          <div class="field">
             <div class="field-label">${hostMode === 'server' ? '服务端端口' : '局域网端口'}</div>            <div class="path-field">
               <input class="input" type="number" min="1" max="65535" value="${hostMode === 'server' ? '25565' : '25565'}" data-host-port>
               <button class="btn btn-primary" data-room-start ${room || hostBusy ? 'disabled' : ''}>${hostBusy ? '<span class="spinner" style="width:13px;height:13px"></span> 准备中' : `${icon('zap', 14)} 一键开房`}</button>
             </div>
             <div class="field-hint" data-host-hint>${hostMode === 'server' ? '自动下载服务端、生成配置并过滤客户端 Mod，然后开房。' : '先在游戏里「对局域网开放」，TYCL 会读取端口。'}</div>
+            ${hostMode === 'server' ? `<button class="btn btn-secondary btn-sm" data-time-standalone>${icon('clock', 12)} 房间时光机</button>` : ''}
           </div>
           <div class="room-live ${room ? '' : 'hidden'}" data-room-live>
             <div class="room-live-main">
               <span class="status-dot ok"></span>
-              <div><strong>${room ? `${room.mode === 'server' ? '服务端' : '局域网世界'} · 端口 ${room.port}` : ''}</strong><span data-room-status>房间运行中</span></div>
+              <div><strong>${room ? `${room.mode === 'server' ? '服务端' : '局域网世界'} · 端口 ${room.port}` : ''}</strong><span data-room-status>房间运行中</span><span data-room-players style="margin-left:8px;color:var(--faint)"></span></div>
             </div>
             <div class="room-live-actions">
+              <button class="btn btn-secondary btn-sm" data-room-time ${room && room.mode === 'server' ? '' : 'disabled'}>${icon('clock', 12)} 时光机</button>
               <button class="btn btn-secondary btn-sm" data-enter-local ${room ? '' : 'disabled'}>${icon('play', 12)} 进入我的房间</button>
               <button class="btn btn-ghost btn-sm" data-room-close ${room ? '' : 'disabled'}>关闭房间</button>
             </div>
@@ -132,7 +140,11 @@ export async function render(container, ctx) {
               </div>
               <div class="field-hint">5 位数字房间号会连接 bore.pub；也可以直接粘贴地址:端口。</div>
             </div>
-            <div class="join-room-hint">${icon('info', 14)} 加入前会先检查房间是否在线，避免进不去。</div>
+            <div class="field">
+              <div class="field-label">房间密码 <span class="field-hint" style="font-weight:400">没有可留空</span></div>
+              <input class="input" type="password" data-room-password placeholder="房主设置的密码" spellcheck="false">
+            </div>
+            <div class="join-room-hint">${icon('info', 14)} 支持 5 位房间号，或“游戏端口-服务端口”。</div>
           </div>
         </section>
       </div>
@@ -164,6 +176,14 @@ export async function render(container, ctx) {
 
   const body = container.querySelector('.multi-page');
 
+  const refreshWorlds = async () => {
+    const select = body.querySelector('[data-host-world]');
+    if (!select) return;
+    const selected = select.value;
+    const worlds = await ctx.api.listWorlds(instanceId).catch(() => []);
+    select.innerHTML = '<option value="">不导入，使用服务端世界</option>' + worlds.map((world) => '<option value="' + escapeHtml(world.name) + '"' + (world.name === selected ? ' selected' : '') + '>' + escapeHtml(world.name) + '</option>').join('');
+  };
+  refreshWorlds();
   const renderRoom = () => {
     const banner = body.querySelector('[data-room-banner]');
     const code = body.querySelector('[data-room-code]');
@@ -183,6 +203,8 @@ export async function render(container, ctx) {
     });
     const status = body.querySelector('[data-room-status]');
     if (status && room) status.textContent = room.mode === 'server' ? '服务端与公网隧道运行中' : '公网隧道运行中';
+    const players = body.querySelector('[data-room-players]');
+    if (players && room) players.textContent = server?.players?.length ? `· 在线 ${server.players.length} 人` : '';
     renderServer();
   };
 
@@ -252,11 +274,21 @@ export async function render(container, ctx) {
 
   const join = async (input) => {
     let address = String(input || '').trim();
+    let serviceAddress = '';
     if (!address) return toast({ title: '请输入房间号或地址', type: 'info' });
-    if (/^\d{4,5}$/.test(address)) address = `bore.pub:${address}`;
+    if (/^\d{4,5}-\d{4,5}$/.test(address)) {
+      const [gamePort, servicePort] = address.split('-');
+      address = `bore.pub:${gamePort}`;
+      serviceAddress = `bore.pub:${servicePort}`;
+    } else if (/^\d{4,5}$/.test(address)) address = `bore.pub:${address}`;
     else if (!address.includes(':')) address = `${address}:25565`;
     if (!instanceId) return toast({ title: '没有可用实例', message: '请先安装一个 Minecraft 版本', type: 'error' });
     try {
+      if (serviceAddress) {
+        const password = String(body.querySelector('[data-room-password]')?.value || '');
+        const result = await ctx.api.joinRoom({ serviceAddress, password, name: ctx.state.player?.name || 'Player', instanceId });
+        toast({ title: result.missing.length ? '已补齐 Mod' : 'Mod 已同步', message: result.missing.length ? result.missing.join('、') : '无需下载', type: 'success' });
+      }
       const status = await ctx.api.pingServer(address);
       if (!status.online) {
         toast({ title: '房间无法连接', message: `${address} · ${status.error || '可能已关闭'}`, type: 'error', duration: 6000 });
@@ -266,11 +298,12 @@ export async function render(container, ctx) {
       if (remoteFingerprint) {
         const local = await ctx.api.getServerFingerprint(instanceId).catch(() => null);
         if (local && local.fingerprint && local.fingerprint !== remoteFingerprint[1]) {
-          toast({ title: 'Mod 不一致', message: `房间 ${remoteFingerprint[1]} / 本地 ${local.fingerprint}，请先同步 Mod`, type: 'error', duration: 8000 });
+          toast({ title: 'Mod 不一致', message: `房间 ${remoteFingerprint[1]} / 本地 ${local.fingerprint}，请让房主开房后重试`, type: 'error', duration: 8000 });
           return;
         }
       }
-      await ctx.api.startLaunch(instanceId, { serverAddress: address });
+      const task = await ctx.api.startLaunch(instanceId, { serverAddress: address });
+      ctx.showLaunchProgress?.(task.id, ctx.state.instances.find((item) => item.id === instanceId)?.name || '');
       toast({ title: '正在进入房间', message: address, type: 'info' });
     } catch (error) {
       toast({ title: '进入失败', message: error.message, type: 'error', duration: 6000 });
@@ -315,7 +348,7 @@ export async function render(container, ctx) {
 
   body.querySelector('[data-multi-refresh]').addEventListener('click', () => { loadServers(); refreshLan(); refreshServer(); });
   body.querySelector('[data-ping-all]').addEventListener('click', loadServers);
-  body.querySelector('[data-host-instance]').addEventListener('change', (event) => { instanceId = event.target.value; const joinSelect = body.querySelector('[data-join-instance]'); if (joinSelect) joinSelect.value = instanceId; });
+  body.querySelector('[data-host-instance]').addEventListener('change', (event) => { instanceId = event.target.value; const joinSelect = body.querySelector('[data-join-instance]'); if (joinSelect) joinSelect.value = instanceId; refreshWorlds(); });
   body.querySelector('[data-join-instance]').addEventListener('change', (event) => { instanceId = event.target.value; const hostSelect = body.querySelector('[data-host-instance]'); if (hostSelect) hostSelect.value = instanceId; });
   body.querySelectorAll('[data-host-mode]').forEach((button) => button.addEventListener('click', () => {
     if (room) return;
@@ -327,29 +360,47 @@ export async function render(container, ctx) {
     if (hint) hint.textContent = hostMode === 'server' ? '自动下载服务端、生成配置并过滤客户端 Mod，然后开房。' : '先在游戏里「对局域网开放」，TYCL 会读取端口。';
   }));
 
+  const offServerProgress = ctx.api.onServerProgress?.((payload) => {
+    if (!hostBusy) return;
+    const pct = Math.max(0, Math.min(100, Number(payload.percent) || 0));
+    const stage = payload.stage || '准备中';
+    const hint = body.querySelector('[data-host-hint]');
+    if (hint) hint.textContent = stage + ' · ' + Math.round(pct) + '%' + (payload.detail ? ' · ' + payload.detail : '');
+    const startButton = body.querySelector('[data-room-start]');
+    if (startButton) startButton.innerHTML = '<span class="spinner" style="width:13px;height:13px"></span> 准备中 ' + Math.round(pct) + '%';
+  });
   body.querySelector('[data-room-start]').addEventListener('click', async () => {
     const port = Number(body.querySelector('[data-host-port]').value) || 25565;
     if (!instanceId) return toast({ title: '请选择实例', type: 'error' });
     hostBusy = true;
     renderRoom();
     config.onlineMode = Boolean(body.querySelector('[data-cfg-online]')?.checked);
-    config.whitelist = Boolean(body.querySelector('[data-cfg-whitelist]')?.checked);
+    const roomPassword = String(body.querySelector('[data-cfg-password]')?.value || '').trim();
+    config.whitelist = Boolean(body.querySelector('[data-cfg-whitelist]')?.checked) || Boolean(roomPassword);
     config.whitelistNames = String(body.querySelector('[data-cfg-names]')?.value || '').split(/[,，\s]+/).map((name) => name.trim()).filter(Boolean);
+    if (roomPassword && !config.whitelistNames.includes(ctx.state.player?.name || '')) config.whitelistNames.push(ctx.state.player?.name || 'Player');
     config.maxPlayers = Number(body.querySelector('[data-cfg-max]')?.value) || 20;
     config.viewDistance = Number(body.querySelector('[data-cfg-view]')?.value) || 10;
     config.difficulty = body.querySelector('[data-cfg-diff]')?.value || 'normal';
     try {
       if (hostMode === 'server') {
-        server = await ctx.api.startServer({ instanceId, port, motd: 'TYCL Room', config });
+        const worldName = body.querySelector('[data-host-world]')?.value || '';
+        server = await ctx.api.startServer({ instanceId, port, motd: 'TYCL Room', config, worldName });
         renderServer();
       }
       const actualPort = server.active ? server.port : port;
       tunnel = await ctx.api.startTunnel({ port: actualPort });
-      const code = String(tunnel.address).split(':').pop();
-      room = { code, address: tunnel.address, port: actualPort, mode: hostMode, fingerprint: server.fingerprint || '' };
+      let serviceAddress = '';
+      if (hostMode === 'server') {
+        const roomInfo = await ctx.api.startRoom({ instanceId, password: roomPassword, whitelist: config.whitelist });
+        serviceAddress = roomInfo.address;
+      }
+      const code = String(tunnel.address).split(':').pop() + (serviceAddress ? '-' + String(serviceAddress).split(':').pop() : '');
+      room = { code, address: tunnel.address, serviceAddress, port: actualPort, mode: hostMode, fingerprint: server.fingerprint || '', instanceId };
       renderRoom();
       toast({ title: '房间已开启', message: `房间号 ${code}`, type: 'success', duration: 6500 });
     } catch (error) {
+      try { await ctx.api.stopRoom(); } catch { /* ignore */ }
       try { await ctx.api.stopTunnel(); } catch { /* ignore */ }
       if (server.active) { try { await ctx.api.stopServer(); } catch { /* ignore */ } server = { active: false }; }
       room = null;
@@ -362,6 +413,7 @@ export async function render(container, ctx) {
   });
 
   body.querySelector('[data-room-close]').addEventListener('click', async () => {
+    await ctx.api.stopRoom();
     await ctx.api.stopTunnel();
     if (server.active) await ctx.api.stopServer();
     tunnel = { active: false };
@@ -369,6 +421,95 @@ export async function render(container, ctx) {
     room = null;
     renderRoom();
     toast({ title: '房间已关闭', type: 'info' });
+  });
+
+  body.querySelector('[data-time-standalone]')?.addEventListener('click', async () => {
+    const targetId = body.querySelector('[data-host-instance]')?.value || instanceId;
+    const modal = openModal({
+      title: '房间时光机',
+      subtitle: '查看这个实例保存过的开房快照',
+      size: 'modal-md',
+      body: `<div class="manager-list" data-snapshot-list><div class="loading-block"><span class="spinner"></span> 读取快照…</div></div>`,
+      footer: `<button class="btn btn-secondary btn-sm" data-modal-close>关闭</button>`,
+    });
+    const list = modal.body.querySelector('[data-snapshot-list]');
+    const snapshots = await ctx.api.listSnapshots(targetId).catch(() => []);
+    list.innerHTML = snapshots.length
+      ? snapshots.map((snap) => `<div class="manager-row"><div class="manager-row-main"><strong>${escapeHtml(snap.label || '房间快照')}</strong><span>${escapeHtml(new Date(snap.createdAt).toLocaleString('zh-CN'))} · ${(snap.size / 1024 / 1024).toFixed(1)} MB</span></div><button class="btn btn-secondary btn-xs" data-snapshot-restore="${escapeHtml(snap.id)}">回到这里</button></div>`).join('')
+      : '<div class="manager-empty">还没有快照。成功开房后会自动生成。</div>';
+    list.querySelectorAll('[data-snapshot-restore]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const ok = await confirmDialog({ title: '回到这个时间点？', message: '当前服务端世界会被替换。', confirmText: '回滚' });
+        if (!ok) return;
+        button.disabled = true;
+        try {
+          const oldPort = server.port;
+          const wasActive = server.active;
+          await ctx.api.restoreSnapshot(targetId, button.dataset.snapshotRestore);
+          server = { active: false };
+          if (wasActive && tunnel.active) {
+            server = await ctx.api.startServer({ instanceId: targetId, port: oldPort, motd: 'TYCL Room' });
+            renderRoom();
+          }
+          toast({ title: '世界已回滚', message: wasActive && tunnel.active ? '服务端已重新启动，房间号不变' : '重新开房即可使用' });
+          modal.close?.();
+        } catch (error) {
+          button.disabled = false;
+          toast({ title: '回滚失败', message: error.message, type: 'error' });
+        }
+      });
+    });
+  });
+
+  body.querySelector('[data-room-time]').addEventListener('click', async () => {
+    if (!room || !room.instanceId) return;
+    const renderSnapshots = async (modal) => {
+      const list = modal.body.querySelector('[data-snapshot-list]');
+      const snapshots = await ctx.api.listSnapshots(room.instanceId).catch(() => []);
+      list.innerHTML = snapshots.length
+        ? snapshots.map((snap) => `<div class="manager-row">
+            <div class="manager-row-main"><strong>${escapeHtml(snap.label || '房间快照')}</strong><span>${escapeHtml(new Date(snap.createdAt).toLocaleString('zh-CN'))} · ${(snap.size / 1024 / 1024).toFixed(1)} MB</span></div>
+            <button class="btn btn-secondary btn-xs" data-snapshot-restore="${escapeHtml(snap.id)}">回到这里</button>
+          </div>`).join('')
+        : '<div class="manager-empty">还没有快照。开房时会自动生成一张。</div>';
+      list.querySelectorAll('[data-snapshot-restore]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const ok = await confirmDialog({ title: '回到这个时间点？', message: '当前世界会被替换，正在房间里的玩家会断开。', confirmText: '回滚' });
+          if (!ok) return;
+          button.disabled = true;
+          try {
+            await ctx.api.restoreSnapshot(room.instanceId, button.dataset.snapshotRestore);
+            server = { active: false };
+            if (tunnel.active) {
+              server = await ctx.api.startServer({ instanceId: room.instanceId, port: room.port, motd: 'TYCL Room' });
+            }
+            renderRoom();
+            toast({ title: '世界已回滚', message: tunnel.active ? '服务端已重新启动，房间号不变' : '重新开房即可使用' });
+            modal.close?.();
+          } catch (error) {
+            button.disabled = false;
+            toast({ title: '回滚失败', message: error.message, type: 'error' });
+          }
+        });
+      });
+    };
+    const modal = openModal({
+      title: '房间时光机',
+      subtitle: '炸服、坏档、误删 Mod 时，回到之前的房间状态',
+      size: 'modal-md',
+      body: `<div class="manager-toolbar"><span>最多保留 3 份开房快照</span><button class="btn btn-secondary btn-sm" data-snapshot-create>${icon('camera', 12)} 现在拍快照</button></div><div class="manager-list" data-snapshot-list><div class="loading-block"><span class="spinner"></span> 读取快照…</div></div>`,
+      footer: `<button class="btn btn-secondary btn-sm" data-modal-close>关闭</button>`,
+    });
+    modal.body.querySelector('[data-snapshot-create]').addEventListener('click', async () => {
+      try {
+        await ctx.api.createSnapshot(room.instanceId, '手动快照');
+        await renderSnapshots(modal);
+        toast({ title: '快照已保存' });
+      } catch (error) {
+        toast({ title: '快照失败', message: error.message, type: 'error' });
+      }
+    });
+    await renderSnapshots(modal);
   });
 
   body.querySelector('[data-copy-room]').addEventListener('click', async () => {
@@ -407,9 +548,12 @@ export async function render(container, ctx) {
   try {
     tunnel = await ctx.api.getTunnelState();
     server = await ctx.api.getServerState();
+    const roomState = await ctx.api.getRoomState().catch(() => ({ active: false }));
     if (tunnel.active) {
-      const code = String(tunnel.address).split(':').pop();
-      room = { code, address: tunnel.address, port: tunnel.localPort, mode: server.active ? 'server' : 'lan' };
+      const gameCode = String(tunnel.address).split(':').pop();
+      const serviceCode = roomState.active ? String(roomState.address).split(':').pop() : '';
+      const code = gameCode + (serviceCode ? '-' + serviceCode : '');
+      room = { code, address: tunnel.address, serviceAddress: roomState.active ? roomState.address : '', port: tunnel.localPort, mode: server.active ? 'server' : 'lan', instanceId: server.instanceId || instanceId };
       const portInput = body.querySelector('[data-host-port]');
       if (portInput) portInput.value = tunnel.localPort;
     }
@@ -418,10 +562,11 @@ export async function render(container, ctx) {
   }
   renderRoom();
   renderServer();
-  lanTimer = setInterval(refreshLan, 2400);
-  serverTimer = setInterval(refreshServer, 1800);
+  lanTimer = setInterval(refreshLan, 4000);
+  serverTimer = setInterval(refreshServer, 3000);
 
   return () => {
+    offServerProgress?.();
     if (lanTimer) clearInterval(lanTimer);
     if (serverTimer) clearInterval(serverTimer);
   };

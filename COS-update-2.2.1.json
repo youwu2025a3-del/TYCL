@@ -1,0 +1,10 @@
+{
+    "sha256":  "ca755bf866d5ea182bcfb2afe6737de47d88e124f5c9673f889811640f36813e",
+    "version":  "2.2.1",
+    "publishedAt":  "2026-11-08T02:28:42.4786031Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.1.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.1.zip"
+                     ],
+    "notes":  "修复 Fabric/Quilt 版本 JSON 丢失 LWJGL downloads/natives 导致 RenderSystem 初始化失败；启动前自动备份并修复版本 JSON。"
+}

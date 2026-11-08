@@ -73,7 +73,7 @@ function faceMarkup(part, scale, dataUrl, slim) {
   return `<div class="skin-part skin-${part.name}" style="left:${p(left * scale)};top:${p(part.y * scale)};width:${p(w * scale)};height:${p(part.h * scale)};">${faces.join('')}</div>`;
 }
 
-export function createSkinViewer(container, options = {}) {
+function createCssSkinViewer(container, options = {}) {
   let dataUrl = options.dataUrl || '';
   let slim = options.model === 'slim';
   let rotX = -7;
@@ -184,4 +184,72 @@ export function createSkinViewer(container, options = {}) {
       container.replaceChildren();
     },
   };
+}
+
+export function createSkinViewer(container, options = {}) {
+  const lib = window.skinview3d;
+  if (!lib || !window.WebGLRenderingContext) return createCssSkinViewer(container, options);
+  try {
+    container.innerHTML = '';
+    const canvas = document.createElement('canvas');
+    const width = container.clientWidth || 420;
+    const height = container.clientHeight || 520;
+    container.appendChild(canvas);
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.touchAction = 'none';
+    const viewer = new lib.SkinViewer({
+      canvas,
+      width,
+      height,
+      skin: options.dataUrl || undefined,
+      model: options.model === 'slim' ? 'slim' : 'classic',
+      enableControls: true,
+    });
+    viewer.autoRotate = false;
+    viewer.autoRotateSpeed = 0.45;
+    viewer.zoom = 0.9;
+    viewer.camera.position.set(0, 12, 62);
+    viewer.controls.target.set(0, 12, 0);
+    viewer.controls.update();
+    viewer.controls.enablePan = false;
+    viewer.controls.enableZoom = false;
+    if (lib.IdleAnimation) viewer.animation = new lib.IdleAnimation();
+    viewer.renderer?.setClearColor?.(0x000000, 0);
+    const resize = () => {
+      const w = container.clientWidth || width;
+      const h = container.clientHeight || height;
+      viewer.setSize(w, h);
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(container);
+    return {
+      setSkin(nextDataUrl, modelType) {
+        viewer.loadSkin(nextDataUrl, { model: modelType === 'slim' ? 'slim' : 'classic' });
+      },
+      setModel(modelType) {
+        viewer.loadSkin(viewer.skin?.image?.src || options.dataUrl, { model: modelType === 'slim' ? 'slim' : 'classic' });
+      },
+      setSpin(value) {
+        viewer.autoRotate = Boolean(value);
+      },
+      isSpinning() {
+        return Boolean(viewer.autoRotate);
+      },
+      reset() {
+        viewer.autoRotate = false;
+        viewer.camera.position.set(0, 12, 62);
+        viewer.controls.target.set(0, 10, 0);
+        viewer.controls.update();
+      },
+      setAngle() {},
+      dispose() {
+        observer.disconnect();
+        viewer.dispose();
+      },
+    };
+  } catch (error) {
+    console.warn('skinview3d failed, using CSS fallback', error);
+    return createCssSkinViewer(container, options);
+  }
 }

@@ -7,7 +7,7 @@ const { execFile } = require('child_process');
 const AdmZip = require('adm-zip');
 const { store } = require('./store');
 const { paths, ensureDir } = require('./paths');
-const { downloadToFile } = require('./net');
+const { fetchJson, downloadToFile } = require('./net');
 
 const JAVA_EXE = process.platform === 'win32' ? 'java.exe' : 'java';
 const JAVA_CACHE = new Map();
@@ -76,7 +76,32 @@ function scanJavaRoot(root, set, depth = 2) {
   }
 }
 
-function candidatePaths() {
+function queryJavaRegistry() {
+  if (process.platform !== 'win32') return Promise.resolve([]);
+  const keys = [
+    'HKLM\\SOFTWARE\\JavaSoft\\JDK',
+    'HKLM\\SOFTWARE\\JavaSoft\\JRE',
+    'HKLM\\SOFTWARE\\Eclipse Adoptium\\JDK',
+    'HKLM\\SOFTWARE\\Azul Systems\\Zulu',
+    'HKLM\\SOFTWARE\\GraalVM',
+    'HKCU\\SOFTWARE\\JavaSoft\\JDK',
+    'HKCU\\SOFTWARE\\Eclipse Adoptium\\JDK',
+  ];
+  const readKey = (key) => new Promise((resolve) => {
+    execFile('reg', ['query', key, '/s'], { windowsHide: true, timeout: 5000 }, (error, stdout) => {
+      if (error) return resolve([]);
+      const paths = [];
+      for (const line of String(stdout || '').split(/\r?\n/)) {
+        const match = line.match(/(?:JavaHome|InstallationPath|Path)\s+REG_[A-Z_]+\s+(.+)$/i);
+        if (match) paths.push(match[1].trim());
+      }
+      resolve(paths);
+    });
+  });
+  return Promise.all(keys.map(readKey)).then((groups) => groups.flat());
+}
+
+async function candidatePaths() {
   const candidates = new Set();
   const settings = store.getSettings();
   addCandidate(candidates, settings.javaPath);
@@ -93,11 +118,16 @@ function candidatePaths() {
     'C:\\Program Files\\BellSoft',
     'C:\\Program Files\\Semeru',
     'C:\\Program Files\\JetBrains',
+    'C:\\Program Files\\GraalVM',
+    'C:\\Program Files\\Azul',
+    'C:\\Program Files\\BellSoft',
+    'C:\\Program Files\\Android\\Android Studio\\jbr',
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Microsoft'),
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Eclipse Adoptium'),
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Amazon Corretto'),
     path.join(process.env.LOCALAPPDATA || '', 'Programs', 'Zulu'),
     path.join(os.homedir(), '.jdks'),
+    path.join(os.homedir(), '.sdkman', 'candidates', 'java'),
     path.join(os.homedir(), 'scoop', 'apps'),
     paths.runtimes(),
     '/usr/lib/jvm',
@@ -106,13 +136,20 @@ function candidatePaths() {
     '/usr/local/opt',
   ];
   for (const root of roots) scanJavaRoot(root, candidates, 2);
+  for (const home of await queryJavaRegistry()) {
+    addCandidate(candidates, path.join(home, 'bin', JAVA_EXE));
+    addCandidate(candidates, path.join(home, JAVA_EXE));
+  }
 
   return Array.from(candidates);
 }
 
+let DETECT_CACHE = { at: 0, list: [] };
+
 async function detectJava({ refresh = false } = {}) {
+  if (!refresh && Date.now() - DETECT_CACHE.at < 30000) return DETECT_CACHE.list;
   if (refresh) JAVA_CACHE.clear();
-  const candidates = candidatePaths();
+  const candidates = await candidatePaths();
   const results = [];
   const seen = new Set();
   for (const candidate of candidates) {
@@ -132,6 +169,7 @@ async function detectJava({ refresh = false } = {}) {
   const pathInfo = await inspectJava(pathJava);
   if (pathInfo) results.push({ ...pathInfo, path: pathJava });
   results.sort((a, b) => b.major - a.major || a.path.localeCompare(b.path));
+  DETECT_CACHE = { at: Date.now(), list: results };
   return results;
 }
 
@@ -158,12 +196,26 @@ function pickJava(list, required) {
   return compatible || null;
 }
 
-function javaDownloadUrl(major) {
-  const known = {
-    17: 'https://aka.ms/download-jdk/microsoft-jdk-17-windows-x64.zip',
-    21: 'https://aka.ms/download-jdk/microsoft-jdk-21-windows-x64.zip',
-  };
-  return known[major] || '';
+async function javaDownloadUrls(major) {
+  const urls = [];
+  if (major === 8) {
+    try {
+      const assets = await fetchJson('https://api.azul.com/metadata/v1/zulu/packages/?java_version=8&os=windows&arch=x64&archive_type=zip&java_package_type=jre&release_status=ga&latest=true', { timeout: 20000 });
+      if (assets?.[0]?.download_url) urls.push(assets[0].download_url);
+    } catch { /* ignore */ }
+    urls.push('https://cdn.azul.com/zulu/bin/zulu8.98.0.107-ca-jre8.0.512-win_x64.zip');
+    try {
+      const assets = await fetchJson('https://api.adoptium.net/v3/assets/latest/8/hotspot?architecture=x64&image_type=jdk&os=windows&vendor=eclipse', { timeout: 20000 });
+      if (assets?.[0]?.binary?.package?.link) urls.push(assets[0].binary.package.link);
+    } catch { /* ignore */ }
+  } else {
+    const known = {
+      17: 'https://aka.ms/download-jdk/microsoft-jdk-17-windows-x64.zip',
+      21: 'https://aka.ms/download-jdk/microsoft-jdk-21-windows-x64.zip',
+    };
+    if (known[major]) urls.push(known[major]);
+  }
+  return Array.from(new Set(urls.filter(Boolean)));
 }
 
 function findJavaExe(root, depth = 4) {
@@ -189,15 +241,15 @@ async function downloadJavaRuntime(major, { signal, onProgress } = {}) {
   if (process.platform !== 'win32' || process.arch !== 'x64') {
     throw new Error('当前平台暂不支持自动下载 Java，请手动安装 Java ' + major);
   }
-  const url = javaDownloadUrl(major);
-  if (!url) throw new Error(`暂不支持自动下载 Java ${major}，请手动安装后到设置中选择 java.exe`);
+  const urls = await javaDownloadUrls(major);
+  if (!urls.length) throw new Error(`暂不支持自动下载 Java ${major}，请手动安装后到设置中选择 java.exe`);
   const cacheDir = paths.cache();
   const zipFile = path.join(cacheDir, `microsoft-jdk-${major}-windows-x64.zip`);
   const destRoot = ensureDir(path.join(paths.runtimes(), `jdk-${major}`));
   const existing = findJavaExe(destRoot);
   if (existing) return { path: existing, major };
   if (onProgress) onProgress({ stage: '下载 Java 运行时', percent: 0, detail: `Java ${major} · 首次启动需要一次下载` });
-  await downloadToFile([url], zipFile, {
+  await downloadToFile(urls, zipFile, {
     signal,
     timeout: 900000,
     skipIfExists: true,

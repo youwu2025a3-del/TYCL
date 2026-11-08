@@ -72,6 +72,7 @@ export async function openInstallModal(ctx, options = {}) {
           const group = loadersData?.[selected.loader];
           selected.loaderVersion = group?.recommended || group?.versions?.[0]?.version || '';
           renderLoaderSection();
+          if (!group?.versions?.length) loadLoaders();
           return;
         }
         const installButton = event.target.closest('[data-install]');
@@ -111,8 +112,14 @@ export async function openInstallModal(ctx, options = {}) {
           loadersData = null;
           const banner = root.querySelector('[data-banner-version]');
           if (banner) banner.textContent = `Minecraft ${mcVersion}`;
-          updateVersionMeta();
-          loadLoaders();
+          if (selected.loader === 'vanilla') {
+            loadersData = { vanilla: { label: '原版', recommended: '', versions: [{ version: '', stable: true, type: 'release' }] } };
+            renderLoaderSection();
+            updateVersionMeta();
+          } else {
+            updateVersionMeta();
+            loadLoaders();
+          }
         }
       });
       root.addEventListener('input', (event) => {
@@ -320,8 +327,13 @@ export async function openInstallModal(ctx, options = {}) {
       }
       versionType = allVersions.find((item) => item.id === mcVersion)?.type || 'release';
       versionsLoading = false;
-      renderForm();
-      await loadLoaders();
+      if (selected.loader === 'vanilla') {
+        loadersData = { vanilla: { label: '原版', recommended: '', versions: [{ version: '', stable: true, type: 'release' }] } };
+        renderForm();
+      } else {
+        renderForm();
+        await loadLoaders();
+      }
     } catch (error) {
       versionsLoading = false;
       renderVersionError(error);
@@ -589,8 +601,174 @@ export function openAvailableUpdatePrompt(ctx, result) {
 }
 
 export function openUpdatesModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.4';
+  const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
+    {
+      version: '2.2.2',
+      date: '2026.11.08',
+      title: '稳定性修复 · LWJGL / 下载 / 诊断',
+      items: [
+        '修复 Fabric / Quilt 版本 JSON 丢失 LWJGL downloads/natives，导致 RenderSystem 初始化失败。',
+        '启动前自动修复版本 JSON，并生成 .bak 备份；已有实例无需重装。',
+        '安装器合并加载器 profile 时保留原版 LWJGL 元数据。',
+        '下载游戏界面优先使用版本缓存，默认原版不再请求加载器列表。',
+        '新增安全启动：禁用全部 Mod 后启动，用于排查冲突。',
+        '启动前超过 12 小时自动备份实例。',
+        '崩溃统一为一个诊断窗口，支持一键修复内存/Java/重复 Mod。',
+        'AI 改为右上角抽屉；新闻恢复左侧导航并支持离线缓存。',
+        '设置中的模型与接口收进“高级”折叠区。',
+      ],
+    },
+                    {
+      version: '2.1.0',
+      date: '2026.10.31',
+      title: 'Clean UI',
+      items: [
+        '左侧导航收敛为首页、游戏库、资源中心、联机、设置。',
+        'AI 改为右上角小按钮，点击右侧抽屉，不再占一级导航。',
+        '首页移除快捷入口和推荐侧栏，只保留继续游戏与最近实例。',
+        '崩溃时统一弹出一个诊断窗口，不再连续弹窗。',
+        '皮肤入口改为点击首页角色头像进入。',
+      ],
+    },{
+      version: '2.0.0',
+      date: '2026.10.27',
+      title: '本地 AI · TYCL 2.0',
+      items: [
+        'AI 助手支持本地模型：Ollama / llama.cpp 的 OpenAI 兼容接口。',
+        '自动模式优先本地模型，本地不可用再走云端 API。',
+        '设置页新增本地模型地址、模型名称、检测和连接测试。',
+        'AI 页面显示本地模型状态，并保留本地意图检索兜底。',
+        '工具调用搜索整合包，结合实例、Java、内存上下文回答。',
+        '对话历史、重新生成、复制、清空和未配置 Key 的降级路径。',
+      ],
+    },{
+      version: '1.6.0',
+      date: '2026.10.27',
+      title: 'AI 助手 2.0',
+      items: [
+        'AI 独立对话页：上下文、历史记录、重新生成、复制。',
+        '接入 OpenAI 兼容模型，支持 DeepSeek，可测试连接。',
+        'AI 工具调用：根据意图搜索 Modrinth 整合包，不再凭空编造。',
+        'AI 上下文：读取实例、版本、加载器、内存和账户信息。',
+        '本地回退：没填 Key 也能做意图检索、Java/内存/崩溃/联机排查。',
+        '中文同义词扩展：渣机、空岛、科技感、低配、任务、联机等。',
+      ],
+    },{
+      version: '1.5.0',
+      date: '2026.10.27',
+      title: 'AI 找包 · 房间服务 · 一键准备',
+      items: [
+        'AI 找包原型：自然语言解析为 Modrinth 分类并推荐整合包。',
+        '一键准备：安装整合包、设置 JVM、自动开服并开房。',
+        '房间密码与缺失 Mod 自动补齐（双隧道房间服务）。',
+        '世界一键开房、启动进度窗口、资源包启用/禁用。',
+        '实例迁移入口、崩溃报告生成、首页继续最近世界。',
+      ],
+    },{
+      version: '1.4.4',
+      date: '2026.10.26',
+      title: 'Java 8 自动安装 · 时光机入口',
+      items: [
+        '修复 Java 8 实例开房失败：自动下载 Temurin 8。',
+        '联机页新增独立的「房间时光机」入口，不必先开房。',
+        '房间内时光机回滚后自动重启服务端，房间号不变。',
+      ],
+    },
+    {
+      version: '1.4.3',
+      date: '2026.10.26',
+      title: '房间时光机',
+      items: [
+        '开房自动保存世界快照，最多保留 3 份。',
+        '炸服、坏档、误删 Mod 后，一键回到之前的房间状态。',
+        '回滚后自动重启服务端，房间号不变。',
+        '修复 Minecraft 26.x 版本判断导致无法自动进服。',
+        'Java 搜索支持 Zulu、GraalVM、BellSoft 与注册表路径。',
+      ],
+    },
+    {
+      version: '1.4.2',
+      date: '2026.10.26',
+      title: '直进存档 · Java 搜索增强',
+      items: [
+        '点击启动后自动进入最近修改的存档，不再停在主菜单。',
+        'Mod 安装继续自动处理必需前置依赖。',
+        'Java 搜索新增 Zulu、GraalVM、BellSoft、Android Studio JBR 和注册表安装路径。',
+      ],
+    },
+    {
+      version: '1.4.1',
+      date: '2026.10.25',
+      title: '更新公告与更新源修复',
+      items: [
+        '更新公告补充 1.4.0 / 1.4.1 内容。',
+        '旧版 Cloudflare 更新源自动迁移到 COS。',
+        '设置页更新源地址显示当前 COS 地址。',
+      ],
+    },
+    {
+      version: '1.4.0',
+      date: '2026.10.25',
+      title: 'COS 国内更新 · skinview3d',
+      items: [
+        '默认更新源切换为腾讯云 COS，国内无需 VPN。',
+        '更新检查顺序：COS → Cloudflare → jsDelivr → GitHub。',
+        '3D 皮肤改用 skinview3d，修正显示并支持鼠标拖动。',
+        '启动不再等待皮肤缓存，最多减少 6 秒等待。',
+        '联机轮询降频，实例管理不再全量计算 Mod SHA-1。',
+        'Ctrl+K 命令面板、实例直接管理、房间在线人数。',
+      ],
+    },
+    {
+      version: '1.3.9',
+      date: '2026.10.25',
+      title: '优化测试版',
+      items: [
+        '启动、联机轮询、实例管理的性能优化测试包。',
+        '3D 皮肤切换 skinview3d。',
+        '更新源多线路回退原型。',
+      ],
+    },
+    {
+      version: '1.3.8',
+      date: '2026.10.25',
+      title: '更新线路回退',
+      items: [
+        '更新源增加 GitHub Raw / jsDelivr 回退。',
+        'update.json 支持 downloadUrls 多地址。',
+        '更新包支持多地址重试与 SHA-256 校验。',
+      ],
+    },
+    {
+      version: '1.3.7',
+      date: '2026.10.25',
+      title: '3D 皮肤重做',
+      items: [
+        '3D 皮肤改用 skinview3d，修正相机和全身显示。',
+        'WebGL 失败静态回退。',
+        'Ctrl+K 命令面板、在线玩家数量、实例直接管理。',
+      ],
+    },
+    {
+      version: '1.3.6',
+      date: '2026.10.25',
+      title: '体验升级',
+      items: [
+        '全局命令面板与顶部搜索入口。',
+        '实例卡片点击直接打开管理，弹窗宽度 1120px。',
+        '联机房间玩家数量解析。',
+      ],
+    },
+    {
+      version: '1.3.5',
+      date: '2026.10.25',
+      title: 'CurseForge 代理',
+      items: [
+        'CurseForge 通过 Cloudflare Worker 代理，客户端不保存 Key。',
+        'Windows 安装器与更新包构建。',
+      ],
+    },
     {
       version: '1.3.4',
       date: '2026.10.25',
@@ -884,14 +1062,14 @@ export function openUpdatesModal(ctx) {
         `;
         progressEl.querySelector('[data-download-update]').addEventListener('click', async (evt) => {
           const downloadButton = evt.currentTarget;
-          if (!result.manifest?.downloadUrl) {
+          if (!result.manifest?.downloadUrl && !(result.manifest?.downloadUrls || []).length) {
             toast({ title: '更新源没有提供下载地址', message: '请使用“导入更新包”，或在更新清单中填写 downloadUrl', type: 'info' });
             return;
           }
           downloadButton.disabled = true;
           downloadButton.innerHTML = `<span class="spinner" style="width:13px;height:13px"></span> 下载中`;
           try {
-            const prepared = await ctx.api.downloadUpdate({ url: result.manifest.downloadUrl, sha256: result.manifest.sha256 });
+            const prepared = await ctx.api.downloadUpdate({ url: result.manifest.downloadUrl, downloadUrls: result.manifest.downloadUrls || [], sha256: result.manifest.sha256 });
             showPreparedUpdate(prepared, result.manifest.source || '更新源');
           } catch (error) {
             toast({ title: '下载更新失败', message: error.message, type: 'error' });
@@ -937,7 +1115,7 @@ export function openUpdatesModal(ctx) {
 
 
 export function openAboutModal(ctx) {
-  const version = ctx.state.system?.appVersion || '1.3.4';
+  const version = ctx.state.system?.appVersion || '1.5.0';
   const modal = openModal({
     title: '关于 TYCL',
     subtitle: '简单、安静、刚刚好的 Minecraft 启动器',
@@ -1044,7 +1222,15 @@ export async function launchInstance(ctx, instance, button = null) {
     button.innerHTML = `<span class="spinner" style="width:13px;height:13px;border-color:rgba(255,255,255,.3);border-top-color:#fff"></span> 启动中`;
   }
   try {
-    await ctx.api.startLaunch(instance.id);
+    let worldName = '';
+    try {
+      const worlds = await ctx.api.listWorlds(instance.id);
+      if (worlds?.length) worldName = worlds[0].name;
+    } catch {
+      // 没有存档时正常进入主菜单
+    }
+    const task = await ctx.api.startLaunch(instance.id, { worldName });
+    ctx.showLaunchProgress?.(task.id, instance.name);
   } catch (error) {
     if (button) {
       button.disabled = false;
@@ -1224,6 +1410,24 @@ export async function openInstanceManager(ctx, instance) {
         toast({ title: '备份失败', message: error.message, type: 'error' });
       }
     });
+    modal.body.querySelector('[data-manager-safe]')?.addEventListener('click', async () => {
+      try {
+        const task = await ctx.api.startLaunch(current.id, { safeMode: true });
+        ctx.showLaunchProgress?.(task.id, current.name);
+        toast({ title: '安全启动中', message: '已禁用全部 Mod，启动后可逐个启用排查', duration: 6000 });
+      } catch (error) {
+        toast({ title: '安全启动失败', message: error.message, type: 'error', duration: 7000 });
+      }
+    });
+    modal.body.querySelector('[data-manager-crash]')?.addEventListener('click', async () => {
+      try {
+        const result = await ctx.api.createCrashReport(instance.id);
+        toast({ title: '崩溃报告已生成', message: result.file, duration: 7000 });
+        ctx.api.openPath(result.file);
+      } catch (error) {
+        toast({ title: '生成失败', message: error.message, type: 'error' });
+      }
+    });
     modal.body.querySelector('[data-manager-export]')?.addEventListener('click', async () => {
       try {
         const result = await ctx.api.exportInstance(instance.id);
@@ -1339,6 +1543,20 @@ export async function openInstanceManager(ctx, instance) {
         }
       });
     });
+    modal.body.querySelectorAll('[data-resource-toggle]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        button.disabled = true;
+        try {
+          await ctx.api.setResourceEnabled(instance.id, button.dataset.resourceToggle, button.dataset.enabled !== '1');
+          data.resources = await ctx.api.listResources(instance.id);
+          render();
+          toast({ title: button.dataset.enabled === '1' ? '资源包已禁用' : '资源包已启用' });
+        } catch (error) {
+          button.disabled = false;
+          toast({ title: '操作失败', message: error.message, type: 'error' });
+        }
+      });
+    });
     modal.body.querySelectorAll('[data-resource-delete]').forEach((button) => {
       button.addEventListener('click', async () => {
         const ok = await confirmDialog({ title: '删除资源', message: button.dataset.resourceName, confirmText: '删除', danger: true });
@@ -1410,6 +1628,8 @@ export async function openInstanceManager(ctx, instance) {
           <button class="manager-action" data-manager-export>${icon('upload', 17)}<strong>导出实例</strong><span>生成可分享的 .zip 实例包</span></button>
           <button class="manager-action" data-manager-import>${icon('download', 17)}<strong>导入实例</strong><span>从 TYCL 实例包恢复</span></button>
           <button class="manager-action" data-manager-repair>${icon('settings', 17)}<strong>一键修复</strong><span>补全缺失的游戏版本和依赖</span></button>
+          <button class="manager-action" data-manager-safe>${icon('shield', 17)}<strong>安全启动</strong><span>禁用全部 Mod 后启动，用于排查冲突</span></button>
+          <button class="manager-action" data-manager-crash>${icon('alert-triangle', 17)}<strong>崩溃报告</strong><span>收集日志、Mod、Java 和系统信息</span></button>
           ${current.modpack ? `<button class="manager-action" data-manager-modpack>${icon('refresh', 17)}<strong>更新整合包</strong><span>同步整合包的新版本文件</span></button>` : ''}
         </div>
         ${data.mods.conflicts.length ? `<div class="notice warn">${icon('alert-triangle', 15)}<span>检测到 ${data.mods.conflicts.length} 个 Mod 冲突，请在 Mods 页查看。</span></div>` : ''}
@@ -1444,7 +1664,7 @@ export async function openInstanceManager(ctx, instance) {
       const section = (kind, title, items) => `<div class="resource-block">
         <div class="manager-toolbar"><span>${title} · ${items.length}</span><button class="btn btn-secondary btn-sm" data-resource-add="${kind}">${icon('plus', 12)} 导入</button></div>
         <div class="manager-list">
-          ${items.map((item) => `<div class="manager-row"><div class="manager-row-main"><strong>${escapeHtml(item.name)}</strong><span>${item.directory ? '文件夹' : formatSize(item.size)}</span></div><button class="btn btn-ghost btn-xs danger" data-resource-delete="${kind}" data-resource-name="${escapeHtml(item.name)}">删除</button></div>`).join('') || '<div class="manager-empty">还没有内容</div>'}
+          ${items.map((item) => `<div class="manager-row"><div class="manager-row-main"><strong>${escapeHtml(item.name)}</strong><span>${item.directory ? '文件夹' : formatSize(item.size)}</span></div>${kind === 'resourcepacks' ? `<button class="btn btn-ghost btn-xs" data-resource-toggle="${escapeHtml(item.name)}" data-enabled="${item.enabled ? '1' : '0'}">${item.enabled ? '禁用' : '启用'}</button>` : ''}<button class="btn btn-ghost btn-xs danger" data-resource-delete="${kind}" data-resource-name="${escapeHtml(item.name)}">删除</button></div>`).join('') || '<div class="manager-empty">还没有内容</div>'}
         </div>
       </div>`;
       content = `

@@ -1,0 +1,10 @@
+{
+    "sha256":  "57d87550071b5a493ed1776cb95a75bde67a44bfaf1498eb1eee8acf839f942e",
+    "version":  "2.1.2",
+    "publishedAt":  "2026-10-31T06:07:17.8216115Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.1.2.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.1.2.zip"
+                     ],
+    "notes":  "修复 AI 按钮重复导航；抽屉内诊断先关闭抽屉再打开；抽屉淡入/滑入动画；新闻恢复左侧导航并支持离线缓存。"
+}

@@ -1,0 +1,10 @@
+{
+    "sha256":  "21cd70b61276c75997e0f416492be398ae3c3c7f834b399e953df44703a5c4bb",
+    "version":  "1.4.3",
+    "publishedAt":  "2026-10-26T13:41:46.3078725Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.4.3.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.4.3.zip"
+                     ],
+    "notes":  "房间时光机：开房自动快照、炸服回滚；修复 26.x 自动进服；Java 搜索增强。"
+}

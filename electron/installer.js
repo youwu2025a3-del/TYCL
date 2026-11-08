@@ -319,6 +319,15 @@ function mergeLoaderProfile(base, profile) {
   const libraries = new Map();
   for (const library of base.libraries || []) libraries.set(keyOf(library), library);
   for (const library of profile.libraries || []) libraries.set(keyOf(library), library);
+  // 加载器 profile 可能覆盖 LWJGL 条目但缺少 downloads/natives，保留原版元数据
+  for (const [key, library] of libraries) {
+    if (!/^org\.lwjgl:/.test(library.name || '')) continue;
+    const baseLibrary = (base.libraries || []).find((item) => keyOf(item) === key);
+    if (!baseLibrary) continue;
+    for (const field of ['downloads', 'natives', 'extract', 'rules', 'url', 'sha1', 'size']) {
+      if (library[field] == null && baseLibrary[field] != null) library[field] = JSON.parse(JSON.stringify(baseLibrary[field]));
+    }
+  }
   merged.libraries = Array.from(libraries.values());
 
   const baseArgs = base.arguments || {};

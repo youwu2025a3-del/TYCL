@@ -44,6 +44,11 @@ async function getManifest({ force = false } = {}) {
   const primary = MANIFEST_URLS[source];
   const fallback = source === 'official' ? MANIFEST_URLS.bmclapi : MANIFEST_URLS.official;
   const cached = readCacheJson(cacheFile('version_manifest_v2.json'), 1000 * 60 * 60 * 12);
+  if (!force && cached && Array.isArray(cached.versions)) {
+    manifestCache = cached;
+    manifestCacheTime = Date.now();
+    return cached;
+  }
   let lastError;
   for (const url of [primary, fallback]) {
     try {

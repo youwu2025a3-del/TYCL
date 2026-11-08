@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const AdmZip = require('adm-zip');
 const { paths, ensureDir, safeResolveWithin } = require('./paths');
 const { getInstance, createInstance, updateInstance } = require('./instances');
+const { store } = require('./store');
 const { fetchJson, mapLimit } = require('./net');
 
 const MODRINTH = 'https://api.modrinth.com/v2';
@@ -335,7 +336,7 @@ function listResources(instanceId) {
       .map((entry) => {
         const file = path.join(dir, entry.name);
         const stat = fs.statSync(file);
-        return { name: entry.name, path: file, directory: entry.isDirectory(), size: entry.isFile() ? stat.size : 0, modifiedAt: stat.mtime.toISOString() };
+        return { name: entry.name, path: file, directory: entry.isDirectory(), size: entry.isFile() ? stat.size : 0, modifiedAt: stat.mtime.toISOString(), enabled: folder !== 'resourcepacks' ? undefined : resourceEnabledSet(instance).has('file/' + entry.name) };
       })
       .sort((a, b) => b.modifiedAt.localeCompare(a.modifiedAt));
   };
@@ -396,6 +397,154 @@ function deleteResource(instanceId, kind, name) {
   return { ok: true };
 }
 
+
+function resourceEnabledSet(instance) {
+  const set = new Set(['vanilla']);
+  try {
+    const options = fs.readFileSync(path.join(instance.gameDir, 'options.txt'), 'utf8');
+    const line = options.split(/\r?\n/).find((item) => item.startsWith('resourcePacks:'));
+    if (line) {
+      const list = JSON.parse(line.slice('resourcePacks:'.length));
+      for (const item of list) set.add(item);
+    }
+  } catch { /* ignore */ }
+  return set;
+}
+
+function setResourceEnabled(instanceId, name, enabled) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const file = path.join(instance.gameDir, 'options.txt');
+  let lines = [];
+  try { lines = fs.readFileSync(file, 'utf8').split(/\r?\n/); } catch { lines = []; }
+  const key = 'file/' + name;
+  const set = resourceEnabledSet(instance);
+  if (enabled) set.add(key); else set.delete(key);
+  const value = 'resourcePacks:' + JSON.stringify(Array.from(set));
+  const index = lines.findIndex((line) => line.startsWith('resourcePacks:'));
+  if (index >= 0) lines[index] = value; else lines.push(value);
+  fs.writeFileSync(file, lines.filter((line, i) => line || i === lines.length - 1).join('\n'), 'utf8');
+  return { ok: true, enabled: Boolean(enabled) };
+}
+
+function readJsonFile(file) {
+  try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; }
+}
+
+function detectExternalInstance(folder) {
+  const mmc = readJsonFile(path.join(folder, 'mmc-pack.json'));
+  if (mmc && Array.isArray(mmc.components)) {
+    const map = {};
+    for (const item of mmc.components) map[item.uid] = item.version;
+    const mcVersion = map['net.minecraft'] || '';
+    const loader = map['net.fabricmc.fabric-loader'] ? 'fabric'
+      : map['net.minecraftforge'] ? 'forge'
+      : map['org.quiltmc.quilt-loader'] ? 'quilt'
+      : map['net.neoforged'] ? 'neoforge' : 'vanilla';
+    const loaderVersion = map[`net.fabricmc.fabric-loader`] || map['net.minecraftforge'] || map['org.quiltmc.quilt-loader'] || map['net.neoforged'] || '';
+    const gameDir = fs.existsSync(path.join(folder, '.minecraft')) ? path.join(folder, '.minecraft') : folder;
+    return { source: 'Prism / MultiMC', name: path.basename(folder), mcVersion, loader, loaderVersion, gameDir };
+  }
+  const cf = readJsonFile(path.join(folder, 'minecraftinstance.json'));
+  if (cf) {
+    const mcVersion = cf.baseModLoader?.minecraftVersion || cf.gameVersion || '';
+    const loaderName = String(cf.baseModLoader?.name || '').toLowerCase();
+    const loader = loaderName.includes('neoforge') ? 'neoforge' : loaderName.includes('fabric') ? 'fabric' : loaderName.includes('quilt') ? 'quilt' : loaderName.includes('forge') ? 'forge' : 'vanilla';
+    const loaderVersion = String(cf.baseModLoader?.forgeVersion || cf.baseModLoader?.name || '').replace(/^.*?-/, '');
+    return { source: 'CurseForge', name: cf.name || path.basename(folder), mcVersion, loader, loaderVersion, gameDir: folder };
+  }
+  return null;
+}
+
+function findInstalledVersion(mcVersion, loader) {
+  const versions = path.join(store.getSettings().gameDir, 'versions');
+  if (!fs.existsSync(versions)) return '';
+  const names = fs.readdirSync(versions, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+  if (loader === 'vanilla') return names.includes(mcVersion) ? mcVersion : '';
+  return names.find((name) => name.toLowerCase().includes(loader) && name.includes(mcVersion)) || '';
+}
+
+function importExternalInstance(folder) {
+  if (!fs.existsSync(folder)) throw new Error('目录不存在');
+  const detected = detectExternalInstance(folder);
+  if (!detected) throw new Error('无法识别该实例。支持 Prism / MultiMC / CurseForge 实例目录。');
+  if (!detected.mcVersion) throw new Error('没有检测到 Minecraft 版本');
+  const versionId = findInstalledVersion(detected.mcVersion, detected.loader);
+  if (!versionId) throw new Error(`请先安装 Minecraft ${detected.mcVersion} · ${detected.loader}，再导入这个实例`);
+  const instance = createInstance({
+    name: detected.name,
+    baseVersion: detected.mcVersion,
+    versionId,
+    loader: detected.loader,
+    loaderVersion: detected.loaderVersion,
+  });
+  const target = getInstance(instance.id) || instance;
+  for (const folderName of ['mods', 'config', 'resourcepacks', 'shaderpacks', 'saves', 'defaultconfigs']) {
+    const source = path.join(detected.gameDir, folderName);
+    if (fs.existsSync(source)) fs.cpSync(source, path.join(target.gameDir, folderName), { recursive: true });
+  }
+  for (const fileName of ['options.txt', 'servers.dat']) {
+    const source = path.join(detected.gameDir, fileName);
+    if (fs.existsSync(source)) fs.copyFileSync(source, path.join(target.gameDir, fileName));
+  }
+  return { instance: target, detected };
+}
+
+function createCrashReport(instanceId) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const logs = path.join(instance.gameDir, 'logs', 'latest.log');
+  let tail = '';
+  try { tail = fs.readFileSync(logs, 'utf8').split(/\r?\n/).slice(-160).join('\n'); } catch { tail = '没有 latest.log'; }
+  let crash = '';
+  try {
+    const crashDir = path.join(instance.gameDir, 'crash-reports');
+    const files = fs.readdirSync(crashDir).filter((name) => name.endsWith('.txt')).sort();
+    if (files.length) crash = fs.readFileSync(path.join(crashDir, files[files.length - 1]), 'utf8').slice(0, 12000);
+  } catch { /* ignore */ }
+  const mods = listMods(instanceId).mods.map((mod) => mod.file);
+  const text = [
+    'TYCL 崩溃现场报告',
+    `时间：${new Date().toISOString()}`,
+    `实例：${instance.name}`,
+    `版本：${instance.baseVersion} · ${instance.loaderLabel}`,
+    `Java：${instance.javaPath || store.getSettings().javaPath || '自动选择'}`,
+    `内存：${instance.javaMemoryMb || store.getSettings().memoryMb} MB`,
+    `Mod：${mods.length} 个`,
+    mods.length ? mods.join('\n') : '无 Mod',
+    '',
+    '--- latest.log ---',
+    tail,
+    crash ? '\n--- crash-report ---\n' + crash : '',
+  ].join('\n');
+  const dir = path.join(store.getSettings().gameDir, 'tycl-crash-reports');
+  fs.mkdirSync(dir, { recursive: true });
+  const file = path.join(dir, `${instance.name.replace(/[\\/:*?"<>|]/g, '_')}-${Date.now()}.txt`);
+  fs.writeFileSync(file, text, 'utf8');
+  return { file, text };
+}
+
+function setAllModsEnabled(instanceId, enabled) {
+  const data = listMods(instanceId);
+  let changed = 0;
+  for (const mod of data.mods) {
+    if (mod.enabled === Boolean(enabled)) continue;
+    toggleMod(instanceId, mod.file, Boolean(enabled));
+    changed += 1;
+  }
+  return { ok: true, changed };
+}
+
+function ensureLaunchSnapshot(instanceId) {
+  const instance = getInstance(instanceId);
+  if (!instance) return { skipped: true };
+  const prefix = safeName(instance.name);
+  const latest = listBackups().find((item) => item.name.startsWith(prefix + '-'));
+  if (latest && Date.now() - new Date(latest.modifiedAt).getTime() < 12 * 60 * 60 * 1000) {
+    return { skipped: true, file: latest.file };
+  }
+  return backupInstance(instanceId);
+}
 function updateSettings(instanceId, patch) {  const allowed = {};
   if (typeof patch.name === 'string') allowed.name = patch.name.trim().slice(0, 64);
   if (typeof patch.javaPath === 'string') allowed.javaPath = patch.javaPath;
@@ -418,5 +567,10 @@ module.exports = {
   listResources,
   addResource,
   deleteResource,
+  setResourceEnabled,
+  setAllModsEnabled,
+  ensureLaunchSnapshot,
+  importExternalInstance,
+  createCrashReport,
   updateSettings,
 };

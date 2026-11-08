@@ -171,7 +171,6 @@ async function installModTask(task, { instanceId, projectId, versionId, title })
   const instance = getInstance(instanceId);
   if (!instance) throw new Error('实例不存在');
   const modsDir = ensureDir(path.join(instance.gameDir, 'mods'));
-  task.setTitle = undefined; // 保持任务接口简单
   task.report({ percent: 5, stage: '解析 Mod', detail: title || projectId });
   const version = await resolveModVersion({ projectId, versionId, instance });
   if (!version) throw new Error('找不到可安装的版本');

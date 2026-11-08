@@ -1,0 +1,10 @@
+{
+    "sha256":  "1a146e4bccd6f4fcf08f8ecab9fd88cf0d959e78f9c4039aaae3169f9a9c3695",
+    "version":  "2.0.0",
+    "publishedAt":  "2026-10-31T05:26:08.9586783Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.0.0.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.0.0.zip"
+                     ],
+    "notes":  "AI 入口移到右上角；启动失败/崩溃自动读日志并弹 AI 诊断；支持内存/Java/重复 Mod 安全修复。"
+}

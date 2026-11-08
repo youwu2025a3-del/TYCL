@@ -1,0 +1,7 @@
+{
+  "secretId": "你的 SecretId",
+  "secretKey": "你的 SecretKey",
+  "bucket": "tycl-1327923012",
+  "region": "ap-shanghai",
+  "prefix": "tycl"
+}

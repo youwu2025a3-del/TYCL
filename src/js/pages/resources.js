@@ -139,6 +139,60 @@ function openCurseForge(ctx, state, filters = {}) {
   query.focus();
 }
 
+function openAiFinder(ctx) {
+  const modal = openModal({
+    title: 'AI 找包',
+    subtitle: '说出你想玩的类型，先给候选，不自动安装',
+    size: 'modal-lg',
+    body: `
+      <div class="field">
+        <div class="field-label">想玩什么？</div>
+        <textarea class="input" data-ai-input rows="3" placeholder="例如：轻量、有科技感、能联机的生存整合包"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-primary" data-ai-go>${icon('sparkles', 13)} 解析并推荐</button><span class="field-hint" style="align-self:center">先解析意图，再匹配现成整合包</span></div>
+      <div id="ai-result" style="margin-top:12px"><div class="manager-empty">输入一句话开始</div></div>
+    `,
+    footer: `<button class="btn btn-secondary btn-sm" data-modal-close>关闭</button>`,
+  });
+  const input = modal.body.querySelector('[data-ai-input]');
+  const result = modal.body.querySelector('#ai-result');
+  modal.body.querySelector('[data-ai-go]').addEventListener('click', async () => {
+    const text = input.value.trim();
+    if (!text) return;
+    result.innerHTML = `<div class="loading-block"><span class="spinner"></span> 解析意图并搜索…</div>`;
+    try {
+      const data = await ctx.api.findIntent(text);
+      const tags = [
+        data.intent.mcVersion ? `版本 ${data.intent.mcVersion}` : '',
+        data.intent.loader || '',
+        ...data.intent.categories,
+        data.intent.lightweight ? '轻量' : '',
+        data.intent.multiplayer ? '联机' : '',
+      ].filter(Boolean);
+      result.innerHTML = `<div class="notice">${icon('sparkles', 14)}<span>识别为：${tags.map(escapeHtml).join(' · ') || '综合'}</span></div>` +
+        (data.hits.length ? data.hits.map((hit) => `<div class="manager-row"><div class="manager-row-main"><strong>${escapeHtml(hit.title)}</strong><span>${escapeHtml(hit.author || '')} · ${formatNumber(hit.downloads)} 次下载 · ${escapeHtml((hit.categories || []).slice(0, 3).join(' / '))}</span></div><button class="btn btn-secondary btn-xs" data-ai-open="${escapeHtml(hit.id)}">查看</button><button class="btn btn-primary btn-xs" data-ai-prepare="${escapeHtml(hit.id)}" data-ai-title="${escapeHtml(hit.title)}">一键准备</button></div>`).join('') : '<div class="manager-empty">没有找到匹配的整合包</div>');
+      result.querySelectorAll('[data-ai-open]').forEach((button) => {
+        button.addEventListener('click', () => openProjectModal(ctx, button.dataset.aiOpen));
+      });
+      result.querySelectorAll('[data-ai-prepare]').forEach((button) => {
+        button.addEventListener('click', async () => {
+          button.disabled = true;
+          try {
+            await ctx.api.prepareAiPack({ projectId: button.dataset.aiPrepare, title: button.dataset.aiTitle });
+            modal.close?.();
+            toast({ title: 'AI 准备已开始', message: '安装、JVM、开房会在后台完成', duration: 6000 });
+          } catch (error) {
+            button.disabled = false;
+            toast({ title: '准备失败', message: error.message, type: 'error' });
+          }
+        });
+      });
+    } catch (error) {
+      result.innerHTML = `<div class="notice warn">${icon('alert-triangle', 14)}<span>${escapeHtml(error.message)}</span></div>`;
+    }
+  });
+}
+
 export async function render(container, ctx) {
   const { state } = ctx;
   if (!state.ui.resourceType) state.ui.resourceType = 'modpack';
@@ -168,6 +222,7 @@ export async function render(container, ctx) {
           <p class="page-subtitle">从 Modrinth 发现精心制作的整合包与 Mod，选中兼容版本，一键安装到你的实例。</p>
         </div>
         <div class="page-actions">
+          <button class="btn btn-secondary btn-sm" data-ai-find>${icon('sparkles', 13)} AI 找包</button>
           <button class="btn btn-secondary btn-sm" data-curseforge>${icon('zap', 13)} CurseForge</button>
           <span class="badge badge-outline" style="height:28px">${icon('globe', 12)} Powered by Modrinth</span>
         </div>
@@ -372,6 +427,7 @@ export async function render(container, ctx) {
     });
   });
 
+  container.querySelector('[data-ai-find]')?.addEventListener('click', () => openAiFinder(ctx));
   container.querySelector('[data-curseforge]')?.addEventListener('click', () => openCurseForge(ctx, state, { gameVersion: view.gameVersion, loader: view.loader }));
 
   updateTypeUI();

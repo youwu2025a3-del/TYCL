@@ -1,6 +1,6 @@
 #define AppVersion GetEnv("TYCL_VERSION")
 #ifndef AppVersion
-  #define AppVersion "1.3.4"
+  #define AppVersion "2.2.2"
 #endif
 
 [Setup]
@@ -21,8 +21,8 @@ OutputBaseFilename=TYCL-Setup-{#AppVersion}
 SetupIconFile=..\src\assets\icon.ico
 UninstallDisplayIcon={app}\TYCL.exe
 UninstallDisplayName=TYCL {#AppVersion}
-Compression=lzma2/max
-SolidCompression=yes
+Compression=zip
+SolidCompression=no
 WizardStyle=modern
 SetupLogging=yes
 CloseApplications=yes
@@ -59,7 +59,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "startup"; Description: "{cm:StartWithWindows}"; GroupDescription: "{cm:StartupOptions}"; Flags: unchecked
 
 [Files]
-Source: "..\dist\TYCL-win32-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\dist\TYCL-win32-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "resources\third_party\bore\bore.exe"
 
 [Icons]
 Name: "{group}\TYCL"; Filename: "{app}\TYCL.exe"; WorkingDir: "{app}"

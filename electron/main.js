@@ -27,7 +27,11 @@ const tunnel = require('./tunnel');
 const lan = require('./lan');
 const serverManager = require('./server-manager');
 const curseforge = require('./curseforge');
+const roomService = require('./room-service');
+const intent = require('./intent');
+const ai = require('./ai');
 
+let disclaimerPending = false;
 let mainWindow = null;
 let loginWindow = null;
 let splashWindow = null;
@@ -384,10 +388,15 @@ function registerIpc() {
     if (!instance) throw new Error('实例不存在');
     return tasks.start({
       kind: 'launch',
-      title: options.serverAddress ? `联机 · ${instance.name}` : `启动 ${instance.name}`,
-      worker: (task) => launchInstance(instanceId, task, { onStatus: (status) => broadcast('game:status', status), serverAddress: options.serverAddress || '' }),
+      title: options.serverAddress ? `联机 · ${instance.name}` : options.worldName ? `继续 · ${instance.name}` : `启动 ${instance.name}`,
+      worker: async (task) => {
+        if (options.safeMode) instanceTools.setAllModsEnabled(instanceId, false);
+        try { await instanceTools.ensureLaunchSnapshot(instanceId); } catch { /* ignore */ }
+        return launchInstance(instanceId, task, { onStatus: (status) => broadcast('game:status', status), serverAddress: options.serverAddress || '', worldName: options.worldName || '' });
+      },
     });
   });
+  ipcMain.handle('instances:worlds', async (_, instanceId) => instanceTools.listWorlds(instanceId));
   ipcMain.handle('servers:list', async () => servers.listServers());
   ipcMain.handle('servers:add', async (_, payload) => servers.addServer(payload));
   ipcMain.handle('servers:remove', async (_, id) => servers.removeServer(id));
@@ -396,12 +405,54 @@ function registerIpc() {
   ipcMain.handle('tunnel:start', async (_, options) => tunnel.startTunnel(options));
   ipcMain.handle('tunnel:stop', async () => tunnel.stopTunnel());
   ipcMain.handle('tunnel:state', async () => tunnel.getTunnelState());
+  ipcMain.handle('ai:intent', async (_, text) => intent.find(text));
+  ipcMain.handle('ai:chat', async (_, messages) => ai.chat(messages));
+  ipcMain.handle('ai:test', async () => ai.testConnection());
+  ipcMain.handle('ai:local-status', async () => ai.localStatus(store.getSettings()));
+  ipcMain.handle('ai:knowledge', async () => ({ count: require('./knowledge').count() }));
+  ipcMain.handle('ai:analyze-crash', async (_, instanceId) => ai.analyzeCrash(instanceId));
+  ipcMain.handle('ai:fix-crash', async (_, instanceId) => ai.fixCrash(instanceId));
+  ipcMain.handle('ai:prepare', async (_, options) => tasks.start({
+    kind: 'ai',
+    title: `AI 准备 · ${options.title || '整合包'}`,
+    worker: async (task) => {
+      const result = await modrinth.installModpackTask(task, options);
+      const instance = result.instance;
+      instanceTools.updateSettings(instance.id, { javaMemoryMb: 4096 });
+      if (options.autoRoom === false) return { instance, room: null, warning: '' };
+      let room = null;
+      let warning = '';
+      try {
+        const server = await serverManager.startDedicatedServer(instance.id, { port: 25565, motd: 'TYCL AI Room', memoryMb: 4096 });
+        const tunnelInfo = await tunnel.startTunnel({ id: 'game', port: server.port });
+        const roomInfo = await roomService.start({ instanceId: instance.id, password: '', whitelist: false });
+        const gamePort = String(tunnelInfo.address).split(':').pop();
+        const servicePort = String(roomInfo.address).split(':').pop();
+        room = { code: `${gamePort}-${servicePort}`, address: tunnelInfo.address, serviceAddress: roomInfo.address, port: server.port };
+      } catch (error) {
+        warning = error.message;
+      }
+      return { instance, room, warning };
+    },
+  }));
+  ipcMain.handle('ai:parse-intent', async (_, text) => intent.parse(text));
+  ipcMain.handle('room:start', async (_, options) => roomService.start(options));
+  ipcMain.handle('room:stop', async () => roomService.stop());
+  ipcMain.handle('room:state', async () => roomService.getState());
+  ipcMain.handle('room:join', async (_, options) => roomService.join(options));
+  ipcMain.handle('room:authorize', async (_, options) => roomService.authorize(options));
   ipcMain.handle('lan:start', async () => lan.start());
   ipcMain.handle('lan:list', async () => lan.list());
-  ipcMain.handle('server:start', async (_, options) => serverManager.startDedicatedServer(options.instanceId, options));
+  ipcMain.handle('server:start', async (_, options) => serverManager.startDedicatedServer(options.instanceId, {
+    ...options,
+    onProgress: (progress) => broadcast('server:progress', { instanceId: options.instanceId, ...progress }),
+  }));
   ipcMain.handle('server:state', async () => serverManager.getServerState());
   ipcMain.handle('server:stop', async () => serverManager.stopDedicatedServer());
   ipcMain.handle('server:force-stop', async () => serverManager.forceStopServer());
+  ipcMain.handle('server:snapshots', async (_, instanceId) => serverManager.listSnapshots(instanceId));
+  ipcMain.handle('server:snapshot-create', async (_, instanceId, label) => serverManager.takeSnapshot(instanceId, label));
+  ipcMain.handle('server:snapshot-restore', async (_, instanceId, snapshotId) => serverManager.restoreSnapshot(instanceId, snapshotId));
   ipcMain.handle('instances:server-fingerprint', async (_, instanceId) => serverManager.getServerFingerprint(instanceId));
   ipcMain.handle('instances:delete', async (_, instanceId) => deleteInstance(instanceId));
   ipcMain.handle('instances:details', async (_, instanceId) => {
@@ -433,6 +484,13 @@ function registerIpc() {
     const added = instanceTools.addResource(instanceId, kind, result.filePaths[0]);
     return { ...added, resources: instanceTools.listResources(instanceId) };
   });
+  ipcMain.handle('instances:resource-enable', async (_, instanceId, name, enabled) => instanceTools.setResourceEnabled(instanceId, name, enabled));
+  ipcMain.handle('instances:import-external', async () => {
+    const result = await dialog.showOpenDialog(mainWindow, { title: '选择 Prism / MultiMC / CurseForge 实例目录', properties: ['openDirectory'] });
+    if (result.canceled || !result.filePaths[0]) return { cancelled: true };
+    return instanceTools.importExternalInstance(result.filePaths[0]);
+  });
+  ipcMain.handle('instances:crash-report', async (_, instanceId) => instanceTools.createCrashReport(instanceId));
   ipcMain.handle('instances:resource-delete', async (_, instanceId, kind, name) => {
     const result = instanceTools.deleteResource(instanceId, kind, name);
     return { ...result, resources: instanceTools.listResources(instanceId) };
@@ -530,7 +588,10 @@ function registerIpc() {
     else mainWindow.maximize();
     return mainWindow.isMaximized();
   });
+  ipcMain.handle('app:disclaimer-pending', async (_, value) => { disclaimerPending = Boolean(value); });
+  ipcMain.handle('app:quit', async () => { app.quit(); });
   ipcMain.handle('window:close', async () => {
+    if (disclaimerPending) { app.quit(); return; }
     if (mainWindow) mainWindow.close();
   });
   ipcMain.handle('window:is-maximized', async () => (mainWindow ? mainWindow.isMaximized() : false));
@@ -589,10 +650,9 @@ if (!gotLock) {
     const skipSplash = process.argv.includes('--no-splash') || consumeUpdateRestartFlag() || consumeLegacyUpdateRestart();
     if (!skipSplash) createSplashWindow();
     if (store.getSettings().accountMode === 'microsoft') {
-      await Promise.race([
-        auth.ensureAccountSkin().catch(() => null),
-        new Promise((resolve) => setTimeout(resolve, 6000)),
-      ]);
+      auth.ensureAccountSkin()
+        .then(() => broadcast('bootstrap:changed'))
+        .catch(() => null);
     }
     createWindow({ immediate: skipSplash });
     if (isDev && mainWindow) mainWindow.webContents.openDevTools({ mode: 'detach' });
@@ -604,6 +664,7 @@ if (!gotLock) {
 
 app.on('before-quit', () => {
   if (tasks) tasks.cancelAll();
+  try { roomService.stop(); } catch { /* ignore */ }
   try { tunnel.stopTunnel(); } catch { /* ignore */ }
   try { lan.stop(); } catch { /* ignore */ }
   try { serverManager.forceStopServer(); } catch { /* ignore */ }

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1080px; height: 1440px; overflow: hidden; }
+  body {
+    padding: 62px 68px 54px;
+    font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+    color: #173b2e;
+    background:
+      radial-gradient(circle at 92% 2%, rgba(91, 201, 151, .20), transparent 33%),
+      radial-gradient(circle at 3% 92%, rgba(255, 205, 113, .14), transparent 28%),
+      #f5f8f5;
+  }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .brand { display: flex; align-items: center; gap: 13px; }
+  .logo {
+    width: 54px; height: 54px; border-radius: 15px; display: grid; place-items: center;
+    background: linear-gradient(145deg, #45c58d, #1b8b62);
+    box-shadow: 0 10px 24px rgba(28, 139, 98, .22);
+  }
+  .logo svg { width: 31px; height: 31px; }
+  .brand strong { display: block; font-size: 29px; line-height: 1; letter-spacing: .4px; }
+  .brand span { display: block; font-size: 11px; letter-spacing: 3px; color: #7f9b90; margin-top: 7px; }
+  .version { text-align: right; color: #7f9b90; font-size: 13px; line-height: 1.7; }
+  .version b { display: block; font-size: 19px; color: #1d6e50; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 43px;
+    padding: 8px 14px; border-radius: 999px; background: #e3f4eb; color: #217a57;
+    font-size: 14px; font-weight: 700; letter-spacing: .3px;
+  }
+  .tag i { width: 7px; height: 7px; border-radius: 50%; background: #2caf7c; display: block; }
+  h1 { margin: 20px 0 0; font-size: 88px; line-height: 1.08; letter-spacing: -3px; font-weight: 800; }
+  h1 em { font-style: normal; color: #21865f; }
+  .sub { margin: 23px 0 0; font-size: 24px; line-height: 1.65; color: #557367; letter-spacing: .2px; }
+
+  .panel {
+    position: relative; margin-top: 36px; padding: 25px 27px 23px;
+    background: #fff; border: 1px solid #dbe8e1; border-radius: 18px;
+    box-shadow: 0 20px 54px rgba(24, 70, 52, .10);
+  }
+  .panel-head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .panel-title { font-size: 22px; font-weight: 800; color: #1d5c46; }
+  .panel-sub { margin-top: 6px; font-size: 12.5px; color: #8a9f96; }
+  .window-dots { display: flex; gap: 6px; margin-top: 7px; }
+  .window-dots i { width: 7px; height: 7px; border-radius: 50%; background: #d6e6dd; display: block; }
+  .timeline { margin-top: 21px; border-top: 1px solid #edf3ef; }
+  .row { display: flex; align-items: center; min-height: 63px; border-bottom: 1px solid #edf3ef; gap: 17px; }
+  .row:last-child { border-bottom: 0; }
+  .time { width: 76px; font-size: 13px; color: #8aa097; font-variant-numeric: tabular-nums; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #48b98a; flex: 0 0 9px; }
+  .dot.warm { background: #e0ad55; }
+  .row-main { flex: 1; }
+  .row-main strong { display: block; font-size: 14px; color: #285e4a; }
+  .row-main span { display: block; margin-top: 3px; font-size: 11px; color: #91a49b; }
+  .row-action { padding: 8px 11px; border: 1px solid #cfe3d9; border-radius: 7px; color: #2a7a5c; font-size: 11px; font-weight: 600; }
+  .row-action.primary { background: #e5f6ed; border-color: #c5e8d8; color: #177451; }
+
+  .story {
+    margin-top: 27px; padding-left: 17px; border-left: 3px solid #47b88a;
+    font-size: 14px; line-height: 1.8; color: #68857a;
+  }
+  .story b { color: #2e6a53; }
+  .features { display: flex; gap: 9px; margin-top: 27px; flex-wrap: wrap; }
+  .chip { padding: 9px 12px; border-radius: 8px; background: #fff; border: 1px solid #dce8e2; color: #3d6b59; font-size: 12.5px; }
+  .compare {
+    display: grid; grid-template-columns: 1fr 42px 1fr; align-items: center;
+    gap: 12px; margin-top: 31px; padding: 19px 21px;
+    background: rgba(255,255,255,.65); border: 1px solid #dce8e2; border-radius: 13px;
+  }
+  .compare-col span { display: block; font-size: 10px; letter-spacing: 1.2px; color: #91a49b; margin-bottom: 5px; }
+  .compare-col strong { display: block; font-size: 14px; line-height: 1.7; color: #52766a; font-weight: 500; }
+  .compare-col.new strong { color: #1e6f51; font-weight: 700; }
+  .compare-arrow { text-align: center; color: #73a791; font-size: 18px; }
+  .bottom { margin-top: 27px; }
+  .bottom { display: flex; align-items: flex-end; justify-content: space-between; }
+  .bottom .left { font-size: 12.5px; line-height: 1.8; color: #8ba096; }
+  .bottom .left strong { color: #356c58; font-size: 14px; }
+  .bottom .right { text-align: right; font-size: 12.5px; line-height: 1.8; color: #6f8c80; }
+  .bottom .right b { color: #1c7453; font-size: 14px; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M4 8.5 16 2l12 6.5v15L16 30 4 23.5v-15Z" fill="#fff" opacity=".2"/>
+          <path d="M4 8.5 16 2l12 6.5M4 8.5v15L16 30l12-6.5v-15M16 15.5v14.5M4 8.5l12 7 12-7" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="m11 12 2.5 2.8L11.5 17l-1.2-1.4L9 16.5l1.3-2.3L9 12h2Z" fill="#fff"/>
+        </svg>
+      </div>
+      <div><strong>TYCL</strong><span>MINECRAFT LAUNCHER</span></div>
+    </div>
+    <div class="version"><b>v1.4.3</b>Windows · 免费开源</div>
+  </div>
+
+  <div class="tag"><i></i>房间时光机 · 这次真的能救档</div>
+  <h1>开房前，<br><em>先拍张照。</em></h1>
+  <p class="sub">朋友把出生点炸了，<br>也不用关服翻 saves。</p>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div><div class="panel-title">房间时光机</div><div class="panel-sub">1.20.1 · Fabric · 自动快照保留 3 份</div></div>
+      <div class="window-dots"><i></i><i></i><i></i></div>
+    </div>
+    <div class="timeline">
+      <div class="row"><span class="time">20:31</span><i class="dot"></i><div class="row-main"><strong>开房前快照</strong><span>世界 86 MB · 自动保存</span></div><span class="row-action">已保存</span></div>
+      <div class="row"><span class="time">20:58</span><i class="dot"></i><div class="row-main"><strong>自动快照</strong><span>世界 91 MB · 自动保存</span></div><span class="row-action">已保存</span></div>
+      <div class="row"><span class="time">21:20</span><i class="dot warm"></i><div class="row-main"><strong>自动快照</strong><span>世界 94 MB · 炸服前</span></div><span class="row-action primary">回到 20:31</span></div>
+    </div>
+  </div>
+
+  <div class="story">
+    上周六，我去倒水的功夫，朋友在出生点试新武器。<br>
+    回来的时候，<b>箱子、村民、地板没了一半</b>，服务端也跟着崩了。
+  </div>
+
+  <div class="features">
+    <span class="chip">开房自动存档</span>
+    <span class="chip">一键回滚</span>
+    <span class="chip">房间号不变</span>
+    <span class="chip">自动重启服务端</span>
+  </div>
+
+  <div class="compare">
+    <div class="compare-col"><span>以前</span><strong>关服 → 翻 saves → 找备份 → 手动替换</strong></div>
+    <div class="compare-arrow">→</div>
+    <div class="compare-col new"><span>现在</span><strong>点「时光机」→ 回到 20:31</strong></div>
+  </div>
+  <div class="bottom">
+    <div class="left"><strong>Windows 10 / 11</strong><br>不是服务器面板，是开房时就在。</div>
+    <div class="right"><b>github.com/youwu2025a3-del/TYCL</b><br>TYCL 1.4.3 · 房间时光机</div>
+  </div>
+</body>
+</html>

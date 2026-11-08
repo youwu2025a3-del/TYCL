@@ -1,0 +1,102 @@
+[
+  {
+    "patterns": ["你好", "您好", "hi", "hello", "在吗", "嗨", "哈喽"],
+    "answer": "你好，我是 TYCL 助手。你可以直接说想玩什么，或者问我 Java、内存、崩溃、联机 Mod 的问题。\n\n比如：想玩轻量、有科技感、能联机的生存整合包。",
+    "actions": []
+  },
+  {
+    "patterns": ["你是谁", "你叫什么", "介绍一下你自己", "你能做什么", "会什么"],
+    "answer": "我是 TYCL 内置助手。\n\n我能做：\n- 按你的描述找现成整合包\n- 解释 Java 和内存怎么配\n- 看实例、日志和崩溃报告\n- 排查联机 Mod 不一致\n- 引导你安装、备份、开房\n\n我也可以在设置里接本地 Ollama 或云端模型，没接模型时用内置知识库和意图检索。",
+    "actions": []
+  },
+  {
+    "patterns": ["谢谢", "感谢", "thanks", "thank you", "辛苦了"],
+    "answer": "不客气。需要继续找包、看崩溃或者配 Java，直接说就行。",
+    "actions": []
+  },
+  {
+    "patterns": ["怎么安装", "安装游戏", "下载游戏", "装一个版本", "怎么下载"],
+    "answer": "安装游戏：\n\n1. 左侧进入「版本」\n2. 点右上角「下载游戏」\n3. 选 Minecraft 版本\n4. 需要 Mod 就选 Fabric / Forge / NeoForge\n5. 等下载完成，回首页启动\n\n第一次启动会自动检查 Java。",
+    "actions": [{ "type": "open-page", "page": "versions" }]
+  },
+  {
+    "patterns": ["java 版本", "java几", "java 几", "用哪个java", "java8", "java 8", "java17", "java 17", "java21", "java 21"],
+    "answer": "Java 版本对应：\n\n- 1.20.1 / 1.21：Java 21\n- 1.18–1.20：Java 17\n- 1.12.2 及更早：Java 8\n\nTYCL 会自动匹配，也可以在实例设置里手动指定 java.exe。",
+    "actions": []
+  },
+  {
+    "patterns": ["内存", "memory", "分配多少", "给多少g", "ram"],
+    "answer": "内存建议：\n\n- 4GB 物理内存：实例 2GB\n- 8GB：实例 4GB\n- 16GB：实例 6–8GB\n- 大型整合包：6GB 起步\n\n不要超过物理内存的一半。内存太小会卡顿或 OutOfMemory，太大也会让系统卡。",
+    "actions": []
+  },
+  {
+    "patterns": ["崩溃", "闪退", "启动不了", "启动失败", "进不去", "崩了", "crash"],
+    "answer": "先按这个顺序排查：\n\n1. 实例管理 → 崩溃报告，生成报告\n2. 确认 Java 版本\n3. 内存降到 4GB 试一次\n4. 禁用最近安装的 Mod\n5. 检查 Mod 是否同一加载器、同一游戏版本\n\n我也可以直接读实例日志帮你判断，点下面的诊断按钮。",
+    "actions": [{ "type": "diagnostics" }]
+  },
+  {
+    "patterns": ["mod 不一致", "mod不一致", "联机mod", "朋友进不来", "房间进不去", "加不进", "无法加入"],
+    "answer": "联机 Mod 不一致时，优先用 TYCL 房间服务：房主开房后会生成「游戏端口-服务端口」，朋友输入完整房间号和密码，启动器会自动补齐缺失 Mod。\n\n如果是旧房间号或直接 IP，先对齐 Minecraft 版本、Fabric/Forge 版本、Mod 文件名和版本。",
+    "actions": [{ "type": "open-page", "page": "multiplayer" }]
+  },
+  {
+    "patterns": ["开房", "联机", "房间号", "怎么联机", "和朋友玩"],
+    "answer": "开房：\n\n1. 进入「联机」\n2. 选择实例\n3. 选单机世界（可选）\n4. 点「一键开房」\n5. 把房间号和密码发给朋友\n\n房间号是「游戏端口-服务端口」，朋友输入完整房间号才能自动补齐 Mod。",
+    "actions": [{ "type": "open-page", "page": "multiplayer" }]
+  },
+  {
+    "patterns": ["低配", "渣机", "卡顿", "掉帧", "优化", "流畅", "性能"],
+    "answer": "低配优化建议：\n\n- 用 Fabric + Sodium / Lithium / FerriteCore\n- 视距 6–8，模拟距离 4–5\n- 关闭光影\n- 分配 4GB 内存，不要给太多\n- 用轻量整合包，不要装 200+ Mod\n\n要我直接找轻量整合包也可以。",
+    "actions": []
+  },
+  {
+    "patterns": ["备份", "存档备份", "备份实例"],
+    "answer": "备份：实例管理 → 立即备份。\n\n会保存 Mod、存档和配置，不会备份整个游戏资源。恢复时在备份列表点「恢复」。",
+    "actions": [{ "type": "open-page", "page": "versions" }]
+  },
+  {
+    "patterns": ["导入实例", "迁移", "prism", "multimc", "curseforge 实例"],
+    "answer": "实例迁移：版本页 →「导入外部实例」，选择 Prism / MultiMC / CurseForge 的实例目录。\n\n需要本机已安装对应 Minecraft 版本；导入会复制 mods、config、存档、资源包和 options.txt。",
+    "actions": [{ "type": "open-page", "page": "versions" }]
+  },
+  {
+    "patterns": ["资源包", "光影", "材质包"],
+    "answer": "资源包：实例管理 → 资源包 / 光影，可以导入、启用、禁用、删除。\n\n启停会写入 options.txt，不需要进游戏手动改。",
+    "actions": [{ "type": "open-page", "page": "versions" }]
+  },
+  {
+    "patterns": ["ai 设置", "本地模型", "ollama", "云端模型", "api key", "模型"],
+    "answer": "AI 设置：设置 → AI 助手。\n\n- 本地：Ollama / llama.cpp，默认 http://127.0.0.1:11434/v1\n- 云端：OpenAI 兼容接口 + API Key\n- 自动：优先本地，本地不可用走云端\n- 都关：只用内置知识库\n\n本地模型要先 ollama pull qwen2.5:3b。",
+    "actions": [{ "type": "open-page", "page": "settings" }]
+  },
+  {
+    "patterns": ["更新", "新版本", "检查更新"],
+    "answer": "设置 → 更新与公告 → 检查更新。\n\nTYCL 支持增量更新包，不需要每次重下整个安装器。",
+    "actions": [{ "type": "open-page", "page": "settings" }]
+  },
+  {
+    "patterns": ["正版", "微软登录", "离线账户", "账户"],
+    "answer": "TYCL 支持 Microsoft 正版登录和离线账户。\n\n正版登录在设置 → 账户；离线账户只需要玩家名。联机时房主可以开启正版验证。",
+    "actions": [{ "type": "open-page", "page": "settings" }]
+  },
+  {
+    "patterns": ["推荐版本", "玩哪个版本", "1.20.1", "1.21", "哪个版本好"],
+    "answer": "现在比较稳的版本：\n\n- 1.20.1：Mod 生态最全，推荐\n- 1.21.1：较新，Fabric 生态在补齐\n- 1.12.2：老整合包多，但 Java 8 限制大\n- 26.3：新版本，Mod 少\n\n想玩整合包优先 1.20.1。",
+    "actions": []
+  },
+  {
+    "patterns": ["forge", "fabric", "neoforge", "quilt", "加载器"],
+    "answer": "加载器怎么选：\n\n- Fabric：轻量、优化 Mod 多，推荐新版本\n- Forge：老整合包和大型科技包多\n- NeoForge：1.20.2+ 的新 Forge 分支\n- Quilt：Fabric 分支，生态较小\n\n同一个实例不要混装 Forge 和 Fabric Mod。",
+    "actions": []
+  },
+  {
+    "patterns": ["删除实例", "卸载游戏", "清空间"],
+    "answer": "实例管理可以删除实例；删除前建议先备份存档。\n\n游戏版本文件在版本页单独管理，删除实例不会自动删除共享的游戏资源。",
+    "actions": []
+  },
+  {
+    "patterns": ["你好吗", "最近怎么样", "在不在"],
+    "answer": "我在。你可以直接说想玩什么，或者把崩溃日志、Mod 列表、Java 版本发给我。",
+    "actions": []
+  }
+]

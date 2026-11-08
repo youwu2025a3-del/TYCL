@@ -1,6 +1,9 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const { fetchJson } = require('./net');
+const { paths } = require('./paths');
 
 const NEWS_URL = 'https://launchercontent.mojang.com/v2/news.json';
 const IMAGE_BASE = 'https://launchercontent.mojang.com';
@@ -64,9 +67,36 @@ function normalizeEntry(entry) {
   };
 }
 
+function localEntries() {
+  const files = [path.join(paths.data(), 'news-cache.json'), path.join(__dirname, '..', 'src', 'assets', 'news', 'mock.json')];
+  for (const file of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+      const entries = Array.isArray(data) ? data : data.entries;
+      if (Array.isArray(entries) && entries.length) return entries;
+    } catch { /* ignore */ }
+  }
+  return [];
+}
+
 async function getMinecraftNews({ force = false } = {}) {
   if (!force && cache && Date.now() - cache.at < CACHE_TTL) return cache.data;
-  const data = await fetchJson(NEWS_URL, { timeout: 25000 });
+  let data;
+  try {
+    data = await fetchJson(NEWS_URL, { timeout: 25000 });
+    try { fs.writeFileSync(path.join(paths.data(), 'news-cache.json'), JSON.stringify(data), 'utf8'); } catch { /* ignore */ }
+  } catch (error) {
+    const fallback = localEntries();
+    if (!fallback.length) throw error;
+    const entries = fallback.map(normalizeEntry).filter((entry) => entry.title).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    entries.forEach((entry, index) => {
+      const local = path.join(__dirname, '..', 'src', 'assets', 'news', `news-${index}.png`);
+      if (fs.existsSync(local)) entry.image = `./assets/news/news-${index}.png`;
+    });
+    const result = { source: 'Minecraft 新闻 · 本地缓存', sourceUrl: 'https://www.minecraft.net/zh-hans/news', language: 'zh', updatedAt: new Date().toISOString(), entries, offline: true };
+    cache = { at: Date.now(), data: result };
+    return result;
+  }
   if (!data || !Array.isArray(data.entries)) throw new Error('官方新闻数据格式异常');
   const entries = data.entries
     .map(normalizeEntry)

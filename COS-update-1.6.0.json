@@ -1,0 +1,10 @@
+{
+    "sha256":  "f8b609eefb3e2a3c7f55cf1aaf4f71599b36ffcdf9940bca3afb0a40f8d2f2d8",
+    "version":  "1.6.0",
+    "publishedAt":  "2026-10-27T12:52:48.2892437Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.6.0.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-1.6.0.zip"
+                     ],
+    "notes":  "AI 助手 2.0：上下文对话、工具调用找包、历史记录、连接测试、本地回退与中文意图扩展。"
+}

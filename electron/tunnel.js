@@ -8,7 +8,7 @@ const AdmZip = require('adm-zip');
 const { paths, ensureDir } = require('./paths');
 const { downloadToFile } = require('./net');
 
-let tunnel = null;
+const tunnels = new Map();
 const BORE_URL = 'https://github.com/ekzhang/bore/releases/download/v0.6.0/bore-v0.6.0-x86_64-pc-windows-msvc.zip';
 
 function borePath() {
@@ -38,29 +38,29 @@ async function ensureBore() {
   return target;
 }
 
-function stopTunnel() {
-  if (!tunnel) return { ok: true };
-  try {
-    tunnel.child.kill();
-  } catch {
-    // ignore
+function stopTunnel(id = '') {
+  const ids = id ? [id] : Array.from(tunnels.keys());
+  for (const key of ids) {
+    const state = tunnels.get(key);
+    if (!state) continue;
+    try { state.child.kill(); } catch { /* ignore */ }
+    tunnels.delete(key);
   }
-  tunnel = null;
   return { ok: true };
 }
 
-async function startTunnel({ port = 25565, server = 'bore.pub', secret = '' } = {}) {
+async function startTunnel({ id = 'game', port = 25565, server = 'bore.pub', secret = '' } = {}) {
   const localPort = Number(port);
   if (!Number.isInteger(localPort) || localPort < 1 || localPort > 65535) throw new Error('本地端口无效');
   if (!/^[a-zA-Z0-9.-]+$/.test(String(server || 'bore.pub'))) throw new Error('隧道服务器地址无效');
-  stopTunnel();
+  stopTunnel(id);
   const exe = await ensureBore();
   if (!fs.existsSync(exe)) throw new Error('缺少联机组件 bore.exe，请检查网络后重试');
   const args = ['local', String(localPort), '--to', String(server || 'bore.pub')];
   if (secret) args.push('--secret', String(secret));
   const child = spawn(exe, args, { windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });
-  const state = { child, port: localPort, server, address: '', startedAt: Date.now(), error: '' };
-  tunnel = state;
+  const state = { child, id, port: localPort, server, address: '', startedAt: Date.now(), error: '' };
+  tunnels.set(id, state);
   return new Promise((resolve, reject) => {
     let output = '';
     let settled = false;
@@ -68,7 +68,7 @@ async function startTunnel({ port = 25565, server = 'bore.pub', secret = '' } = 
       if (settled) return;
       settled = true;
       state.error = message;
-      stopTunnel();
+      stopTunnel(id);
       reject(new Error(message));
     };
     const onData = (chunk) => {
@@ -80,29 +80,31 @@ async function startTunnel({ port = 25565, server = 'bore.pub', secret = '' } = 
       state.address = `${host}:${remotePort}`;
       if (settled) return;
       settled = true;
-      resolve({ ok: true, address: state.address, localPort, server: host, startedAt: state.startedAt });
+      resolve({ ok: true, id, address: state.address, localPort, server: host, startedAt: state.startedAt });
     };
     child.stdout.on('data', onData);
     child.stderr.on('data', onData);
     child.on('error', (error) => finishError(error.message));
     child.on('close', (code) => {
       if (!settled) finishError(`联机隧道启动失败（退出码 ${code}）`);
-      else if (tunnel === state) tunnel = null;
+      else if (tunnels.get(id) === state) tunnels.delete(id);
     });
     setTimeout(() => finishError('连接联机服务器超时，请检查网络后重试'), 20000);
   });
 }
 
-function getTunnelState() {
-  if (!tunnel) return { active: false };
+function getTunnelState(id = 'game') {
+  const state = tunnels.get(id);
+  if (!state) return { active: false };
   return {
     active: true,
-    address: tunnel.address,
-    localPort: tunnel.port,
-    server: tunnel.server,
-    startedAt: tunnel.startedAt,
-    error: tunnel.error,
+    id,
+    address: state.address,
+    localPort: state.port,
+    server: state.server,
+    startedAt: state.startedAt,
+    error: state.error,
   };
 }
 
-module.exports = { startTunnel, stopTunnel, getTunnelState, borePath };
+module.exports = { startTunnel, stopTunnel, getTunnelState, borePath, ensureBore };

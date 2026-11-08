@@ -28,6 +28,7 @@ export async function render(container, ctx) {
           <p class="page-subtitle">管理本地的 Minecraft 实例，或从版本库安装一个新的世界。</p>
         </div>
         <div class="page-actions">
+          <button class="btn btn-secondary" data-import-external>${icon('download', 15)} 导入外部实例</button>
           <button class="btn btn-secondary" data-refresh>${icon('refresh', 15)} 刷新</button>
           <button class="btn btn-primary" data-download>${icon('download', 15)} 下载游戏</button>
         </div>
@@ -47,6 +48,17 @@ export async function render(container, ctx) {
 
   const body = container.querySelector('#versions-body');
 
+  container.querySelector('[data-import-external]')?.addEventListener('click', async () => {
+    try {
+      const result = await ctx.api.importExternalInstance();
+      if (result.cancelled) return;
+      await ctx.refreshState();
+      ctx.rerender();
+      toast({ title: '外部实例已导入', message: result.instance?.name || '' });
+    } catch (error) {
+      toast({ title: '导入失败', message: error.message, type: 'error', duration: 7000 });
+    }
+  });
   container.querySelector('[data-download]').addEventListener('click', () => openLatestInstall(ctx));
   container.querySelector('[data-refresh]').addEventListener('click', async () => {
     state.versionCache = null;

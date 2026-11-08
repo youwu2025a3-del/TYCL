@@ -1,0 +1,10 @@
+{
+    "sha256":  "9d87d8e537739b08ca3e02c34ede5918fa914b57d0abfba4d24ba7ec62cef46d",
+    "version":  "2.2.0",
+    "publishedAt":  "2026-11-07T04:07:04.6958418Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.0.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.0.zip"
+                     ],
+    "notes":  "可靠性更新：下载界面提速、安全启动、启动前快照、高级设置折叠、崩溃统一诊断、新闻离线缓存。安装器不再内置 bore.exe（Defender 误报），首次联机自动下载。"
+}

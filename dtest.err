@@ -1,0 +1,5 @@
+
+DevTools listening on ws://127.0.0.1:9935/devtools/browser/7d64e703-42a4-4a0b-961a-095a869fa683
+Error occurred in handler for 'app:disclaimer-pending': Error: No handler registered for 'app:disclaimer-pending'
+    at Session.<anonymous> (node:electron/js2c/browser_init:2:107400)
+    at Session.emit (node:events:519:28)

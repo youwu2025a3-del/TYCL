@@ -102,10 +102,9 @@ export async function render(container, ctx) {
               </div>
               <button class="switch ${settings.showSnapshots ? 'on' : ''}" data-snapshots aria-label="显示快照"></button>
             </div>
-            <div class="field">
-              <div class="field-label">CurseForge API Key <span class="field-hint" style="font-weight:400">可选</span></div>
-              <input class="input input-sm" data-curseforge-key value="${escapeHtml(settings.curseForgeApiKey || '')}" placeholder="在 console.curseforge.com 申请" spellcheck="false">
-              <div class="field-hint">填写后可在资源页搜索 CurseForge Mod。密钥只保存在本机。</div>
+            <div class="notice">
+              ${icon('info', 15)}
+              <span>CurseForge 通过内置代理访问，无需填写 API Key。</span>
             </div>
             <div class="notice">
               ${icon('info', 15)}
@@ -115,13 +114,32 @@ export async function render(container, ctx) {
         </section>
         <section class="settings-card">
           <div class="settings-card-head">
-            <div class="settings-icon">${icon('megaphone', 15)}</div>
-            <div><h3>更新与公告</h3><p>无需重下整个启动器</p></div>
+            <div class="settings-icon">${icon('sparkles', 15)}</div>
+            <div><h3>AI 助手</h3><p>可选，不填就使用本地意图检索</p></div>
           </div>
+          <div class="settings-card-body">
+            <details class="settings-advanced"><summary>模型与接口（高级）</summary>
+            <div class="field"><div class="field-label">运行方式</div><div class="select-wrap"><select class="select" data-ai-provider><option value="auto" ${settings.aiProvider === 'auto' ? 'selected' : ''}>自动（优先本地）</option><option value="local" ${settings.aiProvider === 'local' ? 'selected' : ''}>仅本地模型</option><option value="cloud" ${settings.aiProvider === 'cloud' ? 'selected' : ''}>仅云端 API</option></select></div></div>
+            <div class="field"><div class="field-label">云端 API 地址</div><input class="input input-sm" data-ai-base value="${escapeHtml(settings.aiBaseUrl || 'https://api.deepseek.com')}" placeholder="https://api.deepseek.com"></div>
+            <div class="field"><div class="field-label">云端 API Key</div><input class="input input-sm" type="password" data-ai-key value="${escapeHtml(settings.aiApiKey || '')}" placeholder="sk-..."></div>
+            <div class="field"><div class="field-label">云端模型</div><input class="input input-sm" data-ai-model value="${escapeHtml(settings.aiModel || 'deepseek-chat')}" placeholder="deepseek-chat"></div>
+            <div class="field"><div class="field-label">本地模型地址</div><input class="input input-sm" data-ai-local-base value="${escapeHtml(settings.aiLocalBaseUrl || 'http://127.0.0.1:11434/v1')}" placeholder="http://127.0.0.1:11434/v1"></div>
+            <div class="field"><div class="field-label">本地模型名称</div><input class="input input-sm" data-ai-local-model value="${escapeHtml(settings.aiLocalModel || 'qwen2.5:3b')}" placeholder="qwen2.5:3b"></div>
+            <div class="field"><div class="field-label">本地算力</div>
+              <label class="room-check"><input type="checkbox" data-ai-gpu ${settings.aiUseGpu !== false ? 'checked' : ''}> 允许本地模型使用 GPU</label>
+              <label class="room-check"><input type="checkbox" data-ai-battery ${settings.aiPauseOnBattery !== false ? 'checked' : ''}> 电池供电时暂停本地模型</label>
+              <div style="display:flex;gap:8px;align-items:center;margin-top:6px"><span class="field-hint">CPU 线程</span><input class="input input-sm" type="number" min="1" max="64" style="max-width:100px" data-ai-threads value="${Number(settings.aiCpuThreads) || 4}"></div>
+            </div>
+            </details>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn btn-secondary btn-sm" data-ai-test>${icon('activity', 13)} 测试连接</button><button class="btn btn-secondary btn-sm" data-ai-local-check>${icon('cpu', 13)} 检测本地模型</button><span class="field-hint" data-ai-local-status>未检测</span></div>
+            <div class="notice">${icon('info', 14)}<span>本地模式支持 Ollama / llama.cpp 的 OpenAI 兼容接口，默认 http://127.0.0.1:11434/v1。Key 只保存在本机；本地服务不可用时回退到内置意图检索。</span></div>
+          </div>
+        </section>
+        <section class="settings-card">
           <div class="settings-card-body">
             <div class="setting-row">
               <div class="setting-copy">
-                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.3.4')}</strong>
+                <strong>当前版本 v${escapeHtml(state.system?.appVersion || '1.5.0')}</strong>
                 <span>${microsoft ? '正版账户已连接。' : ''}支持检查更新、导入本地更新包并在后台替换应用资源。</span>
               </div>
               <button class="btn btn-primary btn-sm" data-open-updates>${icon('megaphone', 12)} 更新公告</button>
@@ -252,7 +270,7 @@ export async function render(container, ctx) {
               </div>
             </div>
             <div class="about-meta">
-              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.3.4')}</span>
+              <span>${icon('package', 11)} 版本 ${escapeHtml(state.system?.appVersion || '1.5.0')}</span>
               <span>${icon('cpu', 11)} ${escapeHtml(state.system?.platform || 'win32')} / ${escapeHtml(state.system?.arch || 'x64')}</span>
               <span>${icon('terminal', 11)} Electron</span>
               <span>${icon('file-text', 11)} MIT License</span>
@@ -502,6 +520,44 @@ export async function render(container, ctx) {
     });
   }
 
+  container.querySelector('[data-ai-gpu]')?.addEventListener('change', async (event) => { try { await ctx.saveSettings({ aiUseGpu: event.target.checked }); toast({ title: 'GPU 设置已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); } });
+  container.querySelector('[data-ai-battery]')?.addEventListener('change', async (event) => { try { await ctx.saveSettings({ aiPauseOnBattery: event.target.checked }); toast({ title: '电池策略已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); } });
+  container.querySelector('[data-ai-threads]')?.addEventListener('change', async (event) => { try { await ctx.saveSettings({ aiCpuThreads: Number(event.target.value) }); toast({ title: 'CPU 线程已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); } });
+  container.querySelector('[data-ai-provider]')?.addEventListener('change', async (event) => {
+    try { await ctx.saveSettings({ aiProvider: event.target.value }); toast({ title: 'AI 运行方式已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); }
+  });
+  container.querySelector('[data-ai-local-base]')?.addEventListener('change', async (event) => {
+    try { await ctx.saveSettings({ aiLocalBaseUrl: event.target.value.trim() }); toast({ title: '本地模型地址已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); }
+  });
+  container.querySelector('[data-ai-local-model]')?.addEventListener('change', async (event) => {
+    try { await ctx.saveSettings({ aiLocalModel: event.target.value.trim() }); toast({ title: '本地模型已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); }
+  });
+  container.querySelector('[data-ai-local-check]')?.addEventListener('click', async () => {
+    const target = container.querySelector('[data-ai-local-status]');
+    target.textContent = '检测中…';
+    try {
+      const result = await ctx.api.aiLocalStatus();
+      target.textContent = result.available ? `已连接 · ${result.models?.join(' / ') || '无模型列表'}` : '未检测到本地服务';
+      toast({ title: result.available ? '本地模型已连接' : '未检测到本地模型', message: result.available ? result.models?.join('、') : '先启动 Ollama 或 llama.cpp', type: result.available ? 'success' : 'error' });
+    } catch (error) {
+      target.textContent = '检测失败';
+      toast({ title: '检测失败', message: error.message, type: 'error' });
+    }
+  });
+  container.querySelector('[data-ai-test]')?.addEventListener('click', async () => {
+    const button = container.querySelector('[data-ai-test]');
+    button.disabled = true;
+    try { const result = await ctx.api.aiTest(); toast({ title: 'AI 连接正常', message: result.model || '' }); } catch (error) { toast({ title: '连接失败', message: error.message, type: 'error', duration: 7000 }); } finally { button.disabled = false; }
+  });
+  container.querySelector('[data-ai-base]')?.addEventListener('change', async (event) => {
+    try { await ctx.saveSettings({ aiBaseUrl: event.target.value.trim() }); toast({ title: 'AI 接口已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); }
+  });
+  container.querySelector('[data-ai-key]')?.addEventListener('change', async (event) => {
+    try { await ctx.saveSettings({ aiApiKey: event.target.value.trim() }); toast({ title: 'AI Key 已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); }
+  });
+  container.querySelector('[data-ai-model]')?.addEventListener('change', async (event) => {
+    try { await ctx.saveSettings({ aiModel: event.target.value.trim() }); toast({ title: '模型已保存' }); } catch (error) { toast({ title: '保存失败', message: error.message, type: 'error' }); }
+  });
   container.querySelector('[data-curseforge-key]')?.addEventListener('change', async (event) => {
     try {
       await ctx.saveSettings({ curseForgeApiKey: event.target.value.trim() });

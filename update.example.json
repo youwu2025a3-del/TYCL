@@ -1,8 +1,8 @@
 {
-  "version": "1.3.4",
+  "version": "1.3.5",
   "notes": "示例更新源：把这里改成新版本的更新说明。",
-  "downloadUrl": "https://your-domain.example/TYCL-update-1.3.4.zip",
-  "sha256": "把 TYCL-update-1.3.4.zip 的 SHA-256 填在这里",
+  "downloadUrl": "https://your-domain.example/TYCL-update-1.3.5.zip",
+  "sha256": "把 TYCL-update-1.3.5.zip 的 SHA-256 填在这里",
   "publishedAt": "2026-10-25T00:00:00.000Z",
   "mandatory": false
 }

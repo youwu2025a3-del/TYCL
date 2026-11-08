@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1080px; height: 1440px; overflow: hidden; }
+  body {
+    font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+    color: #163b2d;
+    background:
+      radial-gradient(circle at 88% 4%, rgba(102, 205, 157, .22), transparent 34%),
+      radial-gradient(circle at 8% 86%, rgba(255, 205, 116, .13), transparent 30%),
+      #f4f8f5;
+    padding: 64px 68px 52px;
+  }
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 15px; }
+  .logo {
+    width: 58px; height: 58px; border-radius: 16px;
+    background: linear-gradient(145deg, #45c58d, #1c8d63);
+    box-shadow: 0 10px 24px rgba(32, 139, 97, .24);
+    display: grid; place-items: center;
+  }
+  .logo svg { width: 34px; height: 34px; }
+  .brand-name { font-size: 30px; font-weight: 800; letter-spacing: .4px; line-height: 1; }
+  .brand-sub { font-size: 12px; letter-spacing: 3.5px; color: #7d9b8f; margin-top: 7px; }
+  .meta { text-align: right; color: #7d9b8f; font-size: 14px; line-height: 1.7; }
+  .meta strong { display: block; color: #1e6f50; font-size: 20px; font-weight: 700; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 48px;
+    padding: 8px 14px; border-radius: 999px; background: #e5f5ec; color: #217b58;
+    font-size: 14px; font-weight: 700; letter-spacing: .4px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #2caf7c; }
+  h1 { margin: 21px 0 0; font-size: 77px; line-height: 1.12; letter-spacing: -2.5px; font-weight: 800; }
+  h1 em { font-style: normal; color: #21865f; }
+  .sub { margin: 24px 0 0; font-size: 23px; line-height: 1.7; color: #527266; letter-spacing: .2px; }
+  .shot-wrap { position: relative; margin-top: 38px; }
+  .shot {
+    width: 944px; height: 546px; overflow: hidden; border-radius: 18px;
+    border: 1px solid #d7e6de; background: #fff;
+    box-shadow: 0 24px 60px rgba(23, 66, 49, .14);
+  }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+  .shot-label {
+    position: absolute; right: 18px; bottom: 17px;
+    padding: 9px 13px; border-radius: 9px;
+    background: rgba(12, 38, 28, .78); color: #fff; font-size: 13px; letter-spacing: .5px;
+    backdrop-filter: blur(4px);
+  }
+  .features { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
+  .chip {
+    padding: 10px 14px; border-radius: 9px; background: #fff; border: 1px solid #dbe8e1;
+    color: #386a58; font-size: 14px; font-weight: 600;
+  }
+  .chip b { color: #177451; }
+
+  .bottom { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 30px; }
+  .note { font-size: 14px; line-height: 1.8; color: #7a978b; }
+  .note strong { color: #316d58; }
+  .gh { font-size: 14px; color: #456f60; text-align: right; line-height: 1.8; }
+  .gh b { color: #1c7453; font-size: 15px; }
+
+  .why { margin-top: 34px; padding-top: 24px; border-top: 1px solid #dbe8e1; }
+  .why-head { display: flex; align-items: center; gap: 10px; color: #2c7a5c; font-size: 15px; font-weight: 700; letter-spacing: .3px; }
+  .why-head::before { content: ""; width: 20px; height: 2px; background: #42b985; border-radius: 2px; }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 16px; }
+  .why-item { border-left: 1px solid #d7e6de; padding-left: 16px; }
+  .why-item span { display: block; color: #8aa49a; font-size: 11px; letter-spacing: 1px; }
+  .why-item strong { display: block; margin-top: 4px; font-size: 19px; color: #1d5c46; }
+  .why-item p { margin: 5px 0 0; font-size: 12.5px; line-height: 1.65; color: #718d82; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M4 8.5 16 2l12 6.5v15L16 30 4 23.5v-15Z" fill="#fff" opacity=".22"/>
+          <path d="M4 8.5 16 2l12 6.5M4 8.5v15L16 30l12-6.5v-15M16 15.5v14.5M4 8.5l12 7 12-7" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="m11 12 2.5 2.8L11.5 17l-1.2-1.4L9 16.5l1.3-2.3L9 12h2Z" fill="#fff"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">TYCL</div>
+        <div class="brand-sub">MINECRAFT LAUNCHER</div>
+      </div>
+    </div>
+    <div class="meta"><strong>v1.4.1</strong>Windows · 免费开源<br>作者 A3Y8</div>
+  </div>
+
+  <div class="tag"><span class="dot"></span> 自己做的一个 Minecraft 启动器</div>
+  <h1>做了个自己<br><em>愿意天天用的启动器。</em></h1>
+  <p class="sub">不是工作室产品，也没有 KPI。开服、联机、模组、皮肤，先把我自己最常用的部分做好。</p>
+
+  <div class="shot-wrap">
+    <div class="shot"><img src="../screenshots/home.png" alt="TYCL 启动器界面"></div>
+    <div class="shot-label">TYCL · 首页</div>
+  </div>
+
+  <div class="features">
+    <span class="chip"><b>一键开服</b> · 自动装服务端</span>
+    <span class="chip"><b>房间号联机</b> · 5 位数字直接进</span>
+    <span class="chip"><b>正版皮肤</b> · 3D 预览</span>
+    <span class="chip"><b>COS 更新</b> · 国内不用加速器</span>
+  </div>
+
+  <div class="bottom">
+    <div class="note">
+      <strong>Windows 10 / 11 · 一个人维护</strong><br>
+      安装包可从 GitHub Release 下载
+    </div>
+    <div class="gh">
+      <b>github.com/youwu2025a3-del/TYCL</b><br>
+      遇到问题欢迎在评论区说
+    </div>
+  </div>
+
+  <div class="why">
+    <div class="why-head">目前做好的部分</div>
+    <div class="why-grid">
+      <div class="why-item"><span>01 / INSTALL</span><strong>装完就能玩</strong><p>原版、Fabric、Forge 实例，下载完直接启动。</p></div>
+      <div class="why-item"><span>02 / TOGETHER</span><strong>开房不记 IP</strong><p>5 位房间号，朋友输入就能进；不用先开游戏。</p></div>
+      <div class="why-item"><span>03 / UPDATE</span><strong>国内能更新</strong><p>COS 更新源，不挂加速器也能收到新版本。</p></div>
+    </div>
+  </div>
+</body>
+</html>

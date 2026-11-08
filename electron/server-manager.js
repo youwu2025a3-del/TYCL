@@ -22,22 +22,11 @@ function serverRoot(instance) {
   return ensureDir(path.join(paths.data(), 'servers', instance.id));
 }
 
-function serverJarUrl(instance) {
-  if (instance.loader === 'vanilla') return null;
-  if (instance.loader === 'fabric') {
-    return `https://meta.fabricmc.net/v2/versions/loader/${encodeURIComponent(instance.baseVersion)}/${encodeURIComponent(instance.loaderVersion)}/server/jar`;
-  }
-  if (instance.loader === 'quilt') {
-    return `https://meta.quiltmc.org/v3/versions/loader/${encodeURIComponent(instance.baseVersion)}/${encodeURIComponent(instance.loaderVersion)}/server/jar`;
-  }
-  throw new Error(`${instance.loader} 服务端暂未自动支持，请使用原版或 Fabric 实例`);
-}
-
 function runInstaller(executable, args, cwd) {
   return new Promise((resolve, reject) => {
     const child = spawn(executable, args, { cwd, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });
     let output = '';
-    child.stdout.on('data', (chunk) => { output += String(chunk); });
+  child.stdout.on('data', (chunk) => { output += String(chunk); });
     child.stderr.on('data', (chunk) => { output += String(chunk); });
     child.on('error', reject);
     child.on('close', (code) => {
@@ -47,14 +36,22 @@ function runInstaller(executable, args, cwd) {
   });
 }
 
-async function ensureServerJar(instance, root, javaPath) {
+async function ensureServerJar(instance, root, javaPath, onProgress) {
   if (instance.loader === 'vanilla') {
     const target = path.join(root, 'server.jar');
     if (fs.existsSync(target) && fs.statSync(target).size > 1024) return target;
     const json = await getVersionJson(instance.baseVersion);
     const url = json.downloads && json.downloads.server && json.downloads.server.url;
     if (!url) throw new Error('该版本没有可用的官方服务端');
-    await downloadToFile([url], target, { sha1: json.downloads.server.sha1, size: json.downloads.server.size, timeout: 120000 });
+    await downloadToFile([url], target, {
+      sha1: json.downloads.server.sha1,
+      size: json.downloads.server.size,
+      timeout: 120000,
+      onProgress: ({ downloaded, total }) => {
+        const detail = total ? `${(downloaded / 1024 / 1024).toFixed(0)} / ${(total / 1024 / 1024).toFixed(0)} MB` : '正在下载';
+        onProgress?.(total ? 18 + (downloaded / total) * 30 : 25, '下载服务端', detail);
+      },
+    });
     return target;
   }
   if (instance.loader === 'fabric' || instance.loader === 'quilt') {
@@ -110,7 +107,7 @@ function modSide(file) {
   return { side: 'server', id: name, name };
 }
 
-function syncServerMods(instance, root) {
+function syncServerMods(instance, root, onProgress) {
   const source = path.join(instance.gameDir, 'mods');
   const target = ensureDir(path.join(root, 'mods'));
   const kept = [];
@@ -203,19 +200,33 @@ function modFingerprint(mods) {
   return crypto.createHash('sha1').update(names.join('|')).digest('hex').slice(0, 8);
 }
 
-async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Room', memoryMb = 0, config = {} } = {}) {
+async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Room', memoryMb = 0, config = {}, onProgress, worldName = '' } = {}) {
+  const report = (percent, stage, detail = '') => { try { onProgress?.({ percent, stage, detail }); } catch { /* ignore */ } };
+  report(2, '检查实例', '读取游戏版本与 Mod');
   if (active) throw new Error('已有服务端在运行');
   const instance = getInstance(instanceId);
   if (!instance) throw new Error('实例不存在');
   const root = serverRoot(instance);
+  if (worldName) {
+    const sourceWorld = path.join(instance.gameDir, 'saves', worldName);
+    if (!fs.existsSync(path.join(sourceWorld, 'level.dat'))) throw new Error('单机存档不存在或已损坏');
+    report(10, '导入单机世界', worldName);
+    const targetWorld = path.join(root, 'world');
+    fs.rmSync(targetWorld, { recursive: true, force: true });
+    fs.cpSync(sourceWorld, targetWorld, { recursive: true, filter: (source) => path.basename(source) !== 'session.lock' });
+  }
   let actualPort = Number(port) || 25565;
   for (let attempt = 0; attempt < 20 && !(await isPortFree(actualPort)); attempt += 1) actualPort += 1;
-  const java = await resolveJava({ mcVersion: instance.baseVersion, explicitPath: instance.javaPath || '', autoDownload: true });
+  report(5, '检查 Java', '自动匹配 Java 运行时');
+  const java = await resolveJava({ mcVersion: instance.baseVersion, explicitPath: instance.javaPath || '', autoDownload: true, onProgress });
   if (java.major < java.required) throw new Error(`Java ${java.major} 低于服务端需要的 Java ${java.required}`);
-  const jar = await ensureServerJar(instance, root, java.path);
-  const mods = syncServerMods(instance, root);
+  report(18, '准备服务端', '检查服务端文件');
+  const jar = await ensureServerJar(instance, root, java.path, (value, stage, detail) => report(value, stage, detail));
+  report(55, '同步 Mod', '只复制服务端需要的 Mod');
+  const mods = syncServerMods(instance, root, (value) => report(55 + value * 0.15, '同步 Mod', ''));
   const fingerprint = modFingerprint(mods.kept);
   const roomMotd = `${motd || 'TYCL Room'} · ${fingerprint}`;
+  report(72, '写入配置', '服务端属性、白名单');
   writeServerProperties(root, actualPort, roomMotd, config);
   writeWhitelist(root, config.whitelistNames || []);
   fs.writeFileSync(path.join(root, 'eula.txt'), 'eula=true\n', 'utf8');
@@ -234,6 +245,7 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
     startedAt: Date.now(),
     status: 'starting',
     logs: [],
+    players: [],
     mods,
     fingerprint,
     config,
@@ -244,6 +256,10 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
   const append = (line) => {
     state.logs.push(String(line).trimEnd());
     if (state.logs.length > 240) state.logs.splice(0, state.logs.length - 240);
+    const joined = String(line).match(/: ([A-Za-z0-9_]{1,16}) joined the game/);
+    if (joined && !state.players.includes(joined[1])) state.players.push(joined[1]);
+    const left = String(line).match(/: ([A-Za-z0-9_]{1,16}) left the game/);
+    if (left) state.players = state.players.filter((name) => name !== left[1]);
   };
   child.stdout.on('data', (chunk) => {
     const text = String(chunk);
@@ -273,6 +289,8 @@ async function startDedicatedServer(instanceId, { port = 25565, motd = 'TYCL Roo
     stopDedicatedServer();
     throw new Error(state.error || '服务端启动超时，请查看日志');
   }
+  report(100, '服务端已就绪', '正在生成房间号');
+  setTimeout(() => { try { takeSnapshot(instanceId, '开房快照'); } catch { /* 快照失败不影响开房 */ } }, 1500);
   return { ...getServerState(), root, mods };
 }
 
@@ -284,6 +302,7 @@ function getServerState() {
     instanceId: active.instanceId,
     instanceName: active.instanceName,
     port: active.port,
+    players: active.players || [],
     root: active.root,
     startedAt: active.startedAt,
     logs: active.logs.slice(-80),
@@ -293,6 +312,80 @@ function getServerState() {
   };
 }
 
+
+function snapshotsRoot(instance) {
+  return path.join(serverRoot(instance), 'snapshots');
+}
+
+function takeSnapshot(instanceId, label = '开房快照') {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const root = serverRoot(instance);
+  const world = path.join(root, 'world');
+  if (!fs.existsSync(world)) return null;
+  const id = String(Date.now());
+  const dir = path.join(snapshotsRoot(instance), id);
+  ensureDir(dir);
+  const snapshotWorld = path.join(dir, 'world');
+  ensureDir(snapshotWorld);
+  fs.cpSync(world, snapshotWorld, { recursive: true, force: true, filter: (source) => path.basename(source) !== 'session.lock' });
+  for (const name of ['server.properties', 'whitelist.json', 'ops.json']) {
+    const file = path.join(root, name);
+    if (fs.existsSync(file)) fs.copyFileSync(file, path.join(dir, name));
+  }
+  const meta = { id, label, createdAt: new Date().toISOString() };
+  fs.writeFileSync(path.join(dir, 'snapshot.json'), JSON.stringify(meta, null, 2), 'utf8');
+  const entries = fs.readdirSync(snapshotsRoot(instance), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .sort((a, b) => b.name.localeCompare(a.name));
+  for (const entry of entries.slice(3)) fs.rmSync(path.join(snapshotsRoot(instance), entry.name), { recursive: true, force: true });
+  return meta;
+}
+
+function directorySize(dir) {
+  let total = 0;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const file = path.join(dir, entry.name);
+    total += entry.isDirectory() ? directorySize(file) : fs.statSync(file).size;
+  }
+  return total;
+}
+
+function listSnapshots(instanceId) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const root = snapshotsRoot(instance);
+  if (!fs.existsSync(root)) return [];
+  return fs.readdirSync(root, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(root, entry.name, 'snapshot.json')))
+    .map((entry) => {
+      const dir = path.join(root, entry.name);
+      const meta = JSON.parse(fs.readFileSync(path.join(dir, 'snapshot.json'), 'utf8'));
+      return { ...meta, size: directorySize(path.join(dir, 'world')), path: dir };
+    })
+    .sort((a, b) => b.id.localeCompare(a.id));
+}
+
+async function restoreSnapshot(instanceId, snapshotId) {
+  const instance = getInstance(instanceId);
+  if (!instance) throw new Error('实例不存在');
+  const root = serverRoot(instance);
+  const dir = path.join(snapshotsRoot(instance), String(snapshotId));
+  const source = path.join(dir, 'world');
+  if (!fs.existsSync(source)) throw new Error('快照不存在或已损坏');
+  if (active) {
+    forceStopServer();
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+  }
+  const target = path.join(root, 'world');
+  fs.rmSync(target, { recursive: true, force: true });
+  fs.cpSync(source, target, { recursive: true });
+  for (const name of ['server.properties', 'whitelist.json', 'ops.json']) {
+    const file = path.join(dir, name);
+    if (fs.existsSync(file)) fs.copyFileSync(file, path.join(root, name));
+  }
+  return { ok: true, snapshotId: String(snapshotId) };
+}
 function stopDedicatedServer() {
   if (!active) return { ok: true };
   const state = active;
@@ -327,4 +420,19 @@ function getServerFingerprint(instanceId) {
   return { fingerprint: modFingerprint(kept), count: kept.length };
 }
 
-module.exports = { startDedicatedServer, getServerState, stopDedicatedServer, forceStopServer, syncServerMods, modSide, getServerFingerprint };
+
+function addWhitelist(name) {
+  const safe = String(name || '').replace(/[^A-Za-z0-9_]/g, '').slice(0, 16);
+  if (!safe || !active) return { ok: false };
+  try {
+    const file = path.join(active.root, 'whitelist.json');
+    let list = [];
+    try { list = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { list = []; }
+    if (!list.some((item) => item.name === safe)) list.push({ uuid: offlineUuid(safe), name: safe });
+    fs.writeFileSync(file, JSON.stringify(list, null, 2), 'utf8');
+    active.child.stdin.write(`whitelist add ${safe}\n`);
+    active.child.stdin.write('whitelist reload\n');
+  } catch { /* ignore */ }
+  return { ok: true, name: safe };
+}
+module.exports = { startDedicatedServer, getServerState, stopDedicatedServer, forceStopServer, syncServerMods, modSide, getServerFingerprint, addWhitelist, takeSnapshot, listSnapshots, restoreSnapshot };
