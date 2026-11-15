@@ -2,9 +2,12 @@
 
 ## 申请状态
 
-- **2026-10-25**：已通过 SignPath Foundation 官网提交 TYCL 的免费开源代码签名申请。
+- **2026-10-25**：第一次提交 SignPath Foundation 申请，未通过。
+- **2026-11-15**：重新提交申请，页面显示 `Form submitted`。
 - 项目：https://github.com/youwu2025a3-del/TYCL
 - 构建系统：GitHub Actions
+- 维护者：A3Y8
+- 联系邮箱：youwu2025@163.com
 - 状态：等待 SignPath Foundation 审核
 
 审核结果会通过申请邮箱通知。收到通过邮件后，再接入 SignPath 的签名步骤和证书。
