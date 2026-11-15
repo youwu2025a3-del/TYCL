@@ -4,7 +4,7 @@ const path = require('path');
 const { paths } = require('./paths');
 const topics = require('./knowledge-topics');
 
-const SEED_VERSION = '3';
+const SEED_VERSION = '4';
 let database = null;
 let fallback = null;
 
@@ -28,11 +28,18 @@ function open() {
     const version = database.prepare("SELECT value FROM meta WHERE key = 'seed_version'").get();
     if (!version || version.value !== SEED_VERSION) {
       database.exec('DELETE FROM faq');
-      database.prepare("INSERT INTO meta (key, value) VALUES ('seed_version', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(SEED_VERSION);
       const insert = database.prepare('INSERT INTO faq (patterns, answer, actions) VALUES (?, ?, ?)');
-      for (const item of seed()) {
-        insert.run(JSON.stringify(item.patterns || []), item.answer || '', JSON.stringify(item.actions || []));
+      database.exec('BEGIN');
+      try {
+        for (const item of seed()) {
+          insert.run(JSON.stringify(item.patterns || []), item.answer || '', JSON.stringify(item.actions || []));
+        }
+        database.exec('COMMIT');
+      } catch (error) {
+        database.exec('ROLLBACK');
+        throw error;
       }
+      database.prepare("INSERT INTO meta (key, value) VALUES ('seed_version', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value").run(SEED_VERSION);
     }
   } catch {
     database = null;
@@ -40,18 +47,42 @@ function open() {
   }
 }
 
+let rowCache = null;
+let invertedIndex = null;
+let exactIndex = null;
+
 function rows() {
+  if (rowCache) return rowCache;
   open();
   if (database) {
     try {
-      return database.prepare('SELECT patterns, answer, actions FROM faq').all().map((row) => ({
+      rowCache = database.prepare('SELECT patterns, answer, actions FROM faq').all().map((row) => ({
         patterns: JSON.parse(row.patterns),
         answer: row.answer,
         actions: JSON.parse(row.actions || '[]'),
       }));
+      return rowCache;
     } catch { /* ignore */ }
   }
-  return fallback || seed();
+  rowCache = fallback || seed();
+  return rowCache;
+}
+
+function buildIndex() {
+  if (invertedIndex) return;
+  invertedIndex = new Map();
+  exactIndex = new Map();
+  rows().forEach((entry, entryIndex) => {
+    for (const pattern of entry.patterns || []) {
+      const key = String(pattern).toLowerCase().replace(/\\s+/g, '');
+      if (key && !exactIndex.has(key)) exactIndex.set(key, entryIndex);
+      for (const token of tokensForPattern(pattern)) {
+        if (token.length < 2) continue;
+        if (!invertedIndex.has(token)) invertedIndex.set(token, new Set());
+        invertedIndex.get(token).add(entryIndex);
+      }
+    }
+  });
 }
 
 const STOP_WORDS = new Set(['的','了','吗','呢','吧','啊','我','你','他','她','它','是','有','和','与','在','把','被','这','那','个','一下','怎么','如何','怎样','请问','什么','可以','需要','教程','方法','步骤','问题','怎么办','咋办','咋','能','会','要','想','请','教','告诉','帮我']);
@@ -105,9 +136,23 @@ function answer(text) {
   if (!raw) return null;
   const normalized = raw.toLowerCase().replace(/\s+/g, '');
   const queryTokens = tokenize(raw);
+  buildIndex();
+  const exact = exactIndex.get(normalized);
+  if (exact != null) {
+    const found = rows()[exact];
+    return { text: found.answer, actions: found.actions || [], mode: 'knowledge' };
+  }
+  const candidateIndexes = new Set();
+  for (const token of queryTokens) {
+    if (token.length < 2) continue;
+    const hits = invertedIndex.get(token);
+    if (hits) for (const index of hits) candidateIndexes.add(index);
+  }
+  const candidates = candidateIndexes.size ? Array.from(candidateIndexes) : rows().map((_, index) => index);
   let best = null;
   let bestScore = 0;
-  for (const entry of rows()) {
+  for (const index of candidates) {
+    const entry = rows()[index];
     const patterns = Array.isArray(entry.patterns) ? entry.patterns : [];
     let score = 0;
     for (const pattern of patterns) score = Math.max(score, scorePattern(normalized, queryTokens, pattern));

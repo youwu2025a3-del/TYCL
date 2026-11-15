@@ -22,6 +22,7 @@ export async function render(container, ctx) {
   let room = null;
   let hostMode = 'server';
   let hostBusy = false;
+  let boreReady = null;
   const config = { onlineMode: false, whitelist: false, whitelistNames: [], maxPlayers: 20, viewDistance: 10, difficulty: 'normal' };
   let lanTimer = null;
   let serverTimer = null;
@@ -39,6 +40,8 @@ export async function render(container, ctx) {
           <button class="btn btn-secondary" data-multi-refresh>${icon('refresh', 15)} 刷新状态</button>
         </div>
       </div>
+
+      <div data-bore-banner></div>
 
       <section class="room-banner ${room ? 'active' : ''}" data-room-banner>
         <div class="room-banner-copy">
@@ -176,6 +179,45 @@ export async function render(container, ctx) {
 
   const body = container.querySelector('.multi-page');
 
+  function renderBoreGate() {
+    const target = body.querySelector('[data-bore-banner]');
+    if (!target) return;
+    if (boreReady === true) { target.innerHTML = ''; return; }
+    if (boreReady === null) { target.innerHTML = `<div class="notice">${icon('activity', 14)}<span>正在检查联机组件…</span></div>`; return; }
+    target.innerHTML = `<div class="notice warn">${icon('download', 14)}<span>联机组件尚未下载。首次联机需要下载 bore，下载完成后才能开房或加入房间。</span><button class="btn btn-primary btn-sm" data-bore-download>${icon('download', 13)} 下载联机组件</button></div>`;
+    target.querySelector('[data-bore-download]')?.addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      button.disabled = true;
+      button.innerHTML = '<span class="spinner" style="width:12px;height:12px"></span> 下载中…';
+      try {
+        await ctx.api.prepareTunnel();
+        boreReady = true;
+        renderBoreGate();
+        toast({ title: '联机组件已就绪' });
+      } catch (error) {
+        button.disabled = false;
+        button.innerHTML = '重新下载联机组件';
+        toast({ title: '下载失败', message: error.message, type: 'error', duration: 7000 });
+      }
+    });
+  }
+
+  async function ensureBore() {
+    if (boreReady === true) return true;
+    try {
+      const result = await ctx.api.checkTunnel();
+      boreReady = Boolean(result.installed);
+      renderBoreGate();
+      return boreReady;
+    } catch {
+      boreReady = false;
+      renderBoreGate();
+      return false;
+    }
+  }
+
+  ensureBore();
+
   const refreshWorlds = async () => {
     const select = body.querySelector('[data-host-world]');
     if (!select) return;
@@ -273,6 +315,10 @@ export async function render(container, ctx) {
   };
 
   const join = async (input) => {
+    if (!(await ensureBore())) {
+      toast({ title: '需要先下载联机组件', message: '点击页面顶部提示下载', type: 'error', duration: 6000 });
+      return;
+    }
     let address = String(input || '').trim();
     let serviceAddress = '';
     if (!address) return toast({ title: '请输入房间号或地址', type: 'info' });
@@ -370,6 +416,10 @@ export async function render(container, ctx) {
     if (startButton) startButton.innerHTML = '<span class="spinner" style="width:13px;height:13px"></span> 准备中 ' + Math.round(pct) + '%';
   });
   body.querySelector('[data-room-start]').addEventListener('click', async () => {
+    if (!(await ensureBore())) {
+      toast({ title: '需要先下载联机组件', message: '点击页面顶部提示下载', type: 'error', duration: 6000 });
+      return;
+    }
     const port = Number(body.querySelector('[data-host-port]').value) || 25565;
     if (!instanceId) return toast({ title: '请选择实例', type: 'error' });
     hostBusy = true;

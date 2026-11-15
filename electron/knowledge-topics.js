@@ -175,8 +175,8 @@ const TOPICS = [
   },
 ];
 
-const PREFIXES = ['', '请问', '怎么'];
-const SUFFIXES = ['', '怎么办', '教程'];
+const PREFIXES = ['', '请问', '怎么', '如何'];
+const SUFFIXES = ['', '怎么办', '教程', '方法'];
 
 function generate() {
   const entries = [];

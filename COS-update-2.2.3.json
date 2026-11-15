@@ -1,0 +1,10 @@
+{
+    "sha256":  "b4a6e7974736b0794187f90de713b96a9324ebb5abc001b48dac1868419e4794",
+    "version":  "2.2.3",
+    "publishedAt":  "2026-11-08T02:42:53.0785936Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.3.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.3.zip"
+                     ],
+    "notes":  "修复 app:bootstrap getActiveGame is not a function；恢复完整启动模块并保留 LWJGL JSON 自动修复。"
+}

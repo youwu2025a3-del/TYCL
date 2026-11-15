@@ -405,6 +405,8 @@ function registerIpc() {
   ipcMain.handle('tunnel:start', async (_, options) => tunnel.startTunnel(options));
   ipcMain.handle('tunnel:stop', async () => tunnel.stopTunnel());
   ipcMain.handle('tunnel:state', async () => tunnel.getTunnelState());
+  ipcMain.handle('tunnel:check', async () => { const file = tunnel.borePath(); return { installed: fs.existsSync(file), path: file }; });
+  ipcMain.handle('tunnel:prepare', async () => { const file = await tunnel.ensureBore(); return { installed: fs.existsSync(file), path: file }; });
   ipcMain.handle('ai:intent', async (_, text) => intent.find(text));
   ipcMain.handle('ai:chat', async (_, messages) => ai.chat(messages));
   ipcMain.handle('ai:test', async () => ai.testConnection());

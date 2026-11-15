@@ -957,6 +957,141 @@ async function enforceDisclaimer() {
   });
 }
 
+async function showOnboarding() {
+  const overlay = document.createElement('div');
+  overlay.className = 'onboarding';
+  overlay.innerHTML = `
+    <div class="onboarding-shell">
+      <aside class="onboarding-rail">
+        <div class="onboarding-brand"><img src="./assets/icon-128.png" alt=""><div><strong>TYCL</strong><span>FIRST LIGHT</span></div></div>
+        <div class="onboarding-steps">
+          <button class="onboarding-step active" data-onboarding-step="0"><b>01</b><span>欢迎</span></button>
+          <button class="onboarding-step" data-onboarding-step="1"><b>02</b><span>游戏目录</span></button>
+          <button class="onboarding-step" data-onboarding-step="2"><b>03</b><span>联机组件</span></button>
+          <button class="onboarding-step" data-onboarding-step="3"><b>04</b><span>准备完成</span></button>
+        </div>
+        <div class="onboarding-rail-foot">TYCL 2.3 · 你的世界，下一次点击</div>
+      </aside>
+      <main class="onboarding-main">
+        <button class="onboarding-skip" data-onboarding-skip>跳过引导</button>
+        <div class="onboarding-progress"><span data-onboarding-bar></span></div>
+
+        <section class="onboarding-slide active" data-onboarding-slide="0">
+          <div class="onboarding-visual welcome-visual"><img class="onboarding-hero" src="./assets/hero-island.svg" alt=""><div class="onboarding-orbit one">${icon('cube', 18)}</div><div class="onboarding-orbit two">${icon('sparkles', 16)}</div></div>
+          <div class="onboarding-copy"><span class="onboarding-kicker">WELCOME TO TYCL</span><h1>你的世界，<br><em>下一次点击。</em></h1><p>一个干净、能装 Mod、能联机、能问 AI 的 Minecraft 启动器。先用一分钟把它调成你的样子。</p><div class="onboarding-chips"><span>${icon('box', 12)} 实例隔离</span><span>${icon('globe', 12)} 一键联机</span><span>${icon('sparkles', 12)} AI 助手</span></div></div>
+        </section>
+
+        <section class="onboarding-slide" data-onboarding-slide="1">
+          <div class="onboarding-visual folder-visual">${icon('folder', 54)}<div class="onboarding-folder-card"><span>GAME DIRECTORY</span><strong data-onboarding-path>${escapeHtml(state.settings.gameDir || '默认目录')}</strong></div></div>
+          <div class="onboarding-copy"><span class="onboarding-kicker">STEP 02 · STORAGE</span><h1>游戏放在哪里？</h1><p>实例、存档、Mod 和下载都会放在这个目录。建议选一个空间充足的磁盘；以后也能在设置里修改。</p><div class="onboarding-actions"><button class="btn btn-primary" data-onboarding-choose>${icon('folder', 14)} 选择目录</button><span class="field-hint">默认目录适合大多数人</span></div></div>
+        </section>
+
+        <section class="onboarding-slide" data-onboarding-slide="2">
+          <div class="onboarding-visual network-visual">${icon('globe', 54)}<div class="onboarding-network-card" data-onboarding-bore-status>${icon('activity', 16)} 正在检查联机组件…</div></div>
+          <div class="onboarding-copy"><span class="onboarding-kicker">STEP 03 · MULTIPLAYER</span><h1>和朋友，进同一个世界。</h1><p>开房需要 bore 联机组件。没下载时只能浏览联机页，不能开房或加入房间；下载一次即可。</p><div class="onboarding-actions" data-onboarding-bore-actions></div></div>
+        </section>
+
+        <section class="onboarding-slide" data-onboarding-slide="3">
+          <div class="onboarding-visual ready-visual"><img src="./assets/icon-128.png" alt=""><div class="onboarding-ready-ring"></div><div class="onboarding-ready-badge">${icon('check', 18)} READY</div></div>
+          <div class="onboarding-copy"><span class="onboarding-kicker">STEP 04 · READY</span><h1>可以开始了。</h1><p>安装一个版本，或者直接问右上角的 AI 助手「想玩轻量、有科技感、能联机的生存整合包」。安装、JVM、开房都可以交给它准备。</p><div class="onboarding-chips"><span>右上角 ✨ AI</span><span>游戏库安装版本</span><span>联机页开房</span></div></div>
+        </section>
+
+        <footer class="onboarding-footer">
+          <div class="onboarding-dots">${[0, 1, 2, 3].map((index) => `<button data-onboarding-dot="${index}" class="${index === 0 ? 'active' : ''}"></button>`).join('')}</div>
+          <div class="onboarding-nav"><button class="btn btn-ghost btn-sm" data-onboarding-back>上一步</button><button class="btn btn-primary btn-sm" data-onboarding-next>下一步 ${icon('arrow-right', 13)}</button></div>
+        </footer>
+      </main>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  let step = 0;
+  let boreReady = null;
+  let finishResolve = null;
+  const finished = new Promise((resolve) => { finishResolve = resolve; });
+  const slides = Array.from(overlay.querySelectorAll('[data-onboarding-slide]'));
+  const dots = Array.from(overlay.querySelectorAll('[data-onboarding-dot]'));
+  const steps = Array.from(overlay.querySelectorAll('[data-onboarding-step]'));
+  const bar = overlay.querySelector('[data-onboarding-bar]');
+  const back = overlay.querySelector('[data-onboarding-back]');
+  const next = overlay.querySelector('[data-onboarding-next]');
+
+  const finish = async () => {
+    try {
+      await api.saveSettings({ onboardingDone: true });
+      state.settings.onboardingDone = true;
+    } catch { /* ignore */ }
+    overlay.classList.add('closing');
+    setTimeout(() => overlay.remove(), 260);
+    finishResolve?.(true);
+    return true;
+  };
+
+  const render = () => {
+    slides.forEach((slide, index) => slide.classList.toggle('active', index === step));
+    dots.forEach((dot, index) => dot.classList.toggle('active', index === step));
+    steps.forEach((item, index) => item.classList.toggle('active', index === step));
+    bar.style.width = `${((step + 1) / 4) * 100}%`;
+    back.disabled = step === 0;
+    next.innerHTML = step === 3 ? `进入 TYCL ${icon('arrow-right', 13)}` : `下一步 ${icon('arrow-right', 13)}`;
+    if (step === 2 && boreReady === null) checkBore();
+  };
+
+  const checkBore = async () => {
+    const status = overlay.querySelector('[data-onboarding-bore-status]');
+    const actions = overlay.querySelector('[data-onboarding-bore-actions]');
+    if (!status || !actions) return;
+    try {
+      const result = await api.checkTunnel();
+      boreReady = Boolean(result.installed);
+      status.innerHTML = boreReady ? `${icon('check', 16)} bore 已就绪` : `${icon('download', 16)} bore 尚未下载`;
+      actions.innerHTML = boreReady
+        ? `<span class="field-hint">开房和加入房间已经可用</span>`
+        : `<button class="btn btn-primary" data-onboarding-bore>${icon('download', 14)} 下载联机组件</button><span class="field-hint">也可以稍后在联机页下载</span>`;
+      actions.querySelector('[data-onboarding-bore]')?.addEventListener('click', async (event) => {
+        const button = event.currentTarget;
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner" style="width:12px;height:12px"></span> 下载中…';
+        try {
+          await api.prepareTunnel();
+          boreReady = true;
+          checkBore();
+          toast({ title: '联机组件已下载' });
+        } catch (error) {
+          button.disabled = false;
+          button.innerHTML = '重试下载';
+          toast({ title: '下载失败', message: error.message, type: 'error' });
+        }
+      });
+    } catch {
+      status.textContent = '检查失败，可以稍后在联机页重试';
+    }
+  };
+
+  const go = (target) => { step = Math.max(0, Math.min(3, target)); render(); };
+  overlay.querySelector('[data-onboarding-next]').addEventListener('click', async () => {
+    if (step < 3) go(step + 1);
+    else await finish();
+  });
+  overlay.querySelector('[data-onboarding-back]').addEventListener('click', () => go(step - 1));
+  overlay.querySelector('[data-onboarding-skip]').addEventListener('click', finish);
+  dots.forEach((dot) => dot.addEventListener('click', () => go(Number(dot.dataset.onboardingDot))));
+  steps.forEach((item) => item.addEventListener('click', () => go(Number(item.dataset.onboardingStep))));
+  overlay.querySelector('[data-onboarding-choose]').addEventListener('click', async () => {
+    const result = await api.chooseDirectory({ title: '选择 TYCL 游戏目录' });
+    if (!result || result.canceled || !result.path) return;
+    try {
+      await api.saveSettings({ gameDir: result.path });
+      state.settings.gameDir = result.path;
+      overlay.querySelector('[data-onboarding-path]').textContent = result.path;
+      toast({ title: '游戏目录已更新' });
+    } catch (error) {
+      toast({ title: '保存失败', message: error.message, type: 'error' });
+    }
+  });
+  render();
+  return finished;
+}
+
 async function init() {
   ensureThemeColorMeta();
   appEl.innerHTML = `<div class="app-boot"><div class="app-boot-logo"><img src="./assets/icon-128.png" alt=""></div><span>正在准备你的世界…</span></div>`;
@@ -973,6 +1108,9 @@ async function init() {
     if (!state.settings.disclaimerAccepted) {
       const accepted = await enforceDisclaimer();
       if (!accepted) return;
+    }
+    if (!state.settings.onboardingDone) {
+      await showOnboarding();
     }
     const initialRoute = (location.hash || '#home').slice(1);
     currentRoute = '';

@@ -1,0 +1,10 @@
+{
+    "sha256":  "f3b652e9ced3e3b7013866d7acdd46a0c8e15442d7ced2c4173fa58bc8e94851",
+    "version":  "2.2.2",
+    "publishedAt":  "2026-11-08T02:35:58.3781308Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.2.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.2.2.zip"
+                     ],
+    "notes":  "LWJGL 版本 JSON 修复、启动前自动修复、安全启动、自动快照、下载界面提速、新闻离线缓存。"
+}

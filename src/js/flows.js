@@ -603,7 +603,25 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-    {
+            {
+      version: '2.3.0',
+      date: '2026.11.15',
+      title: '新手引导 · 联机组件门禁',
+      items: [
+        '首次进入启动器显示新手引导，三步了解安装、联机和 AI。',
+        '联机页自动检查 bore 联机组件，未下载时禁止开房和加入房间。',
+        '已下载联机组件的用户自动通过，不再重复下载。',
+        '联机页顶部提供下载按钮和状态提示。',
+      ],
+    },{
+      version: '2.2.3',
+      date: '2026.11.08',
+      title: '启动修复',
+      items: [
+        '修复 2.2.2 启动时 app:bootstrap 报 getActiveGame is not a function。',
+        '恢复完整启动器模块，保留 LWJGL 版本 JSON 自动修复。',
+      ],
+    },{
       version: '2.2.2',
       date: '2026.11.08',
       title: '稳定性修复 · LWJGL / 下载 / 诊断',

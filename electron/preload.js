@@ -39,6 +39,8 @@ contextBridge.exposeInMainWorld('tycl', {
   startTunnel: (options) => invoke('tunnel:start', options),
   stopTunnel: () => invoke('tunnel:stop'),
   getTunnelState: () => invoke('tunnel:state'),
+  checkTunnel: () => invoke('tunnel:check'),
+  prepareTunnel: () => invoke('tunnel:prepare'),
   findIntent: (text) => invoke('ai:intent', text),
   aiChat: (messages) => invoke('ai:chat', messages),
   aiTest: () => invoke('ai:test'),

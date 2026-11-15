@@ -1,0 +1,10 @@
+{
+    "sha256":  "893569f6965b01b5f084586cecda923f867ec1aaeca4d62657bccb3f711f97bb",
+    "version":  "2.3.0",
+    "publishedAt":  "2026-11-15T06:01:01.5656707Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.3.0.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.3.0.zip"
+                     ],
+    "notes":  "首次新手引导；联机页检查 bore，未下载禁止开房/加入并提示下载；已下载自动通过。"
+}

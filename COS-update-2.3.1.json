@@ -1,0 +1,10 @@
+{
+    "sha256":  "113e528ba6e7ed3a20a6863bc32b506fb1553102b00c4663ab3a2f904191dcc0",
+    "version":  "2.3.1",
+    "publishedAt":  "2026-11-15T06:10:05.1389794Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.3.1.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.3.1.zip"
+                     ],
+    "notes":  "问答库扩至 2592 条；倒排索引 + 关键词评分；新手引导四步；联机组件门禁。"
+}
