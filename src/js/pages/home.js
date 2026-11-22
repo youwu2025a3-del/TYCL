@@ -76,6 +76,14 @@ export async function render(container, ctx) {
         </div>
 
         <div class="hero-art"><img src="./assets/hero-island.svg" alt=""></div>
+        <div class="christmas-hero" aria-hidden="true">
+          <img class="xmas-tree" src="./assets/christmas/tree.svg" alt="">
+          <img class="xmas-santa" src="./assets/christmas/santa.svg" alt="">
+          <img class="xmas-gift" src="./assets/christmas/gift.svg" alt="">
+          <img class="xmas-snowman" src="./assets/christmas/snowman.svg" alt="">
+          <img class="xmas-flake one" src="./assets/christmas/snowflake.svg" alt="">
+          <img class="xmas-flake two" src="./assets/christmas/snowflake.svg" alt="">
+        </div>
         <div class="hero-float-card one">
           <div class="hero-float-icon">${icon('layers', 15)}</div>
           <div><strong>${instances.length} 个游戏实例</strong><span>${totalMods} 个 Mod 已就绪</span></div>

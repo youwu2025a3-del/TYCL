@@ -56,6 +56,12 @@ export async function render(container, ctx) {
         <button data-settings-jump="settings-updates">更新</button>
       </nav>
 
+      <div class="christmas-banner" aria-hidden="true">
+        <img class="christmas-banner-tree" src="./assets/christmas/tree.svg" alt="">
+        <div class="christmas-banner-copy"><span>MERRY CHRISTMAS</span><strong>把喜欢的界面，留在这个冬天。</strong><small>圣诞主题 · TYCL 2026</small></div>
+        <img class="christmas-banner-gift" src="./assets/christmas/gift.svg" alt="">
+      </div>
+
       <div class="settings-grid">
         <div class="settings-col">
         <section class="settings-card">

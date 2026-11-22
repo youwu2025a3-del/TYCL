@@ -603,7 +603,17 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                    {
+                        {
+      version: '2.3.4',
+      date: '2026.11.22',
+      title: '圣诞树配图 · 冬日场景',
+      items: [
+        '圣诞节主题加入圣诞树、圣诞老人、礼物、雪人和雪花插画。',
+        '首页会在圣诞主题下显示完整冬日场景，设置页增加圣诞横幅。',
+        '插画资源来自 Twemoji（CC-BY 4.0），已在 assets/christmas/LICENSE.txt 署名。',
+        '保留圣诞配色、动效和快速设置定位。',
+      ],
+    },{
       version: '2.3.3',
       date: '2026.11.22',
       title: '圣诞主题 · 模组图片 · 自动修复',

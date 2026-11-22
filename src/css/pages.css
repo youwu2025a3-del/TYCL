@@ -5064,3 +5064,54 @@ body[data-theme="dark"] .hero-meta-link:hover {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+/* Christmas illustration scene */
+.christmas-hero { display: none; }
+body[data-theme="christmas"] .hero-art { display: none; }
+body[data-theme="christmas"] .christmas-hero {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: min(52%, 560px);
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.christmas-hero img { position: absolute; filter: drop-shadow(0 18px 22px rgba(63, 37, 16, .16)); }
+.christmas-hero .xmas-tree { width: 46%; right: 22%; bottom: 8px; animation: xmasSway 7s ease-in-out infinite; }
+.christmas-hero .xmas-santa { width: 21%; right: 4%; top: 12%; animation: xmasFloat 5.2s ease-in-out infinite; }
+.christmas-hero .xmas-gift { width: 18%; left: 8%; bottom: 9%; animation: xmasFloat 4.3s ease-in-out infinite reverse; }
+.christmas-hero .xmas-snowman { width: 15%; left: 28%; bottom: 5%; opacity: .95; }
+.christmas-hero .xmas-flake { width: 7%; opacity: .6; }
+.christmas-hero .xmas-flake.one { left: 14%; top: 17%; animation: xmasFlake 8s linear infinite; }
+.christmas-hero .xmas-flake.two { right: 34%; top: 5%; width: 5%; animation: xmasFlake 10s linear infinite reverse; }
+@keyframes xmasSway { 0%, 100% { transform: rotate(-1.5deg) translateY(0); } 50% { transform: rotate(1.5deg) translateY(-5px); } }
+@keyframes xmasFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes xmasFlake { 0% { transform: translateY(-6px) rotate(0); } 50% { transform: translateY(8px) rotate(90deg); } 100% { transform: translateY(-6px) rotate(180deg); } }
+body[data-theme="christmas"] .hero-float-card { background: rgba(255, 250, 240, .9); border-color: rgba(178, 58, 50, .16); }
+
+.christmas-banner { display: none; }
+body[data-theme="christmas"] .christmas-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 12px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(110deg, #fff7e8, #f7e8d2 55%, #f4ded6);
+  box-shadow: var(--shadow-xs);
+}
+.christmas-banner::after { content: ""; position: absolute; width: 170px; height: 170px; right: -55px; top: -85px; border: 1px solid rgba(178, 58, 50, .14); border-radius: 50%; }
+.christmas-banner-tree { width: 52px; height: 52px; object-fit: contain; }
+.christmas-banner-copy { flex: 1; min-width: 0; }
+.christmas-banner-copy span { display: block; color: var(--accent-strong); font-size: 8px; font-weight: 700; letter-spacing: .22em; }
+.christmas-banner-copy strong { display: block; margin: 3px 0; color: var(--text-strong); font-family: Georgia, "Times New Roman", serif; font-size: 16px; }
+.christmas-banner-copy small { color: var(--muted); font-size: 8px; letter-spacing: .08em; }
+.christmas-banner-gift { width: 38px; height: 38px; object-fit: contain; transform: rotate(7deg); }
+@media (max-width: 900px) {
+  body[data-theme="christmas"] .christmas-hero { opacity: .36; width: 60%; }
+  .christmas-banner-gift { display: none; }
+}

@@ -1,0 +1,9 @@
+Christmas illustrations in this folder are from Twemoji.
+
+Source: https://github.com/jdecked/twemoji
+Files: tree.svg (1f384), gift.svg (1f381), santa.svg (1f385), snowman.svg (2603), snowflake.svg (2744)
+
+License: CC-BY 4.0
+https://creativecommons.org/licenses/by/4.0/
+
+Twemoji graphics are licensed under CC-BY 4.0. Attribution is required when redistributing.
