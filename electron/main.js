@@ -28,6 +28,31 @@ const lan = require('./lan');
 const serverManager = require('./server-manager');
 const curseforge = require('./curseforge');
 const roomService = require('./room-service');
+
+const crashLogFile = path.join(app.getPath('userData'), 'crash.log');
+let lastCrashAt = 0;
+
+function recordCrash(kind, error) {
+  const now = Date.now();
+  const message = error && error.stack ? error.stack : String(error || '');
+  try {
+    ensureDir(path.dirname(crashLogFile));
+    if (fs.existsSync(crashLogFile) && fs.statSync(crashLogFile).size > 2 * 1024 * 1024) {
+      fs.writeFileSync(crashLogFile, '', 'utf8');
+    }
+    fs.appendFileSync(crashLogFile, `[${new Date().toISOString()}] ${kind}\n${message}\n\n`, 'utf8');
+  } catch { /* ignore */ }
+  lastCrashAt = now;
+}
+
+process.on('uncaughtException', (error) => {
+  const recent = Date.now() - lastCrashAt < 5000;
+  recordCrash('uncaughtException', error);
+  if (app.isReady() && !recent) {
+    try { dialog.showErrorBox('TYCL 遇到错误', '错误已写入 crash.log。\n\n' + (error?.message || String(error))); } catch { /* ignore */ }
+  }
+});
+process.on('unhandledRejection', (error) => recordCrash('unhandledRejection', error));
 const intent = require('./intent');
 const ai = require('./ai');
 
@@ -92,6 +117,18 @@ function createWindow(options = {}) {
   });
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+  mainWindow.webContents.on('render-process-gone', (event, details) => {
+    recordCrash('render-process-gone', JSON.stringify(details));
+    if (details.reason === 'clean-exit' || !mainWindow || mainWindow.isDestroyed()) return;
+    // 渲染进程崩溃后自动恢复一次，避免直接闪退到桌面。
+    setTimeout(() => {
+      if (mainWindow && !mainWindow.isDestroyed()) mainWindow.reload();
+    }, 800);
+  });
+  mainWindow.on('unresponsive', () => recordCrash('window-unresponsive', 'renderer not responding'));
+  mainWindow.webContents.on('did-fail-load', (event, code, description, url) => {
+    recordCrash('did-fail-load', `${code} ${description} ${url}`);
   });
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (/^https?:\/\//i.test(url)) shell.openExternal(url);

@@ -43,7 +43,6 @@ function repairVersionJson(file, baseData) {
   }
   let changed = false;
   for (const [name, library] of installed) {
-    if (!/^org\.lwjgl:/.test(name)) continue;
     const base = baseLibraries.get(name);
     if (!base) continue;
     for (const key of ['downloads', 'natives', 'extract', 'rules', 'url', 'sha1', 'size']) {
@@ -53,8 +52,10 @@ function repairVersionJson(file, baseData) {
       }
     }
   }
+  // 加载器 profile 可能只列出某个库的 natives 变体，普通 jar 会整个丢失。
+  // jtracy 就是这样被漏掉的：natives-windows 在，普通 jtracy jar 不在，启动时报
+  // NoClassDefFoundError: com/mojang/jtracy/TracyClient。所有原版库都要补回。
   for (const [name, library] of baseLibraries) {
-    if (!/^org\.lwjgl:/.test(name)) continue;
     if (!installed.has(name)) {
       data.libraries.push(JSON.parse(JSON.stringify(library)));
       changed = true;
@@ -103,7 +104,7 @@ function sanitizeInstalledVersionFiles(instance) {
   }
 }
 
-function launchInstance(instanceId, task, { onStatus, serverAddress = '' } = {}) {
+function launchInstance(instanceId, task, { onStatus, serverAddress = '', worldName = '' } = {}) {
   return new Promise(async (resolve, reject) => {
     try {
       if (activeGame) {

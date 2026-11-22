@@ -603,7 +603,17 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-            {
+                {
+      version: '2.3.2',
+      date: '2026.11.22',
+      title: '启动崩溃修复 · jtracy 库',
+      items: [
+        '修复 Fabric 加载器覆盖 jtracy 普通 jar 导致 NoClassDefFoundError: TracyClient 的启动崩溃。',
+        '版本 JSON 修复现在会补回所有缺失的原版库，不再只处理 LWJGL。',
+        '合并 Fabric/Forge 时按 group:artifact:classifier 区分普通 jar 和 natives，避免同类库互相覆盖。',
+        '已有实例会在下次启动时自动修复，无需重新安装。',
+      ],
+    },{
       version: '2.3.0',
       date: '2026.11.15',
       title: '新手引导 · 联机组件门禁',

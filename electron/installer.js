@@ -311,7 +311,9 @@ function mergeLoaderProfile(base, profile) {
   const keyOf = (library) => {
     try {
       const coord = mavenCoordinate(library.name);
-      return `${coord.group}:${coord.artifact}`;
+      // classifier 必须参与 key：jtracy 的普通 jar 和 natives-windows 属于同一个
+      // group:artifact，只用 group:artifact 会让 natives 条目覆盖普通 jar。
+      return `${coord.group}:${coord.artifact}:${coord.classifier || ''}`;
     } catch {
       return library.name;
     }
@@ -319,9 +321,8 @@ function mergeLoaderProfile(base, profile) {
   const libraries = new Map();
   for (const library of base.libraries || []) libraries.set(keyOf(library), library);
   for (const library of profile.libraries || []) libraries.set(keyOf(library), library);
-  // 加载器 profile 可能覆盖 LWJGL 条目但缺少 downloads/natives，保留原版元数据
+  // 加载器 profile 可能只提供残缺的同名条目，保留原版元数据。
   for (const [key, library] of libraries) {
-    if (!/^org\.lwjgl:/.test(library.name || '')) continue;
     const baseLibrary = (base.libraries || []).find((item) => keyOf(item) === key);
     if (!baseLibrary) continue;
     for (const field of ['downloads', 'natives', 'extract', 'rules', 'url', 'sha1', 'size']) {
