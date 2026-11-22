@@ -603,7 +603,20 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                {
+                    {
+      version: '2.3.3',
+      date: '2026.11.22',
+      title: '圣诞主题 · 模组图片 · 自动修复',
+      items: [
+        '新增圣诞节主题：奶油纸张、红绿金配色和雪花装饰。',
+        '设置页新增快速定位，外观、游戏、账户、AI、更新一键跳转。',
+        '实例 Mods 列表显示模组内置图片，点击可以放大查看。',
+        '问答库扩充到 3760 条，新增 jtracy、实例导入、皮肤、联机端口和启动器闪退主题。',
+        '增强一键修复：先修复版本 JSON 和缺失原版库，再补全游戏文件。',
+        'AI 崩溃修复可以识别 jtracy/TracyClient 并自动修复版本 JSON。',
+        '统一页面、卡片和主题切换动效，并支持减少动态效果。',
+      ],
+    },{
       version: '2.3.2',
       date: '2026.11.22',
       title: '启动崩溃修复 · jtracy 库',
@@ -1519,6 +1532,21 @@ export async function openInstanceManager(ctx, instance) {
         }
       });
     });
+    modal.body.querySelectorAll('[data-mod-image]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const mod = (data.mods.mods || []).find((item) => item.file === button.dataset.modImage);
+        if (!mod || !mod.icon) return;
+        const imageModal = openModal({
+          title: mod.name,
+          subtitle: `${mod.id || mod.file} · ${mod.version || '未知版本'}`,
+          size: 'modal-sm',
+          body: `<div class="mod-image-preview"><img src="${escapeHtml(mod.icon)}" alt="${escapeHtml(mod.name)}"></div>`,
+        });
+        imageModal.root.querySelector('.mod-image-preview img')?.addEventListener('error', () => {
+          imageModal.body.innerHTML = '<div class="manager-empty">图片读取失败</div>';
+        });
+      });
+    });
     modal.body.querySelector('[data-mod-check]')?.addEventListener('click', async (event) => {
       const button = event.currentTarget;
       button.disabled = true;
@@ -1670,7 +1698,12 @@ export async function openInstanceManager(ctx, instance) {
           ${data.mods.mods.map((mod) => {
             const update = (data.modUpdates || []).find((item) => item.file === mod.file);
             return `<div class="manager-row ${mod.enabled ? '' : 'disabled'}">
-              <div class="manager-row-main"><strong>${escapeHtml(mod.name)}</strong><span>${escapeHtml(mod.id || mod.file)} · ${escapeHtml(mod.version || '未知版本')} · ${formatSize(mod.size)}</span></div>
+              <div class="manager-row-main mod-row-main">
+                <button class="mod-icon ${mod.icon ? 'has-image' : ''}" ${mod.icon ? `data-mod-image="${escapeHtml(mod.file)}"` : 'disabled'} title="${mod.icon ? '查看模组图片' : '这个 Mod 没有内置图片'}">
+                  ${mod.icon ? `<img src="${escapeHtml(mod.icon)}" alt="">` : `<span>${escapeHtml((mod.name || '?').slice(0, 2))}</span>`}
+                </button>
+                <div class="mod-row-copy"><strong>${escapeHtml(mod.name)}</strong><span>${escapeHtml(mod.id || mod.file)} · ${escapeHtml(mod.version || '未知版本')} · ${formatSize(mod.size)}</span></div>
+              </div>
               ${update ? `<button class="btn btn-primary btn-xs" data-mod-update="${escapeHtml(mod.file)}">${escapeHtml(update.latestVersion)}</button>` : ''}
               <button class="btn btn-ghost btn-xs" data-mod-toggle="${escapeHtml(mod.file)}" data-enabled="${mod.enabled}">${mod.enabled ? '禁用' : '启用'}</button>
               <button class="btn btn-ghost btn-xs danger" data-mod-delete="${escapeHtml(mod.file)}">删除</button>

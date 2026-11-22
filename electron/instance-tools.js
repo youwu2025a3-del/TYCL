@@ -31,8 +31,29 @@ function readJson(file) {
   }
 }
 
+function modIconData(zip, entryPath) {
+  if (!entryPath) return '';
+  const clean = String(entryPath).replace(/^\/+/, '');
+  const candidates = [clean, clean.replace(/\\/g, '/'), 'icon.png', 'logo.png'];
+  for (const candidate of candidates) {
+    const entry = zip.getEntry(candidate);
+    if (!entry || entry.isDirectory) continue;
+    try {
+      const data = entry.getData();
+      if (!data || data.length > 256 * 1024) continue;
+      const ext = path.extname(candidate).toLowerCase();
+      const mime = ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg'
+        : ext === '.webp' ? 'image/webp'
+          : ext === '.gif' ? 'image/gif' : 'image/png';
+      return `data:${mime};base64,${data.toString('base64')}`;
+    } catch { /* ignore */ }
+  }
+  return '';
+}
+
 function parseModMetadata(file) {
   const result = { id: '', name: '', version: '', loader: '' };
+  let iconPath = '';
   try {
     const zip = new AdmZip(file);
     const fabric = zip.getEntry('fabric.mod.json');
@@ -43,6 +64,9 @@ function parseModMetadata(file) {
       result.name = data.name || data.id || '';
       result.version = data.version || '';
       result.loader = 'fabric';
+      const icon = data.icon;
+      if (typeof icon === 'string') iconPath = icon;
+      else if (icon && typeof icon === 'object') iconPath = icon['128'] || icon['64'] || icon['32'] || Object.values(icon)[0] || '';
     } else if (quilt) {
       const data = JSON.parse(quilt.getData().toString('utf8'));
       const q = data.quilt_loader || {};
@@ -50,6 +74,9 @@ function parseModMetadata(file) {
       result.name = (q.metadata && q.metadata.name) || q.id || '';
       result.version = q.version || '';
       result.loader = 'quilt';
+      const icon = q.metadata && q.metadata.icon;
+      if (typeof icon === 'string') iconPath = icon;
+      else if (icon && typeof icon === 'object') iconPath = icon['128'] || icon['64'] || icon['32'] || Object.values(icon)[0] || '';
     }
     for (const entryName of ['META-INF/neoforge.mods.toml', 'META-INF/mods.toml']) {
       const entry = zip.getEntry(entryName);
@@ -58,10 +85,12 @@ function parseModMetadata(file) {
       const id = /modId\s*=\s*["']([^"']+)/.exec(text);
       const name = /displayName\s*=\s*["']([^"']+)/.exec(text);
       const version = /version\s*=\s*["']([^"']+)/.exec(text);
+      const logo = /logoFile\s*=\s*["']([^"']+)/.exec(text);
       result.id = result.id || (id ? id[1] : '');
       result.name = result.name || (name ? name[1] : '');
       result.version = result.version || (version ? version[1] : '');
       result.loader = result.loader || (entryName.includes('neoforge') ? 'neoforge' : 'forge');
+      iconPath = iconPath || (logo ? logo[1] : '');
       break;
     }
     if (!result.id) {
@@ -74,6 +103,7 @@ function parseModMetadata(file) {
           result.name = item.name || '';
           result.version = item.version || '';
           result.loader = result.loader || 'forge';
+          iconPath = iconPath || item.logoFile || '';
         }
       }
     }
@@ -83,6 +113,7 @@ function parseModMetadata(file) {
       const match = /Implementation-Version:\s*(.+)/i.exec(text);
       if (match) result.version = match[1].trim();
     }
+    result.icon = modIconData(zip, iconPath);
   } catch {
     // 损坏或非标准 jar：保留文件名即可
   }

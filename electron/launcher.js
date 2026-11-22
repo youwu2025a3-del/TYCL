@@ -268,8 +268,15 @@ function recentLogs(limit = 200) {
   }
 }
 
+function repairInstanceFiles(instance) {
+  if (!instance) return false;
+  sanitizeInstalledVersionFiles(instance);
+  return true;
+}
+
 module.exports = {
   launchInstance,
+  repairInstanceFiles,
   getActiveGame,
   isGameRunning,
   stopGame,

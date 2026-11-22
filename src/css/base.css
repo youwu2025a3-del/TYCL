@@ -817,3 +817,68 @@ body[data-theme="dark"] .workspace::before {
   .page-header { flex-direction: column; align-items: flex-start; }
   .page-actions { justify-content: flex-start; }
 }
+body[data-theme="christmas"] {
+  color-scheme: light;
+  --bg: #f4e8d3;
+  --bg-elevated: #fbf3e3;
+  --surface: #fffaf0;
+  --surface-raised: #fffdf7;
+  --surface-subtle: #fbf1df;
+  --surface-hover: #f7e9d2;
+  --surface-sunken: #f0dfc4;
+  --sidebar: #fffaf0;
+  --chrome: rgba(255, 250, 240, .94);
+  --text: #2a3a30;
+  --text-strong: #14281d;
+  --muted: #717b69;
+  --muted-strong: #596552;
+  --faint: #a39378;
+  --line: #ead9bd;
+  --line-strong: #ddc7a5;
+  --line-dark: #cdb28c;
+  --shadow-xs: 0 1px 2px rgba(70, 45, 20, .05);
+  --shadow-sm: 0 2px 10px rgba(70, 45, 20, .07);
+  --shadow-md: 0 12px 34px rgba(70, 45, 20, .1);
+  --shadow-lg: 0 30px 80px rgba(50, 30, 15, .18);
+  --glass: rgba(255, 250, 240, .78);
+  --hero-text: #1d3325;
+  --overlay: rgba(20, 40, 29, .42);
+  --button-dark: #143127;
+  --button-dark-hover: #1d4633;
+  --button-dark-text: #fffaf0;
+  --stage-a: #f8efdc;
+  --stage-b: #efe4cc;
+  --skeleton: linear-gradient(90deg, #efe1c9 25%, #fbf3e3 37%, #efe1c9 63%);
+  --accent: #b23a32;
+  --accent-strong: #982b26;
+  --accent-deep: #74201c;
+  --accent-soft: #f8e2da;
+  --accent-softer: #fdf4ef;
+  --accent-rgb: 178, 58, 50;
+  --accent-contrast: #ffffff;
+  --hero-a: #f8e3cf;
+  --hero-b: #e2ecdb;
+  --hero-c: #fdf7ea;
+}
+body[data-theme="christmas"] .workspace::before {
+  background:
+    radial-gradient(520px 320px at 88% 4%, rgba(178, 58, 50, .08), transparent 70%),
+    radial-gradient(480px 300px at 8% 100%, rgba(22, 78, 53, .08), transparent 70%);
+}
+body[data-theme="christmas"] .workspace::after {
+  content: "❄";
+  position: fixed;
+  right: 18px;
+  bottom: 16px;
+  z-index: 0;
+  color: var(--accent);
+  opacity: .16;
+  font-size: 34px;
+  pointer-events: none;
+}
+body[data-theme="christmas"] .hero-card,
+body[data-theme="christmas"] .news-card,
+body[data-theme="christmas"] .settings-card {
+  border-color: var(--line);
+}
+body.theme-switching, body.theme-switching * { transition: background-color .24s ease, color .24s ease, border-color .24s ease, fill .24s ease, stroke .24s ease !important; }

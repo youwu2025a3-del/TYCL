@@ -173,9 +173,34 @@ const TOPICS = [
     answer: '1.20.1 的 Mod 生态最全；1.21 较新，部分 Mod 还没更新；26.3 的 Mod 更少。装 Mod 前先确认游戏版本和加载器，不要跨版本硬塞。',
     actions: [],
   },
-];
 
-const PREFIXES = ['', '请问', '怎么', '如何'];
+  {
+    patterns: ['jtracy', 'TracyClient', 'NoClassDefFoundError', '缺少 jtracy', 'jtracy 崩溃'],
+    answer: '这是 26.x 的 jtracy 库缺失。TYCL 2.3.2 起会自动补回原版库并修复版本 JSON。\n\n如果仍报错：\n- 关闭游戏后重新启动实例\n- 实例管理 → 一键修复\n- 确认 libraries/com/mojang/jtracy/1.14.38/ 下同时有普通 jar 和 natives-windows jar\n- 不要手动删除版本 JSON',
+    actions: [{ type: 'open-page', page: 'instances' }],
+  },
+  {
+    patterns: ['导入实例失败', '导出实例', '实例备份', '恢复备份', '实例包'],
+    answer: '实例管理 → 备份 / 导出 / 导入。\n\n导出会生成实例 zip；导入会恢复实例配置和文件。恢复前先关闭游戏，避免文件被占用。大实例建议先单独备份存档。',
+    actions: [{ type: 'open-page', page: 'instances' }],
+  },
+  {
+    patterns: ['皮肤不显示', '皮肤上传失败', '正版皮肤', '皮肤工坊', '换皮肤'],
+    answer: '皮肤工坊可以导入 PNG 皮肤并切换经典/纤细模型。\n\n正版账户上传皮肤需要有效 Microsoft 登录；离线账户只在本机显示。上传失败先检查网络和图片尺寸（64x64 或 64x32）。',
+    actions: [{ type: 'open-page', page: 'skins' }],
+  },
+  {
+    patterns: ['联机端口', '防火墙', '朋友进不来', '房间连不上', '端口占用'],
+    answer: '联机排查：\n- 确认双方都下载了联机组件\n- 房间号要完整复制，包含两段端口\n- Windows 防火墙允许 TYCL\n- 端口被占用时换一个端口\n- 公共隧道不稳定时重开房间\n- Mod 必须一致，客户端专用 Mod 会让对方进不来',
+    actions: [{ type: 'open-page', page: 'multiplayer' }],
+  },
+  {
+    patterns: ['启动器闪退', 'APP崩溃', '启动就退出', '白屏', '界面崩溃', 'crash.log'],
+    answer: '先看 crash.log（%APPDATA%\\TYCL\\crash.log）。\n\n常见处理：\n- 重新打开 TYCL，让渲染进程自动恢复\n- 删除 GPU 缓存或关闭硬件加速\n- 检查是否被杀毒软件拦截\n- 更新显卡驱动\n- 把 crash.log 和最新游戏日志发给作者',
+    actions: [],
+  },
+];
+const PREFIXES = ['', '请问', '怎么', '如何', '为什么'];
 const SUFFIXES = ['', '怎么办', '教程', '方法'];
 
 function generate() {

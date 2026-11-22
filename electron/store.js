@@ -73,7 +73,7 @@ function normalizeSettings(input, previous = {}) {
   const name = String(player.name || 'Steve').trim().replace(/[^A-Za-z0-9_]/g, '').slice(0, 16) || 'Steve';
   return {
     ...base,
-    theme: ['light', 'dark', 'system'].includes(base.theme) ? base.theme : 'light',
+    theme: ['light', 'dark', 'christmas', 'system'].includes(base.theme) ? base.theme : 'light',
     accent: ['mint', 'sky', 'violet', 'amber', 'rose'].includes(base.accent) ? base.accent : 'mint',
     player: {
       ...player,

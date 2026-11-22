@@ -220,6 +220,8 @@ export function setAvatar(element, dataUrl) {
   element.appendChild(img);
 }
 
+let themeTransitionTimer = null;
+
 export function applyThemeDom(theme, accent) {
   const actual = theme === 'system'
     ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
@@ -227,8 +229,11 @@ export function applyThemeDom(theme, accent) {
   document.body.dataset.theme = actual;
   document.body.dataset.themeMode = theme;
   document.body.dataset.accent = accent || 'mint';
+  document.body.classList.add('theme-switching');
+  clearTimeout(themeTransitionTimer);
+  themeTransitionTimer = setTimeout(() => document.body.classList.remove('theme-switching'), 320);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', actual === 'dark' ? '#0b1015' : '#f4f6f8');
+  if (meta) meta.setAttribute('content', actual === 'dark' ? '#0b1015' : actual === 'christmas' ? '#143127' : '#f4f6f8');
   document.dispatchEvent(new CustomEvent('tycl:theme-changed', { detail: { theme: actual } }));
 }
 

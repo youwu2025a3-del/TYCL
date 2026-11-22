@@ -362,6 +362,10 @@ async function fixCrash(instanceId) {
     }
   }
   try {
+    if (/jtracy|TracyClient/i.test(text)) {
+      require('./launcher').repairInstanceFiles(instance);
+      fixed.push('已修复版本 JSON 中的 jtracy 库，下次启动会补齐普通 jar 和 natives');
+    }
     const modData = instanceTools.listMods(instance.id);
     for (const conflict of modData.conflicts || []) {
       const files = conflict.files || [];

@@ -4,7 +4,7 @@ const path = require('path');
 const { paths } = require('./paths');
 const topics = require('./knowledge-topics');
 
-const SEED_VERSION = '4';
+const SEED_VERSION = '5';
 let database = null;
 let fallback = null;
 

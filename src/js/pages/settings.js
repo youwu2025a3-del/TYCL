@@ -5,6 +5,7 @@ import { setAvatar, toast } from '../components.js';
 const THEMES = [
   { value: 'light', label: '浅色', icon: 'sun' },
   { value: 'dark', label: '深色', icon: 'moon' },
+  { value: 'christmas', label: '圣诞', icon: 'gift' },
   { value: 'system', label: '跟随系统', icon: 'monitor' },
 ];
 
@@ -45,6 +46,15 @@ export async function render(container, ctx) {
           <button class="btn btn-secondary" data-open-dir>${icon('folder', 15)} 打开游戏目录</button>
         </div>
       </div>
+
+      <nav class="settings-jump" aria-label="设置分类">
+        <span class="settings-jump-label">快速定位</span>
+        <button data-settings-jump="settings-appearance">外观</button>
+        <button data-settings-jump="settings-game">游戏</button>
+        <button data-settings-jump="settings-account">账户</button>
+        <button data-settings-jump="settings-ai">AI</button>
+        <button data-settings-jump="settings-updates">更新</button>
+      </nav>
 
       <div class="settings-grid">
         <div class="settings-col">
@@ -282,6 +292,25 @@ export async function render(container, ctx) {
   `;
 
   setAvatar(container.querySelector('[data-settings-avatar]'), state.activeSkin?.dataUrl);
+
+  const sectionIds = { '外观': 'settings-appearance', '下载': 'settings-download', 'AI 助手': 'settings-ai', '游戏与性能': 'settings-game', '账户': 'settings-account', '关于 TYCL': 'settings-about' };
+  container.querySelectorAll('.settings-card').forEach((card) => {
+    const title = card.querySelector('.settings-card-head h3')?.textContent?.trim();
+    if (title && sectionIds[title]) card.id = sectionIds[title];
+  });
+  const updatesCard = container.querySelector('[data-open-updates]')?.closest('.settings-card');
+  if (updatesCard) updatesCard.id = 'settings-updates';
+  container.querySelectorAll('[data-settings-jump]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const target = container.querySelector(`#${button.dataset.settingsJump}`);
+      if (!target) return;
+      container.querySelectorAll('[data-settings-jump]').forEach((item) => item.classList.toggle('active', item === button));
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.classList.remove('settings-flash');
+      void target.offsetWidth;
+      target.classList.add('settings-flash');
+    });
+  });
 
   const memoryInput = container.querySelector('[data-memory]');
   const memoryValue = container.querySelector('[data-memory-value]');

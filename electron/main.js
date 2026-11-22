@@ -11,7 +11,7 @@ const { listVersions, getLoaders } = require('./versions');
 const { installGameTask, installVersionCore } = require('./installer');
 const { listInstances, deleteInstance, getInstance } = require('./instances');
 const instanceTools = require('./instance-tools');
-const { launchInstance, getActiveGame, stopGame, recentLogs } = require('./launcher');
+const { launchInstance, getActiveGame, stopGame, recentLogs, repairInstanceFiles } = require('./launcher');
 const modrinth = require('./modrinth');
 const { detectJava } = require('./java');
 const { downloadJavaRuntime } = require('./java');
@@ -326,7 +326,7 @@ function registerIpc() {
       next.player = { ...current.player, ...next.player };
     }
     const settings = store.saveSettings(next);
-    nativeTheme.themeSource = settings.theme === 'system' ? 'system' : settings.theme;
+    nativeTheme.themeSource = settings.theme === 'dark' ? 'dark' : settings.theme === 'system' ? 'system' : 'light';
     return { settings, ...getSkinState(), instances: listInstances() };
   });
 
@@ -564,7 +564,10 @@ function registerIpc() {
     return tasks.start({
       kind: 'install',
       title: `修复实例 · ${instance.name}`,
-      worker: (task) => installVersionCore(task, { mcVersion: instance.baseVersion, loader: instance.loader, loaderVersion: instance.loaderVersion }),
+      worker: async (task) => {
+        repairInstanceFiles(instance);
+        return installVersionCore(task, { mcVersion: instance.baseVersion, loader: instance.loader, loaderVersion: instance.loaderVersion });
+      },
     });
   });
   ipcMain.handle('instances:update-modpack', async (_, instanceId, versionId) => {
@@ -635,7 +638,7 @@ function registerIpc() {
   });
   ipcMain.handle('window:is-maximized', async () => (mainWindow ? mainWindow.isMaximized() : false));
   ipcMain.handle('theme:native', async (_, source) => {
-    nativeTheme.themeSource = ['light', 'dark', 'system'].includes(source) ? source : 'system';
+    nativeTheme.themeSource = source === 'dark' ? 'dark' : source === 'system' ? 'system' : 'light';
     return nativeTheme.shouldUseDarkColors;
   });
 }
@@ -684,7 +687,7 @@ if (!gotLock) {
   });
   app.whenReady().then(async () => {
     app.setAppUserModelId('com.tycl.launcher');
-    nativeTheme.themeSource = store.getSettings().theme;
+    nativeTheme.themeSource = store.getSettings().theme === 'dark' ? 'dark' : store.getSettings().theme === 'system' ? 'system' : 'light';
     registerIpc();
     const skipSplash = process.argv.includes('--no-splash') || consumeUpdateRestartFlag() || consumeLegacyUpdateRestart();
     if (!skipSplash) createSplashWindow();
