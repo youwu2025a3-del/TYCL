@@ -5115,3 +5115,30 @@ body[data-theme="christmas"] .christmas-banner {
   body[data-theme="christmas"] .christmas-hero { opacity: .36; width: 60%; }
   .christmas-banner-gift { display: none; }
 }
+/* Easter egg discovery */
+.egg-progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.egg-progress { flex: 1; height: 5px; border-radius: 99px; background: var(--surface-sunken); overflow: hidden; }
+.egg-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--accent-strong)); transition: width .35s ease; }
+.egg-progress-row strong { font-size: 9px; color: var(--accent-strong); white-space: nowrap; }
+.egg-discovery-list { display: grid; gap: 6px; }
+.egg-discovery { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-subtle); transition: border-color .18s ease, transform .18s ease; }
+.egg-discovery:hover { border-color: var(--line-strong); transform: translateX(2px); }
+.egg-discovery.found { border-color: rgba(var(--accent-rgb), .28); background: var(--accent-softer); }
+.egg-discovery-icon { flex: 0 0 31px; width: 31px; height: 31px; display: grid; place-items: center; border-radius: 9px; background: var(--surface); border: 1px solid var(--line); font-size: 16px; }
+.egg-discovery.locked .egg-discovery-icon { color: var(--faint); font-size: 13px; font-weight: 700; background: transparent; border-style: dashed; }
+.egg-discovery-copy { flex: 1; min-width: 0; }
+.egg-discovery-copy strong { display: block; color: var(--text-strong); font-size: 10px; }
+.egg-discovery.locked .egg-discovery-copy strong { color: var(--muted); }
+.egg-discovery-copy span { display: block; margin-top: 2px; color: var(--muted); font-size: 8.5px; line-height: 1.55; }
+.egg-discovery-state { flex: 0 0 auto; padding: 3px 7px; border-radius: 99px; background: var(--surface); color: var(--faint); font-size: 7.5px; letter-spacing: .06em; }
+.egg-discovery.found .egg-discovery-state { background: var(--accent-soft); color: var(--accent-strong); }
+.egg-christmas-card { display: flex; align-items: center; gap: 18px; }
+.egg-christmas-art { position: relative; flex: 0 0 130px; width: 130px; height: 130px; }
+.egg-christmas-art img:first-child { width: 112px; height: 112px; position: absolute; right: 0; bottom: 0; filter: drop-shadow(0 12px 16px rgba(50, 30, 15, .16)); animation: egg-bob 3s ease-in-out infinite; }
+.egg-christmas-art img:last-child { width: 54px; height: 54px; position: absolute; left: 0; bottom: 4px; transform: rotate(-8deg); filter: drop-shadow(0 8px 12px rgba(50, 30, 15, .14)); }
+.egg-christmas-card h3 { margin: 0 0 6px; font-size: 15px; color: var(--text-strong); }
+.egg-christmas-card p { margin: 0 0 12px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+@media (max-width: 700px) {
+  .egg-christmas-card { flex-direction: column; text-align: center; }
+  .egg-christmas-art { flex-basis: 120px; }
+}

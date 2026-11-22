@@ -301,6 +301,15 @@ function registerIpc() {
   tasks = new TaskManager(broadcast);
 
   ipcMain.handle('app:bootstrap', async () => bootstrap());
+  ipcMain.handle('app:discover-egg', async (_, kind) => {
+    const allowed = new Set(['creeper', 'dev', 'herobrine', 'christmas']);
+    if (!allowed.has(kind)) throw new Error('未知彩蛋');
+    const settings = store.getSettings();
+    const discovered = [...new Set([...(settings.discoveredEggs || []), kind])];
+    store.saveSettings({ discoveredEggs: discovered });
+    broadcast('bootstrap:changed', bootstrap());
+    return discovered;
+  });
   ipcMain.handle('app:open-path', async (_, target) => {
     if (!target) return { ok: false };
     const error = await shell.openPath(path.resolve(target));

@@ -343,6 +343,7 @@ api.onBootstrapChanged?.(async () => {
     const data = await api.getBootstrap();
     applyBootstrap(data);
     if (currentRoute === 'skins' || currentRoute === 'home') await renderRoute(currentRoute, { force: true });
+    if (currentRoute === 'settings' && document.querySelector('#settings-eggs')) await renderRoute('settings', { force: true });
   } catch {
     // 后台皮肤刷新失败不影响当前页面
   }

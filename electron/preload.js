@@ -11,6 +11,7 @@ const subscribe = (channel) => (callback) => {
 contextBridge.exposeInMainWorld('tycl', {
   isElectron: true,
   getBootstrap: () => invoke('app:bootstrap'),
+  discoverEgg: (kind) => invoke('app:discover-egg', kind),
   openPath: (target) => invoke('app:open-path', target),
   showInFolder: (target) => invoke('app:show-in-folder', target),
   openExternal: (url) => invoke('app:open-external', url),

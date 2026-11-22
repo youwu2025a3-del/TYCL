@@ -1,4 +1,5 @@
 import { openModal, toast } from './components.js';
+import { api } from './api.js';
 
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 let keyBuffer = [];
@@ -155,12 +156,45 @@ function openHerobrineEgg() {
   }, 450);
 }
 
+function openChristmasEgg() {
+  const modal = openModal({
+    title: '圣诞快乐',
+    subtitle: '你发现了藏在冬日场景里的彩蛋',
+    size: 'modal-md',
+    body: `
+      <div class="egg-christmas-card">
+        <div class="egg-christmas-art">
+          <img src="./assets/christmas/tree.svg" alt="">
+          <img src="./assets/christmas/gift.svg" alt="">
+        </div>
+        <div>
+          <h3>树下的礼物，是留给你的。</h3>
+          <p>你点了五下圣诞树。没有任务提示，也没有成就弹窗，只有一点冬天的好运。</p>
+          <span class="egg-sign">A3Y8 · 2026 · Merry Christmas</span>
+        </div>
+      </div>
+    `,
+    footer: `<button class="btn btn-secondary btn-sm" data-egg-snow>撒点雪</button>
+      <button class="btn btn-primary btn-sm" data-modal-close>收下</button>`,
+  });
+  modal.root.querySelector('[data-egg-snow]')?.addEventListener('click', () => {
+    confetti();
+    toast({ title: '雪下大了', message: '圣诞树晃了一下。' });
+  });
+}
+
+function discover(kind) {
+  api.discoverEgg?.(kind).catch(() => { /* ignore */ });
+}
+
 function openEgg(kind) {
   if (Date.now() - lastTriggered < 1200) return;
   if (document.querySelector('#modal-root .modal')) return;
   lastTriggered = Date.now();
+  discover(kind);
   if (kind === 'dev') openDeveloperEgg();
   else if (kind === 'herobrine') openHerobrineEgg();
+  else if (kind === 'christmas') openChristmasEgg();
   else openCreeperEgg();
 }
 
@@ -171,6 +205,17 @@ function isTyping(target) {
 }
 
 export function setupEasterEggs() {
+  let treeClicks = [];
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.xmas-tree')) return;
+    const now = Date.now();
+    treeClicks = treeClicks.filter((time) => now - time < 3200);
+    treeClicks.push(now);
+    if (treeClicks.length >= 5) {
+      treeClicks = [];
+      openEgg('christmas');
+    }
+  });
   const logo = document.querySelector('.chrome-logo');
   logo?.addEventListener('dblclick', (event) => {
     event.preventDefault();

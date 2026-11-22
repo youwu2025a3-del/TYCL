@@ -17,6 +17,13 @@ const ACCENTS = [
   { value: 'rose', label: '玫瑰', color: '#d75c76' },
 ];
 
+const EGGS = [
+  { id: 'creeper', name: '苦力怕', icon: '💥', hint: '在左上角 Logo 上连续点五下。', desc: '它一直站在这里，只是你刚好点到了它。' },
+  { id: 'dev', name: '金苹果', icon: '🍎', hint: '在键盘上敲出作者的名字缩写。', desc: 'A3Y8 留在代码角落里的一点甜。' },
+  { id: 'herobrine', name: 'Herobrine', icon: '👁', hint: '输入一段经典的街机秘技。', desc: '雾里有两盏白色的灯。你确定刚才那里没有人。' },
+  { id: 'christmas', name: '冬日礼物', icon: '🎄', hint: '在圣诞主题里，连续点五下首页的圣诞树。', desc: '树下的礼物，是留给你的。' },
+];
+
 function themePreview(theme) {
   return `<div class="theme-preview ${theme}">
     <div class="tp-side"></div>
@@ -27,6 +34,7 @@ function themePreview(theme) {
 export async function render(container, ctx) {
   const { state } = ctx;
   const settings = state.settings;
+  const discoveredEggs = new Set(settings.discoveredEggs || []);
   const microsoft = state.account?.mode === 'microsoft';
   const displayName = ctx.displayName?.() || state.player.name;
   const totalMemory = state.system?.totalMemoryMb || 16384;
@@ -54,6 +62,7 @@ export async function render(container, ctx) {
         <button data-settings-jump="settings-account">账户</button>
         <button data-settings-jump="settings-ai">AI</button>
         <button data-settings-jump="settings-updates">更新</button>
+        <button data-settings-jump="settings-eggs">彩蛋</button>
       </nav>
 
       <div class="christmas-banner" aria-hidden="true">
@@ -264,6 +273,32 @@ export async function render(container, ctx) {
               <input class="input input-sm" data-ms-client-id value="${escapeHtml(settings.microsoftClientId || '00000000402b5328')}" spellcheck="false">
               <div class="field-hint">用于 Microsoft 登录的公共客户端 ID。默认值适用于大多数用户，登录异常时再修改。</div>
             </div>
+          </div>
+        </section>
+        <section class="settings-card" id="settings-eggs">
+          <div class="settings-card-head">
+            <div class="settings-icon">${icon('sparkles', 15)}</div>
+            <div><h3>彩蛋发现</h3><p>藏起来的小东西，找到后会记录在这里</p></div>
+          </div>
+          <div class="settings-card-body">
+            <div class="egg-progress-row">
+              <div class="egg-progress"><span style="width:${(discoveredEggs.size / EGGS.length) * 100}%"></span></div>
+              <strong>${discoveredEggs.size} / ${EGGS.length}</strong>
+            </div>
+            <div class="egg-discovery-list">
+              ${EGGS.map((egg) => {
+                const found = discoveredEggs.has(egg.id);
+                return `<div class="egg-discovery ${found ? 'found' : 'locked'}">
+                  <div class="egg-discovery-icon">${found ? egg.icon : '?'}</div>
+                  <div class="egg-discovery-copy">
+                    <strong>${found ? egg.name : '未发现'}</strong>
+                    <span>${found ? egg.desc : egg.hint}</span>
+                  </div>
+                  <span class="egg-discovery-state">${found ? '已发现' : '线索'}</span>
+                </div>`;
+              }).join('')}
+            </div>
+            <div class="notice">${icon('info', 14)}<span>提示不是任务，也不会影响游戏。所有彩蛋都藏在你每天会经过的地方。</span></div>
           </div>
         </section>
         </div>

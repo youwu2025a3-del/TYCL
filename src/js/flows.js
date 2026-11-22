@@ -603,7 +603,17 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                        {
+                            {
+      version: '2.3.5',
+      date: '2026.11.22',
+      title: '彩蛋发现列表',
+      items: [
+        '设置页新增「彩蛋发现」：显示已找到的彩蛋和未解锁线索。',
+        '新增第四个彩蛋：在圣诞主题首页连续点五下圣诞树。',
+        '彩蛋进度会保存，重启启动器后仍然保留。',
+        '设置快速定位增加「彩蛋」入口。',
+      ],
+    },{
       version: '2.3.4',
       date: '2026.11.22',
       title: '圣诞树配图 · 冬日场景',
