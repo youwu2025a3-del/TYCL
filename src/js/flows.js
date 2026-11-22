@@ -603,7 +603,18 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                            {
+                                {
+      version: '2.3.6',
+      date: '2026.11.22',
+      title: '圣诞树点击修复 · 下雪效果',
+      items: [
+        '修复圣诞树无法点击、点击会选中旁边文字的问题。',
+        '圣诞树现在可以正常点击，并显示手型光标。',
+        '点击圣诞树不再触发文本选择。',
+        '连续点五下圣诞树仍会触发冬日礼物彩蛋。',
+        '重做圣诞树周围的下雪效果：30 颗白色雪点从树冠周围落下，不再使用两枚大雪花图标。',
+      ],
+    },{
       version: '2.3.5',
       date: '2026.11.22',
       title: '彩蛋发现列表',
@@ -645,6 +656,16 @@ export function openUpdatesModal(ctx) {
         '版本 JSON 修复现在会补回所有缺失的原版库，不再只处理 LWJGL。',
         '合并 Fabric/Forge 时按 group:artifact:classifier 区分普通 jar 和 natives，避免同类库互相覆盖。',
         '已有实例会在下次启动时自动修复，无需重新安装。',
+      ],
+    },{
+      version: '2.3.1',
+      date: '2026.11.15',
+      title: '新手引导重做 · 四步流程',
+      items: [
+        '新手引导改成游戏式四步：欢迎、游戏目录、联机组件、准备完成。',
+        '引导内可直接选择游戏目录，也可以直接下载联机组件。',
+        '四步进度、上一步/下一步、跳过引导和步骤跳转。',
+        '联机组件门禁和自动检查继续保留。',
       ],
     },{
       version: '2.3.0',

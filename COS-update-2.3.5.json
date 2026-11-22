@@ -1,0 +1,10 @@
+{
+    "sha256":  "2504ab8525369b89285d47661a6f499f8d2ef92be0d4a5d318ff1b5df705b534",
+    "version":  "2.3.5",
+    "publishedAt":  "2026-11-22T09:11:27.4662212Z",
+    "downloadUrl":  "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.3.5.zip",
+    "downloadUrls":  [
+                         "https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/TYCL-update-2.3.5.zip"
+                     ],
+    "notes":  "设置页新增彩蛋发现列表，显示已找到的彩蛋、进度和未解锁线索；新增圣诞树彩蛋；彩蛋记录持久保存。"
+}

@@ -77,12 +77,17 @@ export async function render(container, ctx) {
 
         <div class="hero-art"><img src="./assets/hero-island.svg" alt=""></div>
         <div class="christmas-hero" aria-hidden="true">
-          <img class="xmas-tree" src="./assets/christmas/tree.svg" alt="">
+          <img class="xmas-tree" src="./assets/christmas/tree.svg" alt="" title="连续点五下试试" draggable="false">
           <img class="xmas-santa" src="./assets/christmas/santa.svg" alt="">
           <img class="xmas-gift" src="./assets/christmas/gift.svg" alt="">
           <img class="xmas-snowman" src="./assets/christmas/snowman.svg" alt="">
-          <img class="xmas-flake one" src="./assets/christmas/snowflake.svg" alt="">
-          <img class="xmas-flake two" src="./assets/christmas/snowflake.svg" alt="">
+          <div class="xmas-snowfall">${Array.from({ length: 38 }, (_, index) => {
+            const left = (index * 37 + 9) % 94;
+            const delay = (index % 8) * 0.65;
+            const duration = 5.5 + (index % 5) * 1.1;
+            const size = 2.5 + (index % 4) * 0.7;
+            return `<i class="xmas-snow" style="left:${left}%;width:${size}px;height:${size}px;animation-delay:-${delay}s;animation-duration:${duration}s"></i>`;
+          }).join('')}</div>
         </div>
         <div class="hero-float-card one">
           <div class="hero-float-icon">${icon('layers', 15)}</div>

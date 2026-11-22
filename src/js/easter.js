@@ -208,6 +208,8 @@ export function setupEasterEggs() {
   let treeClicks = [];
   document.addEventListener('click', (event) => {
     if (!event.target.closest('.xmas-tree')) return;
+    event.preventDefault();
+    event.stopPropagation();
     const now = Date.now();
     treeClicks = treeClicks.filter((time) => now - time < 3200);
     treeClicks.push(now);

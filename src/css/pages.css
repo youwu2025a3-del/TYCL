@@ -5076,18 +5076,19 @@ body[data-theme="christmas"] .christmas-hero {
   height: 100%;
   z-index: 2;
   pointer-events: none;
+  user-select: none;
 }
 .christmas-hero img { position: absolute; filter: drop-shadow(0 18px 22px rgba(63, 37, 16, .16)); }
-.christmas-hero .xmas-tree { width: 46%; right: 22%; bottom: 8px; animation: xmasSway 7s ease-in-out infinite; }
+.christmas-hero .xmas-tree { width: 46%; right: 22%; bottom: 8px; animation: xmasSway 7s ease-in-out infinite; pointer-events: auto; cursor: pointer; }
+.christmas-hero .xmas-tree:hover { filter: drop-shadow(0 20px 26px rgba(63, 37, 16, .24)) brightness(1.03); }
 .christmas-hero .xmas-santa { width: 21%; right: 4%; top: 12%; animation: xmasFloat 5.2s ease-in-out infinite; }
 .christmas-hero .xmas-gift { width: 18%; left: 8%; bottom: 9%; animation: xmasFloat 4.3s ease-in-out infinite reverse; }
 .christmas-hero .xmas-snowman { width: 15%; left: 28%; bottom: 5%; opacity: .95; }
-.christmas-hero .xmas-flake { width: 7%; opacity: .6; }
-.christmas-hero .xmas-flake.one { left: 14%; top: 17%; animation: xmasFlake 8s linear infinite; }
-.christmas-hero .xmas-flake.two { right: 34%; top: 5%; width: 5%; animation: xmasFlake 10s linear infinite reverse; }
+.xmas-snowfall { position: absolute; inset: 4% 9% 0 14%; z-index: 5; overflow: hidden; pointer-events: none; mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 84%, transparent 100%); }
+.xmas-snow { position: absolute; top: -12px; border-radius: 50%; background: rgba(255, 255, 255, 1); box-shadow: 0 0 6px rgba(255, 255, 255, .95); filter: blur(.15px); animation-name: xmasSnowFall; animation-timing-function: linear; animation-iteration-count: infinite; }
 @keyframes xmasSway { 0%, 100% { transform: rotate(-1.5deg) translateY(0); } 50% { transform: rotate(1.5deg) translateY(-5px); } }
 @keyframes xmasFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
-@keyframes xmasFlake { 0% { transform: translateY(-6px) rotate(0); } 50% { transform: translateY(8px) rotate(90deg); } 100% { transform: translateY(-6px) rotate(180deg); } }
+@keyframes xmasSnowFall { 0% { transform: translate3d(0, -20px, 0); opacity: 0; } 12% { opacity: .95; } 80% { opacity: .8; } 100% { transform: translate3d(18px, 320px, 0); opacity: 0; } }
 body[data-theme="christmas"] .hero-float-card { background: rgba(255, 250, 240, .9); border-color: rgba(178, 58, 50, .16); }
 
 .christmas-banner { display: none; }
