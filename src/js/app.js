@@ -16,6 +16,7 @@ import {
   openInstanceManager,
   launchInstance,
 } from './flows.js';
+import { openMessageCenter, refreshMessages } from './messages.js';
 import * as homePage from './pages/home.js';
 import * as newsPage from './pages/news.js';
 import * as aiPage from './pages/ai.js';
@@ -488,6 +489,8 @@ async function openAiDrawer() {
 function setupChrome() {
   setupCommandPalette();
   document.getElementById('chrome-ai')?.addEventListener('click', () => openAiDrawer());
+  const messagesButton = document.getElementById('chrome-messages');
+  if (messagesButton) messagesButton.onclick = () => openMessageCenter(ctx);
   document.getElementById('quick-theme')?.addEventListener('click', () => {
     const actual = resolveTheme(state.settings.theme);
     ctx.setTheme(actual === 'dark' ? 'light' : 'dark');
@@ -1117,6 +1120,9 @@ async function init() {
     currentRoute = '';
     await renderRoute(PAGES[initialRoute] ? initialRoute : 'home', { force: true });
     showVersionWelcome();
+    refreshMessages(api)
+      .then(() => refreshMessages(api, { notify: true, remote: true }))
+      .catch(() => { /* 消息中心不影响启动 */ });
   } catch (error) {
     console.error(error);
     appEl.innerHTML = `<div class="page"><div class="page-error">${icon('alert-triangle', 32)}<strong>TYCL 启动失败</strong><span>${escapeHtml(error.message)}</span><button class="btn btn-secondary btn-sm" data-retry style="margin-top:10px">重新尝试</button></div></div>`;

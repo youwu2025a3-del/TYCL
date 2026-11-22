@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "id": "welcome-2026-11",
+      "title": "消息中心上线",
+      "message": "以后祝福和公告都会放在这里，不需要更新启动器就能看到。",
+      "author": "A3Y8",
+      "date": "2026-11-22",
+      "type": "notice"
+    },
+    {
+      "id": "christmas-2026",
+      "title": "圣诞快乐",
+      "message": "愿你这个冬天有热可可、有游戏、有朋友，也有不期而遇的好运。",
+      "author": "A3Y8",
+      "date": "2026-12-25",
+      "type": "blessing"
+    }
+  ]
+}

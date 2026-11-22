@@ -43,6 +43,7 @@ const DEFAULT_SETTINGS = {
   aiLocalModel: 'qwen2.5:3b',
   updateChannel: 'stable',
   autoCheckUpdates: true,
+  blessingFeedUrl: 'https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/blessings.json',
   lastUpdateCheck: 0,
 };
 
@@ -114,6 +115,7 @@ function normalizeSettings(input, previous = {}) {
     aiLocalModel: typeof base.aiLocalModel === 'string' ? base.aiLocalModel.trim() : 'qwen2.5:3b',
     updateChannel: base.updateChannel === 'beta' ? 'beta' : 'stable',
     autoCheckUpdates: base.autoCheckUpdates !== false,
+    blessingFeedUrl: typeof base.blessingFeedUrl === 'string' && /^https?:\/\//i.test(base.blessingFeedUrl.trim()) ? base.blessingFeedUrl.trim() : 'https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/blessings.json',
     lastUpdateCheck: Number(base.lastUpdateCheck) || 0,
   };
 }

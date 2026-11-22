@@ -603,7 +603,19 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                                    {
+                                        {
+      version: '2.3.8',
+      date: '2026.11.22',
+      title: '消息中心 · 远程祝福',
+      items: [
+        '新增独立消息中心，和更新公告分开。',
+        '从 COS 的 blessings.json 拉取公开祝福和公告，不需要更新客户端。',
+        '所有消息保存在本机，刷新只新增和更新，不删除旧消息。',
+        '顶部新增消息按钮和未读红点，启动时自动拉取。',
+        '更新公告顶部新增检查更新和导入更新包入口。',
+        '消息中心支持全部已读、手动刷新和离线回退。',
+      ],
+    },{
       version: '2.3.7',
       date: '2026.11.22',
       title: '彩蛋洒雪修复',
@@ -1061,11 +1073,18 @@ export function openUpdatesModal(ctx) {
     subtitle: `TYCL 当前版本 v${escapeHtml(version)} · 制作者 A3Y8`,
     size: 'modal-lg',
     body: `
+      <div class="update-topbar">
+        <div class="update-topbar-copy">
+          <strong>检查更新</strong>
+          <span data-update-status>可导入本地更新包，或在设置中配置更新源。</span>
+        </div>
+        <button class="btn btn-primary btn-sm" data-check-update-top>${icon('refresh', 13)} 检查更新</button>
+      </div>
       <div class="update-hero">
         <div class="update-hero-icon">${icon('megaphone', 24)}</div>
         <div style="flex:1">
-          <strong>把资源、联机和 Java 都收进来。</strong>
-          <span>TYCL 1.3.2 修复正版皮肤、加入资源管理、CurseForge 与 NeoForge。</span>
+          <strong>TYCL v${escapeHtml(version)} · ${escapeHtml(releases[0]?.title || '更新公告')}</strong>
+          <span>查看更新内容，或直接检查新版本。</span>
         </div>
         <span class="badge badge-accent">LATEST</span>
       </div>
@@ -1104,10 +1123,10 @@ export function openUpdatesModal(ctx) {
       toast({ title: '复制失败', type: 'error' });
     }
   });
-  const statusEl = modal.root.querySelector('[data-update-status]');
+  const statusEls = Array.from(modal.root.querySelectorAll('[data-update-status]'));
   const progressEl = modal.root.querySelector('[data-update-progress]');
   const setStatus = (text) => {
-    if (statusEl) statusEl.textContent = text;
+    statusEls.forEach((statusEl) => { statusEl.textContent = text; });
   };
   const showPreparedUpdate = (prepared, from = '本地更新包') => {
     progressEl.innerHTML = `
@@ -1134,7 +1153,7 @@ export function openUpdatesModal(ctx) {
       }
     });
   };
-  modal.root.querySelector('[data-check-update]').addEventListener('click', async (event) => {
+  modal.root.querySelectorAll('[data-check-update], [data-check-update-top]').forEach((checkButton) => checkButton.addEventListener('click', async (event) => {
     const button = event.currentTarget;
     button.disabled = true;
     button.innerHTML = `<span class="spinner" style="width:13px;height:13px"></span> 检查中`;
@@ -1185,7 +1204,7 @@ export function openUpdatesModal(ctx) {
       button.disabled = false;
       button.innerHTML = `${icon('refresh', 13)} 检查更新`;
     }
-  });
+  }));
   modal.root.querySelector('[data-import-update]').addEventListener('click', async (event) => {
     const button = event.currentTarget;
     button.disabled = true;

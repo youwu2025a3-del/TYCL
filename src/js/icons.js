@@ -35,6 +35,7 @@ const paths = {
   megaphone: '<path d="m3 11 15-6v14L3 13v-2Z"/><path d="M7 13.5V18a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-3.3"/><path d="M21 9v6"/>',
   gift: '<path d="M4 10h16v10H4z"/><path d="M2.5 6.5h19V10h-19zM12 6.5V20"/><path d="M12 6.5H8.3a2.1 2.1 0 1 1 0-4.2C10.9 2.3 12 6.5 12 6.5ZM12 6.5h3.7a2.1 2.1 0 1 0 0-4.2C13.1 2.3 12 6.5 12 6.5Z"/>',
   mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/>',
+  bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
   microsoft: '<path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z" fill="currentColor" stroke="none"/>',
   logout: '<path d="M9 4H5v16h4"/><path d="M14 8l4 4-4 4M8 12h10"/>',
   check: '<path d="m4.5 12.5 5 5 10-11"/>',

@@ -28,6 +28,7 @@ const lan = require('./lan');
 const serverManager = require('./server-manager');
 const curseforge = require('./curseforge');
 const roomService = require('./room-service');
+const messages = require('./messages');
 
 const crashLogFile = path.join(app.getPath('userData'), 'crash.log');
 let lastCrashAt = 0;
@@ -301,6 +302,9 @@ function registerIpc() {
   tasks = new TaskManager(broadcast);
 
   ipcMain.handle('app:bootstrap', async () => bootstrap());
+  ipcMain.handle('messages:list', async () => messages.list());
+  ipcMain.handle('messages:refresh', async () => messages.refresh());
+  ipcMain.handle('messages:read', async (_, ids) => messages.markRead(ids));
   ipcMain.handle('app:discover-egg', async (_, kind) => {
     const allowed = new Set(['creeper', 'dev', 'herobrine', 'christmas']);
     if (!allowed.has(kind)) throw new Error('未知彩蛋');
