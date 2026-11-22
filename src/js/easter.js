@@ -156,6 +156,27 @@ function openHerobrineEgg() {
   }, 450);
 }
 
+function snowBurst() {
+  const layer = document.createElement('div');
+  layer.className = 'egg-snow-layer';
+  for (let i = 0; i < 54; i += 1) {
+    const flake = document.createElement('i');
+    flake.className = 'egg-snow';
+    if (i % 4 === 0) {
+      flake.textContent = '❄';
+      flake.classList.add('flake');
+    }
+    flake.style.left = `${Math.random() * 100}%`;
+    flake.style.fontSize = `${6 + Math.random() * 9}px`;
+    flake.style.animationDuration = `${3.5 + Math.random() * 3.5}s`;
+    flake.style.animationDelay = `${Math.random() * 1.2}s`;
+    flake.style.opacity = `${0.55 + Math.random() * 0.45}`;
+    layer.appendChild(flake);
+  }
+  document.body.appendChild(layer);
+  setTimeout(() => layer.remove(), 5500);
+}
+
 function openChristmasEgg() {
   const modal = openModal({
     title: '圣诞快乐',
@@ -178,8 +199,8 @@ function openChristmasEgg() {
       <button class="btn btn-primary btn-sm" data-modal-close>收下</button>`,
   });
   modal.root.querySelector('[data-egg-snow]')?.addEventListener('click', () => {
-    confetti();
-    toast({ title: '雪下大了', message: '圣诞树晃了一下。' });
+    snowBurst();
+    toast({ title: '下雪了', message: '白色的雪，不是彩花。' });
   });
 }
 

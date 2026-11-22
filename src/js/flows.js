@@ -603,7 +603,17 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                                {
+                                    {
+      version: '2.3.7',
+      date: '2026.11.22',
+      title: '彩蛋洒雪修复',
+      items: [
+        '修复圣诞彩蛋「撒点雪」实际撒出彩色纸花的问题。',
+        '现在会显示 54 个白色雪点，其中包含少量雪花字符。',
+        '所有雪点从屏幕顶部持续飘落，不再复用彩花效果。',
+        '圣诞树点击和冬日礼物彩蛋保持不变。',
+      ],
+    },{
       version: '2.3.6',
       date: '2026.11.22',
       title: '圣诞树点击修复 · 下雪效果',

@@ -5143,3 +5143,13 @@ body[data-theme="christmas"] .christmas-banner {
   .egg-christmas-card { flex-direction: column; text-align: center; }
   .egg-christmas-art { flex-basis: 120px; }
 }
+/* Real snow burst for the Christmas egg */
+.egg-snow-layer { position: fixed; inset: 0; z-index: 230; pointer-events: none; overflow: hidden; }
+.egg-snow { position: absolute; top: -20px; width: 5px; height: 5px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px rgba(255, 255, 255, .85); animation-name: eggSnowFall; animation-timing-function: linear; animation-fill-mode: forwards; }
+.egg-snow.flake { width: auto; height: auto; background: transparent; box-shadow: none; color: #fff; text-shadow: 0 0 7px rgba(255, 255, 255, .9); line-height: 1; }
+@keyframes eggSnowFall {
+  0% { transform: translate3d(0, -20px, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: .95; }
+  80% { opacity: .8; }
+  100% { transform: translate3d(26px, 105vh, 0) rotate(220deg); opacity: 0; }
+}
