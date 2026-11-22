@@ -603,7 +603,17 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                                        {
+                                            {
+      version: '2.3.9',
+      date: '2026.11.22',
+      title: '移除内置示例消息',
+      items: [
+        '删除内置的圣诞祝福和消息中心示例内容。',
+        '消息中心现在只显示 COS blessings.json 里的真实内容。',
+        '本地缓存会清理旧的内置示例，不会删除真实远程消息。',
+        'blessings.json 现在是空模板，未上传时消息中心保持为空。',
+      ],
+    },{
       version: '2.3.8',
       date: '2026.11.22',
       title: '消息中心 · 远程祝福',

@@ -8,6 +8,8 @@ const { store } = require('./store');
 
 const DEFAULT_FEED = 'https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/blessings.json';
 const FILE_NAME = 'messages.json';
+// 这些是早期内置示例，不能出现在真实消息中心里。
+const REMOVED_SAMPLE_IDS = new Set(['welcome-2026-11', 'christmas-2026']);
 let cached = null;
 
 function file() {
@@ -38,7 +40,9 @@ function read() {
   try {
     const data = JSON.parse(fs.readFileSync(file(), 'utf8'));
     cached = {
-      messages: Array.isArray(data.messages) ? data.messages.map((item) => normalize(item, item.source || 'local')).filter(Boolean) : [],
+      messages: Array.isArray(data.messages) ? data.messages
+        .filter((item) => !REMOVED_SAMPLE_IDS.has(String(item.id || '')))
+        .map((item) => normalize(item, item.source || 'local')).filter(Boolean) : [],
       read: Array.isArray(data.read) ? [...new Set(data.read.map(String))] : [],
       updatedAt: Number(data.updatedAt) || 0,
     };
@@ -52,15 +56,6 @@ function write(data) {
   cached = data;
   ensureDir(path.dirname(file()));
   fs.writeFileSync(file(), JSON.stringify(data, null, 2), 'utf8');
-}
-
-function bundled() {
-  try {
-    const data = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'assets', 'blessings.json'), 'utf8'));
-    return (Array.isArray(data) ? data : data.items || []).map((item) => normalize(item, 'local')).filter(Boolean);
-  } catch {
-    return [];
-  }
 }
 
 function merge(items) {
@@ -99,13 +94,6 @@ async function refresh() {
   }
 
   let data = read();
-  if (!data.messages.length) {
-    const fallback = bundled();
-    if (fallback.length) {
-      data = { ...data, messages: fallback, updatedAt: Date.now() };
-      write(data);
-    }
-  }
   return snapshot(data, error);
 }
 
