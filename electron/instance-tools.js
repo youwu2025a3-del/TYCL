@@ -495,30 +495,52 @@ function findInstalledVersion(mcVersion, loader) {
   return names.find((name) => name.toLowerCase().includes(loader) && name.includes(mcVersion)) || '';
 }
 
-function importExternalInstance(folder) {
-  if (!fs.existsSync(folder)) throw new Error('目录不存在');
-  const detected = detectExternalInstance(folder);
-  if (!detected) throw new Error('无法识别该实例。支持 Prism / MultiMC / CurseForge 实例目录。');
-  if (!detected.mcVersion) throw new Error('没有检测到 Minecraft 版本');
-  const versionId = findInstalledVersion(detected.mcVersion, detected.loader);
-  if (!versionId) throw new Error(`请先安装 Minecraft ${detected.mcVersion} · ${detected.loader}，再导入这个实例`);
-  const instance = createInstance({
-    name: detected.name,
-    baseVersion: detected.mcVersion,
-    versionId,
-    loader: detected.loader,
-    loaderVersion: detected.loaderVersion,
-  });
-  const target = getInstance(instance.id) || instance;
-  for (const folderName of ['mods', 'config', 'resourcepacks', 'shaderpacks', 'saves', 'defaultconfigs']) {
-    const source = path.join(detected.gameDir, folderName);
-    if (fs.existsSync(source)) fs.cpSync(source, path.join(target.gameDir, folderName), { recursive: true });
+function importExternalInstance(input) {
+  if (!fs.existsSync(input)) throw new Error('文件或目录不存在');
+  let folder = input;
+  let tempDir = '';
+  try {
+    if (fs.statSync(input).isFile()) {
+      if (!/\.zip$/i.test(input)) throw new Error('只支持 .zip 实例包或实例文件夹');
+      tempDir = fs.mkdtempSync(path.join(paths.cache(), 'external-'));
+      new AdmZip(input).extractAllTo(tempDir, true);
+      folder = tempDir;
+    }
+    let detected = detectExternalInstance(folder);
+    if (!detected && tempDir) {
+      for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue;
+        detected = detectExternalInstance(path.join(folder, entry.name));
+        if (detected) {
+          folder = path.join(folder, entry.name);
+          break;
+        }
+      }
+    }
+    if (!detected) throw new Error('无法识别该实例。支持 Prism / MultiMC / CurseForge 实例目录或 .zip 实例包。');
+    if (!detected.mcVersion) throw new Error('没有检测到 Minecraft 版本');
+    const versionId = findInstalledVersion(detected.mcVersion, detected.loader);
+    if (!versionId) throw new Error(`请先安装 Minecraft ${detected.mcVersion} · ${detected.loader}，再导入这个实例`);
+    const instance = createInstance({
+      name: detected.name,
+      baseVersion: detected.mcVersion,
+      versionId,
+      loader: detected.loader,
+      loaderVersion: detected.loaderVersion,
+    });
+    const target = getInstance(instance.id) || instance;
+    for (const folderName of ['mods', 'config', 'resourcepacks', 'shaderpacks', 'saves', 'defaultconfigs']) {
+      const source = path.join(detected.gameDir, folderName);
+      if (fs.existsSync(source)) fs.cpSync(source, path.join(target.gameDir, folderName), { recursive: true });
+    }
+    for (const fileName of ['options.txt', 'servers.dat']) {
+      const source = path.join(detected.gameDir, fileName);
+      if (fs.existsSync(source)) fs.copyFileSync(source, path.join(target.gameDir, fileName));
+    }
+    return { instance: target, detected };
+  } finally {
+    if (tempDir) fs.rmSync(tempDir, { recursive: true, force: true });
   }
-  for (const fileName of ['options.txt', 'servers.dat']) {
-    const source = path.join(detected.gameDir, fileName);
-    if (fs.existsSync(source)) fs.copyFileSync(source, path.join(target.gameDir, fileName));
-  }
-  return { instance: target, detected };
 }
 
 function createCrashReport(instanceId) {

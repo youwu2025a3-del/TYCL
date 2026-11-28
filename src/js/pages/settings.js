@@ -193,6 +193,7 @@ export async function render(container, ctx) {
               </div>
               <div class="field-hint" data-update-status>没有配置更新源时，也可以把 update.json 放到 TYCL.exe 同目录，或直接导入 .zip/.asar 更新包。</div>
             </div>
+            <div class="settings-update-result" data-settings-update-result></div>
             <div class="notice">
               ${icon('info', 15)}
               <span>更新包只替换应用的 app.asar，不会删除游戏、存档、皮肤和账户数据。安装完成后 TYCL 会自动重启。</span>
@@ -465,6 +466,7 @@ export async function render(container, ctx) {
 
   const feedInput = container.querySelector('[data-update-feed]');
   const updateStatus = container.querySelector('[data-update-status]');
+  const updateResultEl = container.querySelector('[data-settings-update-result]');
   feedInput?.addEventListener('change', async () => {
     try {
       await ctx.saveSettings({ updateFeedUrl: feedInput.value.trim() });
@@ -495,18 +497,54 @@ export async function render(container, ctx) {
     const button = event.currentTarget;
     button.disabled = true;
     button.innerHTML = `<span class="spinner" style="width:12px;height:12px"></span> 检查中`;
+    if (updateResultEl) updateResultEl.innerHTML = '';
     try {
       if (feedInput.value.trim() !== (ctx.state.settings.updateFeedUrl || '')) {
         await ctx.saveSettings({ updateFeedUrl: feedInput.value.trim() });
       }
       const result = await ctx.api.checkUpdates();
       if (result.hasUpdate) {
-        updateStatus.textContent = `发现新版本 v${result.latestVersion}，可在更新公告中下载或导入更新包。`;
-        toast({ title: `发现新版本 v${result.latestVersion}`, message: '打开更新公告即可安装', type: 'info' });
+        updateStatus.textContent = `发现新版本 v${result.latestVersion}`;
+        if (updateResultEl) {
+          updateResultEl.innerHTML = `
+            <div class="settings-update-ready">
+              <div><strong>v${escapeHtml(result.latestVersion)}</strong><span>${escapeHtml(result.notes || '')}</span></div>
+              <button class="btn btn-primary btn-sm" data-settings-download>下载更新</button>
+            </div>`;
+          updateResultEl.querySelector('[data-settings-download]')?.addEventListener('click', async (downloadEvent) => {
+            const downloadButton = downloadEvent.currentTarget;
+            if (!result.manifest?.downloadUrl && !(result.manifest?.downloadUrls || []).length) {
+              toast({ title: '更新清单没有下载地址', type: 'error' });
+              return;
+            }
+            downloadButton.disabled = true;
+            downloadButton.innerHTML = '<span class="spinner" style="width:12px;height:12px"></span> 下载中';
+            try {
+              const prepared = await ctx.api.downloadUpdate({ url: result.manifest.downloadUrl, downloadUrls: result.manifest.downloadUrls || [], sha256: result.manifest.sha256 });
+              updateResultEl.innerHTML = `
+                <div class="settings-update-ready">
+                  <div><strong>更新已下载</strong><span>安装后 TYCL 会自动重启</span></div>
+                  <button class="btn btn-primary btn-sm" data-settings-install>安装并重启</button>
+                </div>`;
+              updateResultEl.querySelector('[data-settings-install]')?.addEventListener('click', async () => {
+                try {
+                  await ctx.api.installUpdate({ packagePath: prepared.packagePath });
+                  toast({ title: '正在安装更新' });
+                } catch (error) {
+                  toast({ title: '更新失败', message: error.message, type: 'error' });
+                }
+              });
+            } catch (error) {
+              downloadButton.disabled = false;
+              downloadButton.textContent = '重新下载';
+              toast({ title: '下载失败', message: error.message, type: 'error' });
+            }
+          });
+        }
       } else if (result.error) {
         updateStatus.textContent = result.error;
       } else if (!result.configured) {
-        updateStatus.textContent = '未配置更新源。可填写 update.json 地址，或直接导入本地更新包。';
+        updateStatus.textContent = '未配置更新源';
       } else {
         updateStatus.textContent = `已是最新版本 v${result.currentVersion}`;
       }

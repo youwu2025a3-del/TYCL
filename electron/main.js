@@ -29,6 +29,7 @@ const serverManager = require('./server-manager');
 const curseforge = require('./curseforge');
 const roomService = require('./room-service');
 const messages = require('./messages');
+const lab = require('./lab');
 
 const crashLogFile = path.join(app.getPath('userData'), 'crash.log');
 let lastCrashAt = 0;
@@ -537,10 +538,19 @@ function registerIpc() {
     return { ...added, resources: instanceTools.listResources(instanceId) };
   });
   ipcMain.handle('instances:resource-enable', async (_, instanceId, name, enabled) => instanceTools.setResourceEnabled(instanceId, name, enabled));
-  ipcMain.handle('instances:import-external', async () => {
-    const result = await dialog.showOpenDialog(mainWindow, { title: '选择 Prism / MultiMC / CurseForge 实例目录', properties: ['openDirectory'] });
-    if (result.canceled || !result.filePaths[0]) return { cancelled: true };
-    return instanceTools.importExternalInstance(result.filePaths[0]);
+  ipcMain.handle('instances:import-external', async (_, filePath = '') => {
+    let target = String(filePath || '').trim();
+    if (!target) {
+      const result = await dialog.showOpenDialog(mainWindow, {
+        title: '选择外部实例文件或文件夹',
+        filters: [{ name: '实例压缩包', extensions: ['zip'] }],
+        properties: ['openFile'],
+      });
+      if (result.canceled || !result.filePaths[0]) return { cancelled: true };
+      target = result.filePaths[0];
+    }
+    if (!fs.existsSync(target)) throw new Error('找不到拖入的实例文件');
+    return instanceTools.importExternalInstance(target);
   });
   ipcMain.handle('instances:crash-report', async (_, instanceId) => instanceTools.createCrashReport(instanceId));
   ipcMain.handle('instances:resource-delete', async (_, instanceId, kind, name) => {
@@ -632,6 +642,28 @@ function registerIpc() {
       title: `安装整合包 · ${options.title || options.projectId}`,
       worker: (task) => modrinth.installModpackTask(task, options),
     });
+  });
+  ipcMain.handle('lab:scan-conflicts', async () => lab.scanConflicts());
+  ipcMain.handle('lab:export-server', async (_, filePath = '') => {
+    let target = String(filePath || '').trim();
+    if (!target) {
+      const picked = await dialog.showOpenDialog(mainWindow, {
+        title: '选择客户端整合包',
+        filters: [{ name: 'Modrinth 整合包', extensions: ['mrpack'] }, { name: '整合包', extensions: ['zip'] }],
+        properties: ['openFile'],
+      });
+      if (picked.canceled || !picked.filePaths[0]) return { cancelled: true };
+      target = picked.filePaths[0];
+    }
+    if (!fs.existsSync(target)) throw new Error('找不到拖入的整合包文件');
+    const defaultName = path.basename(target).replace(/\\.(mrpack|zip)$/i, '') + '-server.mrpack';
+    const save = await dialog.showSaveDialog(mainWindow, {
+      title: '导出服务器整合包',
+      defaultPath: path.join(require('os').homedir(), 'Downloads', defaultName),
+      filters: [{ name: 'Modrinth 整合包', extensions: ['mrpack'] }],
+    });
+    if (save.canceled || !save.filePath) return { cancelled: true };
+    return lab.exportServerPack(target, save.filePath);
   });
   ipcMain.handle('resources:import-modpack', async (_, filePath = '') => {
     let target = String(filePath || '').trim();

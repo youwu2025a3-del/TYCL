@@ -25,6 +25,7 @@ import * as versionsPage from './pages/versions.js';
 import * as resourcesPage from './pages/resources.js';
 import * as skinsPage from './pages/skins.js';
 import * as settingsPage from './pages/settings.js';
+import * as labPage from './pages/lab.js';
 import { setupEasterEggs } from './easter.js';
 
 const appEl = document.getElementById('app');
@@ -40,6 +41,7 @@ const PAGE_META = {
   resources: { label: '资源中心', title: '资源中心' },
   skins: { label: '皮肤工坊', title: '皮肤工坊' },
   settings: { label: '设置', title: '设置' },
+  lab: { label: '实验室', title: '实验室' },
 };
 
 const PAGES = {
@@ -51,6 +53,7 @@ const PAGES = {
   resources: resourcesPage,
   skins: skinsPage,
   settings: settingsPage,
+  lab: labPage,
 };
 
 const state = {
@@ -491,10 +494,7 @@ function setupChrome() {
   document.getElementById('chrome-ai')?.addEventListener('click', () => openAiDrawer());
   const messagesButton = document.getElementById('chrome-messages');
   if (messagesButton) messagesButton.onclick = () => openMessageCenter(ctx);
-  document.getElementById('quick-theme')?.addEventListener('click', () => {
-    const actual = resolveTheme(state.settings.theme);
-    ctx.setTheme(actual === 'dark' ? 'light' : 'dark');
-  });
+  document.getElementById('chrome-lab')?.addEventListener('click', () => ctx.navigate('lab'));
   document.getElementById('chrome-updates')?.addEventListener('click', () => ctx.openUpdates());
   document.getElementById('chrome-queue')?.addEventListener('click', openDownloadQueue);
   document.getElementById('chrome-help')?.addEventListener('click', () => ctx.openAbout());

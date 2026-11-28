@@ -228,12 +228,6 @@ export async function render(container, ctx) {
         </div>
       </div>
 
-      <div class="modpack-drop" data-modpack-drop>
-        <div class="modpack-drop-icon">${icon('upload', 18)}</div>
-        <div class="modpack-drop-copy"><strong>拖入整合包开始安装</strong><span>.mrpack 或 .zip</span></div>
-        <button class="btn btn-secondary btn-sm" data-modpack-import>选择文件</button>
-      </div>
-
       <div class="page-toolbar" style="margin-bottom:14px">
         <div class="tabs">
           <button class="tab ${view.type === 'modpack' ? 'active' : ''}" data-type="modpack">${icon('package', 13)} 整合包</button>
@@ -296,49 +290,6 @@ export async function render(container, ctx) {
   const pagination = container.querySelector('[data-pagination]');
   const searchInput = container.querySelector('[data-search]');
   const clearButton = container.querySelector('[data-clear]');
-  const dropZone = container.querySelector('[data-modpack-drop]');
-
-  const importModpack = async (filePath = '') => {
-    try {
-      const task = await ctx.api.importModpack(filePath);
-      if (!task || task.cancelled) return;
-      toast({ title: '开始导入整合包', message: filePath ? filePath.split(/[\\/]/).pop() : '' });
-    } catch (error) {
-      toast({ title: '导入失败', message: error.message, type: 'error', duration: 7000 });
-    }
-  };
-
-  dropZone?.querySelector('[data-modpack-import]')?.addEventListener('click', () => importModpack());
-  let dragDepth = 0;
-  container.addEventListener('dragenter', (event) => {
-    if (!event.dataTransfer?.types?.includes('Files')) return;
-    event.preventDefault();
-    dragDepth += 1;
-    dropZone?.classList.add('dragging');
-  });
-  container.addEventListener('dragover', (event) => {
-    if (!event.dataTransfer?.types?.includes('Files')) return;
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
-  });
-  container.addEventListener('dragleave', (event) => {
-    if (!event.dataTransfer?.types?.includes('Files')) return;
-    dragDepth = Math.max(0, dragDepth - 1);
-    if (!dragDepth) dropZone?.classList.remove('dragging');
-  });
-  container.addEventListener('drop', (event) => {
-    if (!event.dataTransfer?.files?.length) return;
-    event.preventDefault();
-    dragDepth = 0;
-    dropZone?.classList.remove('dragging');
-    const file = event.dataTransfer.files[0];
-    const filePath = ctx.api.getPathForFile?.(file) || file.path || '';
-    if (!filePath) {
-      toast({ title: '无法读取拖入的文件', message: '请使用「选择文件」导入', type: 'error' });
-      return;
-    }
-    importModpack(filePath);
-  });
 
   async function load({ append = false } = {}) {
     if (!append) {

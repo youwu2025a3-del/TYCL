@@ -42,15 +42,17 @@ export async function render(container, ctx) {
         <div class="toolbar-spacer"></div>
       </div>
 
+      <div class="library-drop-hint" data-library-drop>${icon('upload', 13)} 拖入 .zip 实例包或实例文件夹导入</div>
+
       <div id="versions-body"></div>
     </div>
   `;
 
   const body = container.querySelector('#versions-body');
 
-  container.querySelector('[data-import-external]')?.addEventListener('click', async () => {
+  const importExternal = async (filePath = '') => {
     try {
-      const result = await ctx.api.importExternalInstance();
+      const result = await ctx.api.importExternalInstance(filePath);
       if (result.cancelled) return;
       await ctx.refreshState();
       ctx.rerender();
@@ -58,6 +60,39 @@ export async function render(container, ctx) {
     } catch (error) {
       toast({ title: '导入失败', message: error.message, type: 'error', duration: 7000 });
     }
+  };
+
+  container.querySelector('[data-import-external]')?.addEventListener('click', () => importExternal());
+  let dragDepth = 0;
+  const dropHint = container.querySelector('[data-library-drop]');
+  container.addEventListener('dragenter', (event) => {
+    if (!event.dataTransfer?.types?.includes('Files')) return;
+    event.preventDefault();
+    dragDepth += 1;
+    dropHint?.classList.add('dragging');
+  });
+  container.addEventListener('dragover', (event) => {
+    if (!event.dataTransfer?.types?.includes('Files')) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+  });
+  container.addEventListener('dragleave', (event) => {
+    if (!event.dataTransfer?.types?.includes('Files')) return;
+    dragDepth = Math.max(0, dragDepth - 1);
+    if (!dragDepth) dropHint?.classList.remove('dragging');
+  });
+  container.addEventListener('drop', (event) => {
+    if (!event.dataTransfer?.files?.length) return;
+    event.preventDefault();
+    dragDepth = 0;
+    dropHint?.classList.remove('dragging');
+    const file = event.dataTransfer.files[0];
+    const filePath = ctx.api.getPathForFile?.(file) || file.path || '';
+    if (!filePath) {
+      toast({ title: '无法读取拖入的文件', type: 'error' });
+      return;
+    }
+    importExternal(filePath);
   });
   container.querySelector('[data-download]').addEventListener('click', () => openLatestInstall(ctx));
   container.querySelector('[data-refresh]').addEventListener('click', async () => {

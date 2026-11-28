@@ -5190,3 +5190,25 @@ body[data-theme="dark"] .message-type.notice { background: #3b2d17; color: #e4b8
 
 /* Decorative eyebrow labels are intentionally hidden. */
 .page-eyebrow { display: none; }
+.library-drop-hint { display: flex; align-items: center; gap: 7px; margin: -2px 0 12px; padding: 8px 10px; border: 1px dashed var(--line-strong); border-radius: 10px; color: var(--muted); font-size: 9px; transition: border-color .18s ease, background .18s ease, color .18s ease; }
+.library-drop-hint.dragging { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+.settings-update-ready { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 9px; padding: 10px 11px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-subtle); }
+.settings-update-ready strong { display: block; color: var(--text-strong); font-size: 10px; }
+.settings-update-ready span { display: block; margin-top: 2px; color: var(--muted); font-size: 8.5px; line-height: 1.5; }
+/* Lab */
+.lab-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.lab-grid .settings-card:last-child { grid-column: 1 / -1; }
+.lab-result { margin-top: 10px; }
+.lab-muted { color: var(--muted); font-size: 9.5px; }
+.lab-ok { display: flex; align-items: flex-start; gap: 6px; padding: 9px 10px; border-radius: 9px; background: var(--accent-soft); color: var(--accent-strong); font-size: 9px; line-height: 1.6; }
+.lab-error { padding: 9px 10px; border-radius: 9px; background: var(--surface-sunken); color: var(--danger); font-size: 9px; line-height: 1.6; }
+.lab-conflicts { display: grid; gap: 7px; }
+.lab-conflict { padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-subtle); }
+.lab-conflict strong { display: block; color: var(--text-strong); font-size: 10px; margin-bottom: 4px; }
+.lab-conflict span { display: block; color: var(--muted); font-size: 8.5px; line-height: 1.6; }
+.lab-drop { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 12px; border: 1px dashed var(--line-strong); border-radius: 10px; color: var(--muted); transition: border-color .18s ease, background .18s ease; }
+.lab-drop.dragging { border-color: var(--accent); background: var(--accent-soft); }
+.lab-drop strong { color: var(--text-strong); font-size: 10px; }
+.lab-drop span { color: var(--faint); font-size: 8px; }
+.lab-drop .btn { margin-left: auto; }
+@media (max-width: 900px) { .lab-grid { grid-template-columns: 1fr; } .lab-grid .settings-card:last-child { grid-column: auto; } }
