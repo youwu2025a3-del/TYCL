@@ -542,14 +542,22 @@ function registerIpc() {
     let target = String(filePath || '').trim();
     if (!target) {
       const result = await dialog.showOpenDialog(mainWindow, {
-        title: '选择外部实例文件或文件夹',
-        filters: [{ name: '实例压缩包', extensions: ['zip'] }],
+        title: '选择外部实例或整合包',
+        filters: [{ name: '实例 / 整合包', extensions: ['zip', 'mrpack'] }],
         properties: ['openFile'],
       });
       if (result.canceled || !result.filePaths[0]) return { cancelled: true };
       target = result.filePaths[0];
     }
-    if (!fs.existsSync(target)) throw new Error('找不到拖入的实例文件');
+    if (!fs.existsSync(target)) throw new Error('找不到拖入的文件');
+    if (instanceTools.isModpackArchive(target)) {
+      const task = await tasks.start({
+        kind: 'modpack',
+        title: `安装整合包 · ${path.basename(target)}`,
+        worker: (taskHandle) => modrinth.installLocalModpackTask(taskHandle, { filePath: target }),
+      });
+      return { modpack: true, task };
+    }
     return instanceTools.importExternalInstance(target);
   });
   ipcMain.handle('instances:crash-report', async (_, instanceId) => instanceTools.createCrashReport(instanceId));

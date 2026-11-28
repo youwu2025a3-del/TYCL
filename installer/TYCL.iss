@@ -1,6 +1,6 @@
 #define AppVersion GetEnv("TYCL_VERSION")
 #ifndef AppVersion
-  #define AppVersion "2.3.10"
+  #define AppVersion "2.3.11"
 #endif
 
 [Setup]

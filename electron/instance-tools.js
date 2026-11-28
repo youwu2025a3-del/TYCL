@@ -523,6 +523,16 @@ function findInstalledVersion(mcVersion, loader) {
   return names.find((name) => name.toLowerCase().includes(loader) && name.includes(mcVersion)) || '';
 }
 
+function isModpackArchive(file) {
+  if (!file || !/\.(mrpack|zip)$/i.test(file) || !fs.existsSync(file)) return false;
+  if (/\.mrpack$/i.test(file)) return true;
+  try {
+    return Boolean(new AdmZip(file).getEntry('modrinth.index.json'));
+  } catch {
+    return false;
+  }
+}
+
 function importExternalInstance(input) {
   if (!fs.existsSync(input)) throw new Error('文件或目录不存在');
   let folder = input;
@@ -647,6 +657,7 @@ module.exports = {
   setAllModsEnabled,
   ensureLaunchSnapshot,
   importExternalInstance,
+  isModpackArchive,
   createCrashReport,
   updateSettings,
 };

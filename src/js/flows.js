@@ -603,7 +603,17 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                                                {
+                                                    {
+      version: '2.3.11',
+      date: '2026.11.28',
+      title: '游戏库拖入整合包直接安装',
+      items: [
+        '游戏库支持把 .mrpack 或 .zip 客户端整合包直接拖入，自动创建实例并开始安装。',
+        '自动区分 Modrinth 整合包和外部实例，不需要先选类型。',
+        '安装任务会进入下载队列，进度和结果都在队列里。',
+        '整合包安装完成后自动出现在游戏库。',
+      ],
+    },{
       version: '2.3.10',
       date: '2026.11.28',
       title: '实验室 · 导入修复',
