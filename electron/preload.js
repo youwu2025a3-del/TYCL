@@ -1,6 +1,6 @@
 'use strict';
 
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 const invoke = (channel, ...args) => ipcRenderer.invoke(channel, ...args);
 const subscribe = (channel) => (callback) => {
@@ -10,6 +10,7 @@ const subscribe = (channel) => (callback) => {
 
 contextBridge.exposeInMainWorld('tycl', {
   isElectron: true,
+  getPathForFile: (file) => { try { return webUtils.getPathForFile(file) || file?.path || ''; } catch { return file?.path || ''; } },
   getBootstrap: () => invoke('app:bootstrap'),
   discoverEgg: (kind) => invoke('app:discover-egg', kind),
   listMessages: () => invoke('messages:list'),
@@ -100,6 +101,7 @@ contextBridge.exposeInMainWorld('tycl', {
   searchCurseForge: (options) => invoke('curseforge:search', options),
   installCurseForge: (options) => invoke('curseforge:install', options),
   installModpack: (options) => invoke('resources:install-modpack', options),
+  importModpack: (filePath) => invoke('resources:import-modpack', filePath),
   getActiveGame: () => invoke('game:active'),
   stopGame: () => invoke('game:stop'),
   getLogs: () => invoke('game:logs'),

@@ -633,6 +633,25 @@ function registerIpc() {
       worker: (task) => modrinth.installModpackTask(task, options),
     });
   });
+  ipcMain.handle('resources:import-modpack', async (_, filePath = '') => {
+    let target = String(filePath || '').trim();
+    if (!target) {
+      const result = await dialog.showOpenDialog(mainWindow, {
+        title: '选择整合包文件',
+        filters: [{ name: 'Modrinth 整合包', extensions: ['mrpack'] }, { name: '整合包', extensions: ['zip'] }],
+        properties: ['openFile'],
+      });
+      if (result.canceled || !result.filePaths[0]) return { cancelled: true };
+      target = result.filePaths[0];
+    }
+    if (!fs.existsSync(target)) throw new Error('找不到拖入的整合包文件');
+    if (!/\.(mrpack|zip)$/i.test(target)) throw new Error('请拖入 .mrpack 或 .zip 文件');
+    return tasks.start({
+      kind: 'modpack',
+      title: `导入整合包 · ${path.basename(target)}`,
+      worker: (task) => modrinth.installLocalModpackTask(task, { filePath: target }),
+    });
+  });
 
   ipcMain.handle('window:minimize', async () => {
     if (mainWindow) mainWindow.minimize();

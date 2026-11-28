@@ -122,7 +122,7 @@ function openDeveloperEgg() {
   });
   modal.root.querySelector('[data-egg-gold]')?.addEventListener('click', () => {
     goldSparkles();
-    toast({ title: '金苹果 +1', message: '饥饿值已恢复。' });
+    toast({ title: '金苹果 +1' });
     modal.close();
   });
 }
@@ -200,7 +200,7 @@ function openChristmasEgg() {
   });
   modal.root.querySelector('[data-egg-snow]')?.addEventListener('click', () => {
     snowBurst();
-    toast({ title: '下雪了', message: '白色的雪，不是彩花。' });
+    toast({ title: '下雪了' });
   });
 }
 

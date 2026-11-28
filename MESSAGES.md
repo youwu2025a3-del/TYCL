@@ -10,13 +10,9 @@ https://tycl-1327923012.cos.ap-shanghai.myqcloud.com/tycl/blessings.json
 
 把仓库根目录的 `blessings.json` 上传到 COS 的 `tycl/blessings.json` 即可。
 
-当前仓库里的 `blessings.json` 是空模板：
+当前仓库根目录的 `blessings.json` 是一条「消息中心上线」公告，上传到 COS 即可。
 
-```json
-{ "items": [] }
-```
-
-客户端不内置任何示例祝福；没有上传内容时，消息中心就是空的。
+客户端本身不内置任何祝福；`src/assets/blessings.json` 仍是空模板，消息只来自 COS。
 
 ## 格式
 

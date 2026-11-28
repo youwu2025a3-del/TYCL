@@ -219,13 +219,19 @@ export async function render(container, ctx) {
         <div>
           <div class="page-eyebrow">DISCOVER</div>
           <h1 class="page-title">资源中心</h1>
-          <p class="page-subtitle">从 Modrinth 发现精心制作的整合包与 Mod，选中兼容版本，一键安装到你的实例。</p>
+          <p class="page-subtitle">安装整合包与 Mod，或把 .mrpack 拖进窗口。</p>
         </div>
         <div class="page-actions">
           <button class="btn btn-secondary btn-sm" data-ai-find>${icon('sparkles', 13)} AI 找包</button>
           <button class="btn btn-secondary btn-sm" data-curseforge>${icon('zap', 13)} CurseForge</button>
-          <span class="badge badge-outline" style="height:28px">${icon('globe', 12)} Powered by Modrinth</span>
+
         </div>
+      </div>
+
+      <div class="modpack-drop" data-modpack-drop>
+        <div class="modpack-drop-icon">${icon('upload', 18)}</div>
+        <div class="modpack-drop-copy"><strong>拖入整合包开始安装</strong><span>.mrpack 或 .zip</span></div>
+        <button class="btn btn-secondary btn-sm" data-modpack-import>选择文件</button>
       </div>
 
       <div class="page-toolbar" style="margin-bottom:14px">
@@ -277,7 +283,7 @@ export async function render(container, ctx) {
 
       <div class="results-count">
         <span data-count>正在寻找${view.type === 'modpack' ? '整合包' : ' Mod'}…</span>
-        <span style="color:var(--faint)">内容与下载来自 Modrinth</span>
+
       </div>
 
       <div class="resource-grid" data-grid>${skeletonCards(6)}</div>
@@ -290,6 +296,49 @@ export async function render(container, ctx) {
   const pagination = container.querySelector('[data-pagination]');
   const searchInput = container.querySelector('[data-search]');
   const clearButton = container.querySelector('[data-clear]');
+  const dropZone = container.querySelector('[data-modpack-drop]');
+
+  const importModpack = async (filePath = '') => {
+    try {
+      const task = await ctx.api.importModpack(filePath);
+      if (!task || task.cancelled) return;
+      toast({ title: '开始导入整合包', message: filePath ? filePath.split(/[\\/]/).pop() : '' });
+    } catch (error) {
+      toast({ title: '导入失败', message: error.message, type: 'error', duration: 7000 });
+    }
+  };
+
+  dropZone?.querySelector('[data-modpack-import]')?.addEventListener('click', () => importModpack());
+  let dragDepth = 0;
+  container.addEventListener('dragenter', (event) => {
+    if (!event.dataTransfer?.types?.includes('Files')) return;
+    event.preventDefault();
+    dragDepth += 1;
+    dropZone?.classList.add('dragging');
+  });
+  container.addEventListener('dragover', (event) => {
+    if (!event.dataTransfer?.types?.includes('Files')) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+  });
+  container.addEventListener('dragleave', (event) => {
+    if (!event.dataTransfer?.types?.includes('Files')) return;
+    dragDepth = Math.max(0, dragDepth - 1);
+    if (!dragDepth) dropZone?.classList.remove('dragging');
+  });
+  container.addEventListener('drop', (event) => {
+    if (!event.dataTransfer?.files?.length) return;
+    event.preventDefault();
+    dragDepth = 0;
+    dropZone?.classList.remove('dragging');
+    const file = event.dataTransfer.files[0];
+    const filePath = ctx.api.getPathForFile?.(file) || file.path || '';
+    if (!filePath) {
+      toast({ title: '无法读取拖入的文件', message: '请使用「选择文件」导入', type: 'error' });
+      return;
+    }
+    importModpack(filePath);
+  });
 
   async function load({ append = false } = {}) {
     if (!append) {

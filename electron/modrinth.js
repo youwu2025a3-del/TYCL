@@ -412,6 +412,86 @@ async function updateModpackTask(task, { instance, versionId }) {
   return { ok: true, instanceId: instance.id, version: candidate.version_number, failures, overrides, fileCount: files.length };
 }
 
+async function installLocalModpackTask(task, { filePath }) {
+  if (!filePath || !fs.existsSync(filePath)) throw new Error('找不到整合包文件');
+  const packFile = path.resolve(filePath);
+  if (!/\.(mrpack|zip)$/i.test(packFile)) throw new Error('只支持 .mrpack 或 .zip 整合包');
+  const rawTitle = path.basename(packFile).replace(/\.(mrpack|zip)$/i, '');
+  const safeTitle = rawTitle.replace(/[\\/:*?"<>|]/g, '').trim() || '本地整合包';
+  task.report({ percent: 2, stage: '解析整合包', detail: path.basename(packFile) });
+  let zip;
+  let index;
+  try {
+    zip = new AdmZip(packFile);
+    const entry = zip.getEntry('modrinth.index.json');
+    if (!entry) throw new Error('缺少 modrinth.index.json');
+    index = JSON.parse(entry.getData().toString('utf8'));
+  } catch (error) {
+    throw new Error('无法解析整合包：' + error.message);
+  }
+  const mcVersion = index.dependencies && index.dependencies.minecraft;
+  if (!mcVersion) throw new Error('整合包未声明 Minecraft 版本');
+  const { loader, loaderVersion } = loaderFromPack(index);
+  if (loader === 'neoforge') throw new Error('暂不支持 NeoForge 整合包');
+  task.report({ percent: 8, stage: '安装游戏环境', detail: `Minecraft ${mcVersion} · ${loader}` });
+  const core = await ensureGameForModpack(task, { mcVersion, loader, loaderVersion });
+  const title = String(index.name || safeTitle).trim();
+  const instance = createInstance({
+    name: title,
+    baseVersion: mcVersion,
+    versionId: core.versionId,
+    loader: core.loader,
+    loaderVersion: core.loaderVersion,
+    icon: core.loader === 'vanilla' ? 'grass' : core.loader,
+    forgeInstaller: core.forgeInstaller || '',
+    modpack: {
+      projectId: 'local',
+      versionId: String(index.versionId || 'local'),
+      title,
+      versionNumber: String(index.versionId || '本地文件'),
+      iconUrl: '',
+      localFile: packFile,
+    },
+  });
+
+  const files = (index.files || []).filter((item) => !(item.env && item.env.client === 'unsupported'));
+  let done = 0;
+  const failures = [];
+  task.report({ percent: 94, stage: '下载整合包内容', detail: `0 / ${files.length}` });
+  await mapLimit(files, 6, async (item) => {
+    if (task.signal.aborted) throw Object.assign(new Error('已取消'), { cancelled: true });
+    if (!item.path || !Array.isArray(item.downloads) || !item.downloads.length) return;
+    const target = safeResolveWithin(instance.gameDir, item.path);
+    ensureDir(path.dirname(target));
+    try {
+      await downloadToFile(item.downloads, target, {
+        sha1: item.hashes && item.hashes.sha1,
+        size: item.fileSize,
+        signal: task.signal,
+      });
+    } catch (error) {
+      failures.push(`${item.path}: ${error.message}`);
+    }
+    done += 1;
+    task.report({
+      percent: 94 + (4 * done) / Math.max(1, files.length),
+      stage: '下载整合包内容',
+      detail: `${done} / ${files.length}`,
+    });
+  });
+  task.report({ percent: 98, stage: '写入配置与覆盖文件', detail: '' });
+  const overrides = extractOverrides(zip, instance.gameDir);
+  fs.writeFileSync(path.join(instance.gameDir, 'modrinth.index.json'), JSON.stringify(index, null, 2), 'utf8');
+  updateInstance(instance.id, {
+    modpack: {
+      ...instance.modpack,
+      installedAt: new Date().toISOString(),
+      fileCount: files.length,
+    },
+  });
+  return { instance, overrides, failures, warningCount: failures.length, fileCount: files.length };
+}
+
 module.exports = {
   search,
   getProject,
@@ -419,6 +499,7 @@ module.exports = {
   getVersion,
   installModTask,
   installModpackTask,
+  installLocalModpackTask,
   updateModpackTask,
   normalizeHit,
   normalizeProject,

@@ -5180,3 +5180,13 @@ body[data-theme="dark"] .message-type.notice { background: #3b2d17; color: #e4b8
 .update-topbar-copy { min-width: 0; }
 .update-topbar-copy strong { display: block; color: var(--text-strong); font-size: 11px; }
 .update-topbar-copy span { display: block; margin-top: 2px; color: var(--muted); font-size: 9px; line-height: 1.5; }
+/* Drag and drop modpack import */
+.modpack-drop { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 10px 12px; border: 1px dashed var(--line-strong); border-radius: 12px; background: var(--surface-subtle); transition: border-color .18s ease, background .18s ease, transform .18s ease; }
+.modpack-drop.dragging { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+.modpack-drop-icon { flex: 0 0 30px; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--surface); color: var(--accent); }
+.modpack-drop-copy { flex: 1; min-width: 0; }
+.modpack-drop-copy strong { display: block; color: var(--text-strong); font-size: 10.5px; }
+.modpack-drop-copy span { display: block; margin-top: 1px; color: var(--faint); font-size: 8px; }
+
+/* Decorative eyebrow labels are intentionally hidden. */
+.page-eyebrow { display: none; }

@@ -1,3 +1,13 @@
 {
-  "items": []
+  "items": [
+    {
+      "id": "message-center-launch-2026-11-22",
+      "title": "消息中心上线",
+      "message": "TYCL 消息中心已上线。以后祝福和公告会放在这里，不需要更新启动器就能看到。",
+      "author": "A3Y8",
+      "date": "2026-11-22",
+      "type": "notice",
+      "link": ""
+    }
+  ]
 }

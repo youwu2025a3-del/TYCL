@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchJson } = require('./net');
+const { fetchText } = require('./net');
 const { paths, ensureDir } = require('./paths');
 const { store } = require('./store');
 
@@ -80,7 +80,17 @@ async function refresh() {
   let error = '';
   let items = [];
   try {
-    const payload = await fetchJson(url, { timeout: 12000 });
+    const requestUrl = new URL(url);
+    requestUrl.searchParams.set('_', String(Date.now()));
+    const text = await fetchText(requestUrl.toString(), { timeout: 12000, headers: { 'Cache-Control': 'no-cache' } });
+    const clean = text.replace(/^\uFEFF/, '').trim();
+    if (!clean) throw new Error('COS 返回了空文件');
+    let payload;
+    try {
+      payload = JSON.parse(clean);
+    } catch {
+      throw new Error('COS 的 blessings.json 不是完整 JSON（' + clean.length + ' 字节），请检查结尾是否有 ] 和 }');
+    }
     const raw = Array.isArray(payload) ? payload : payload.items || payload.messages || [];
     items = raw.map((item) => normalize(item)).filter(Boolean);
   } catch (err) {

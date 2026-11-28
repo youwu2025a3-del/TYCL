@@ -603,7 +603,17 @@ export function openAvailableUpdatePrompt(ctx, result) {
 export function openUpdatesModal(ctx) {
   const version = ctx.state.system?.appVersion || '1.5.0';
   const releases = [
-                                            {
+                                                {
+      version: '2.3.10',
+      date: '2026.11.28',
+      title: '拖入整合包 · 文案清理',
+      items: [
+        '资源中心支持把 .mrpack 或 .zip 直接拖进窗口开始安装。',
+        '修复了无法拖进文件 bug。',
+        '新增「选择文件」导入本地整合包。',
+        '移除部分装饰性小字和多余提示。',
+      ],
+    },{
       version: '2.3.9',
       date: '2026.11.22',
       title: '移除内置示例消息',
