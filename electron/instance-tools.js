@@ -462,6 +462,20 @@ function readJsonFile(file) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; }
 }
 
+function findExternalRoot(root, depth = 0) {
+  const markers = ['mmc-pack.json', 'minecraftinstance.json', 'manifest.json', 'instance.json'];
+  if (markers.some((name) => fs.existsSync(path.join(root, name)))) return root;
+  if (depth >= 2) return '';
+  let entries = [];
+  try { entries = fs.readdirSync(root, { withFileTypes: true }); } catch { return ''; }
+  for (const entry of entries) {
+    if (!entry.isDirectory() || entry.name.startsWith('.')) continue;
+    const found = findExternalRoot(path.join(root, entry.name), depth + 1);
+    if (found) return found;
+  }
+  return '';
+}
+
 function detectExternalInstance(folder) {
   const mmc = readJsonFile(path.join(folder, 'mmc-pack.json'));
   if (mmc && Array.isArray(mmc.components)) {
@@ -484,6 +498,20 @@ function detectExternalInstance(folder) {
     const loaderVersion = String(cf.baseModLoader?.forgeVersion || cf.baseModLoader?.name || '').replace(/^.*?-/, '');
     return { source: 'CurseForge', name: cf.name || path.basename(folder), mcVersion, loader, loaderVersion, gameDir: folder };
   }
+  const manifest = readJsonFile(path.join(folder, 'manifest.json'));
+  if (manifest && manifest.minecraft && fs.existsSync(path.join(folder, 'mods'))) {
+    const mcVersion = String(manifest.minecraft.version || '');
+    const loaderId = String(manifest.minecraft.modLoaders?.[0]?.id || '');
+    const loader = loaderId.startsWith('neoforge') ? 'neoforge' : loaderId.startsWith('fabric') ? 'fabric' : loaderId.startsWith('quilt') ? 'quilt' : loaderId.startsWith('forge') ? 'forge' : 'vanilla';
+    return {
+      source: 'CurseForge 整合包',
+      name: manifest.name || path.basename(folder),
+      mcVersion,
+      loader,
+      loaderVersion: loaderId.replace(/^[a-z-]+-/, ''),
+      gameDir: folder,
+    };
+  }
   return null;
 }
 
@@ -502,22 +530,17 @@ function importExternalInstance(input) {
   try {
     if (fs.statSync(input).isFile()) {
       if (!/\.zip$/i.test(input)) throw new Error('只支持 .zip 实例包或实例文件夹');
+      const archive = new AdmZip(input);
+      if (archive.getEntry('tycl-instance.json')) return importArchive(input);
       tempDir = fs.mkdtempSync(path.join(paths.cache(), 'external-'));
-      new AdmZip(input).extractAllTo(tempDir, true);
+      archive.extractAllTo(tempDir, true);
       folder = tempDir;
     }
+    const nestedRoot = findExternalRoot(folder);
+    if (nestedRoot) folder = nestedRoot;
     let detected = detectExternalInstance(folder);
-    if (!detected && tempDir) {
-      for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
-        if (!entry.isDirectory()) continue;
-        detected = detectExternalInstance(path.join(folder, entry.name));
-        if (detected) {
-          folder = path.join(folder, entry.name);
-          break;
-        }
-      }
-    }
-    if (!detected) throw new Error('无法识别该实例。支持 Prism / MultiMC / CurseForge 实例目录或 .zip 实例包。');
+    if (!detected) throw new Error('无法识别该实例。支持 TYCL / Prism / MultiMC / CurseForge 实例包或实例文件夹。');
+    if (tempDir && /^(external-|tmp)/i.test(detected.name)) detected.name = path.basename(input).replace(/\.zip$/i, '');
     if (!detected.mcVersion) throw new Error('没有检测到 Minecraft 版本');
     const versionId = findInstalledVersion(detected.mcVersion, detected.loader);
     if (!versionId) throw new Error(`请先安装 Minecraft ${detected.mcVersion} · ${detected.loader}，再导入这个实例`);
